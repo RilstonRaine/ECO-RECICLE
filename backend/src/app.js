@@ -15,7 +15,8 @@ const descartesRoutes   = require('./routes/descartesRoutes');
 const recompensasRoutes = require('./routes/recompensasRoutes');
 const licencasRoutes    = require('./routes/licencasRoutes');
 const relatoriosRoutes  = require('./routes/relatoriosRoutes');
-const diagRoutes = require('./routes/_diagRoutes')
+const diagRoutes = require('./routes/_diagRoutes');
+const auditoriaRoutes   = require('./routes/auditoriaRoutes'); 
 
 app.use('/auth',        authRoutes);
 app.use('/usuarios',    usuariosRoutes);
@@ -23,6 +24,7 @@ app.use('/descartes',   descartesRoutes);
 app.use('/recompensas', recompensasRoutes);
 app.use('/licencas',    licencasRoutes);
 app.use('/relatorios',  relatoriosRoutes);
+app.use('/auditoria',   auditoriaRoutes);
 
 app.use('/_diag', diagRoutes)
 app.use((req, res) => res.status(404).json({ message: 'Endpoint não encontrado' }));
