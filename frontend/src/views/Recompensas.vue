@@ -223,8 +223,7 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import store from '@/store'
-import recompensasApi from '@/api/recompensasApi'
-import api from '@/api/http'
+import { recompensasApi, usuariosApi } from '@/services/api'
 import { getLicencaCached } from '@/services/licenca'
 
 /* ================= helpers ================= */
@@ -267,7 +266,7 @@ async function montarRanking() {
   rankLoading.value = true
   ranking.value = []
   try {
-    const { data } = await recompensasApi.leaderboard({
+    const { data } = await recompensasApi.leaderboardPJ({
       from: from.value,
       to: to.value,
       limit: 5
@@ -288,7 +287,7 @@ async function carregarMinhas() {
   try {
     const params = { from: from.value, to: to.value }
     if (statusFiltro.value) params.status = statusFiltro.value
-    const { data } = await recompensasApi.minhas(params)
+    const { data } = await recompensasApi.minhasPJ(params)
     minhas.value = data || []
   } catch (e) {
     console.error('[minhas recompensas]', e)
@@ -372,7 +371,7 @@ const resgatando = ref(new Set())
 
 async function refreshPerfilUsuario() {
   try {
-    const { data } = await api.get('/usuarios/me')
+    const { data } = await usuariosApi.me()
     usuario.value = data
     try {
       const authLS = JSON.parse(localStorage.getItem('auth') || '{}')
@@ -388,7 +387,7 @@ async function carregarAtivas(preserveMsg = false) {
   ativasLoading.value = true
   if (!preserveMsg) msg.value = ''
   try {
-    const { data } = await recompensasApi.ativas()
+    const { data } = await recompensasApi.listarAtivas()
     ativas.value = data || []
   } catch (e) {
     console.error('[recompensas ativas]', e)
