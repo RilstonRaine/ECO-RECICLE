@@ -199,7 +199,8 @@ export const recompensasApi = {
   listarAtivas: () => api.get('/recompensas/ativas'),
 
   // Encerrar recompensa (PJ)
-  encerrar: (id) => api.post(`/recompensas/${id}/encerrar`),
+  encerrar: (id) =>
+    api.patch(`/recompensas/${id}/encerrar`),
 
   // Resgatar recompensa (PF)
   resgatar: (id) => api.post(`/recompensas/${id}/resgatar`),
