@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EcoRecicle</title>
+      <script>
+    (function () {
+      try {
+        const auth = JSON.parse(localStorage.getItem('auth') || '{}');
+        const u = auth?.usuario || null;
+
+        // Cache da licença salvo no passo 2
+        const lic = JSON.parse(localStorage.getItem('__licenca_cache__') || 'null');
+        const proAtivo = !!(lic && lic.plano === 'pro' && (lic.pro_ativo || (lic.pro_ativo_ate && new Date(lic.pro_ativo_ate) > new Date())));
+
+        const cl = document.documentElement.classList;
+        // Tema PRO (ouro) ou FREE (verde)
+        if (proAtivo) cl.add('theme-pro'); else cl.remove('theme-pro');
+
+        // Se ainda quiser diferenciar visual de PJ (azulado), mantenha:
+        if (u && u.tipo_usuario === 'ponto_coleta') cl.add('theme-pj'); else cl.remove('theme-pj');
+      } catch (_) {}
+    })();
+  </script>
+
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
