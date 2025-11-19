@@ -172,12 +172,33 @@ export const relatoriosApi = {
 }
 
 export const recompensasApi = {
-  leaderboardPJ: (params) => api.get('/recompensas/pj/leaderboard', { params: pickParams(params) }),
-  criar:         (payload) => api.post('/recompensas', payload),
-  minhasPJ:      ()        => api.get('/recompensas/pj/minhas'),
-  listarAtivas:  ()        => api.get('/recompensas/ativas'),
-  resgatar:      (id)      => api.post(`/recompensas/${id}/resgatar`),
-  resgates:      (params)  => api.get('/recompensas/resgates', { params }),
+  // Ranking de pontuadores em um ponto (PJ)
+  leaderboardPJ: (params = {}) =>
+    api.get('/recompensas/pj/leaderboard', { params: pickParams(params) }),
+
+  // Criar recompensa (PJ)
+  criar: (payload) =>
+    api.post('/recompensas', payload),
+
+  // Minhas recompensas criadas (PJ), com filtros de período/status
+  minhasPJ: (params = {}) =>
+    api.get('/recompensas/pj/minhas', { params: pickParams(params) }),
+
+  // Listar recompensas ativas para PF
+  listarAtivas: () =>
+    api.get('/recompensas/ativas'),
+
+  // Encerrar recompensa (PJ)
+  encerrar: (id) =>
+    api.post(`/recompensas/${id}/encerrar`),
+
+  // Resgatar recompensa (PF)
+  resgatar: (id) =>
+    api.post(`/recompensas/${id}/resgatar`),
+
+  // Relatório de resgates (caso use em outro lugar)
+  resgates: (params = {}) =>
+    api.get('/recompensas/resgates', { params: pickParams(params) }),
 }
 
 export const auditoriaApi = {
