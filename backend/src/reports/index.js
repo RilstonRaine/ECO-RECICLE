@@ -5,9 +5,9 @@ const {
 } = require('./builders/columns'); // <= caminho correto
 
 const pfDescartes   = require('./queries/DescartesPF');
-const pfRecompensas = require('./queries/recompensasPF');
-const pjDescartes   = require('./queries/descartesPJ');
-const pjRecompensas = require('./queries/recompensasPJ');
+const pfRecompensas = require('./queries/RecompensasPF');
+const pjDescartes   = require('./queries/DescartesPJ');
+const pjRecompensas = require('./queries/RecompensasPJ');
 
 const map = {
   pf: {
