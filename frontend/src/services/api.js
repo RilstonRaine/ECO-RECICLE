@@ -3,8 +3,15 @@ import axios from 'axios'
 import router from '../router'
 import store from '../store'
 
+// Define baseURL: usa env, senão localhost em dev, senão Render em produção
+const baseURL =
+  import.meta.env.VITE_API_URL ||
+  (typeof window !== 'undefined' && window.location.hostname === 'localhost'
+    ? 'http://localhost:3000'             // DEV local
+    : 'https://eco-recicle.onrender.com') // PRODUÇÃO (Netlify)
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000',
+  baseURL,
   // withCredentials: true, // habilite se usar cookies/sessions
 })
 
@@ -12,7 +19,10 @@ const api = axios.create({
    Helpers
 --------------------------- */
 // aceita { params: {...} } ou diretamente { ... }
-const pickParams = (obj) =>  Object.fromEntries(Object.entries(obj || {}).filter(([, v]) => v !== undefined && v !== null && v !== ''));
+const pickParams = (obj) =>
+  Object.fromEntries(
+    Object.entries(obj || {}).filter(([, v]) => v !== undefined && v !== null && v !== '')
+  )
 
 // Helper para limpar auth com fallback seguro
 function clearAuthSafely() {
@@ -73,7 +83,9 @@ api.interceptors.response.use(
       if (!isAuthPath) {
         const current = router.currentRoute?.value
         if (!current || current.name !== 'Login') {
-          try { await router.push({ name: 'Login' }) } catch {}
+          try {
+            await router.push({ name: 'Login' })
+          } catch {}
         }
       }
     }
@@ -85,24 +97,24 @@ api.interceptors.response.use(
    Endpoints
    ====================== */
 export const authApi = {
-  login:    (email, senha) => api.post('/auth/login', { email, senha }),
-  cadastro: (payload)      => api.post('/auth/cadastro', payload),
+  login: (email, senha) => api.post('/auth/login', { email, senha }),
+  cadastro: (payload) => api.post('/auth/cadastro', payload),
 }
 
-
 export const usuariosApi = {
-  listar:       (params)   => api.get('/usuarios', { params: pickParams(params) }),
-  listarPontos: (params)   => api.get('/usuarios/pontos', { params: pickParams(params) }),
-  me:           (params)   => api.get('/usuarios/me', { params: pickParams(params) }),
-  updateMe:     (payload)  => api.put('/usuarios/me', payload),
-  resgatados:   (params)   => api.get('/usuarios/me/resgates', { params: pickParams(params) }),
+  listar: (params) => api.get('/usuarios', { params: pickParams(params) }),
+  listarPontos: (params) => api.get('/usuarios/pontos', { params: pickParams(params) }),
+  me: (params) => api.get('/usuarios/me', { params: pickParams(params) }),
+  updateMe: (payload) => api.put('/usuarios/me', payload),
+  resgatados: (params) => api.get('/usuarios/me/resgates', { params: pickParams(params) }),
 }
 
 export const descartesApi = {
-  listar:  (params = {})         => api.get('/descartes', { params: pickParams(params) }),
-  criar:   (payload)             => api.post('/descartes', payload),
-  ultimos: (limit = 5, params={})=> api.get('/descartes/ultimos', { params: { ...pickParams(params), limit } }),
-  detalhe: (id)                  => api.get(`/descartes/${id}`),
+  listar: (params = {}) => api.get('/descartes', { params: pickParams(params) }),
+  criar: (payload) => api.post('/descartes', payload),
+  ultimos: (limit = 5, params = {}) =>
+    api.get('/descartes/ultimos', { params: { ...pickParams(params), limit } }),
+  detalhe: (id) => api.get(`/descartes/${id}`),
 }
 
 /* ------------- NOVO: RESGATES (recompensas resgatadas por usuários) ------------- */
@@ -112,8 +124,8 @@ export const resgatesApi = {
 }
 
 export const licencasApi = {
-  status:  ()           => api.get('/licencas/me'),
-  upgrade: (dias = 30)  => api.post('/licencas/upgrade', { dias }),
+  status: () => api.get('/licencas/me'),
+  upgrade: (dias = 30) => api.post('/licencas/upgrade', { dias }),
 }
 
 export const relatoriosApi = {
@@ -177,24 +189,20 @@ export const recompensasApi = {
     api.get('/recompensas/pj/leaderboard', { params: pickParams(params) }),
 
   // Criar recompensa (PJ)
-  criar: (payload) =>
-    api.post('/recompensas', payload),
+  criar: (payload) => api.post('/recompensas', payload),
 
   // Minhas recompensas criadas (PJ), com filtros de período/status
   minhasPJ: (params = {}) =>
     api.get('/recompensas/pj/minhas', { params: pickParams(params) }),
 
   // Listar recompensas ativas para PF
-  listarAtivas: () =>
-    api.get('/recompensas/ativas'),
+  listarAtivas: () => api.get('/recompensas/ativas'),
 
   // Encerrar recompensa (PJ)
-  encerrar: (id) =>
-    api.post(`/recompensas/${id}/encerrar`),
+  encerrar: (id) => api.post(`/recompensas/${id}/encerrar`),
 
   // Resgatar recompensa (PF)
-  resgatar: (id) =>
-    api.post(`/recompensas/${id}/resgatar`),
+  resgatar: (id) => api.post(`/recompensas/${id}/resgatar`),
 
   // Relatório de resgates (caso use em outro lugar)
   resgates: (params = {}) =>
