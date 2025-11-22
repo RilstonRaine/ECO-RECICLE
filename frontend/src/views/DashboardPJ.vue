@@ -192,6 +192,36 @@
         <div v-else>Sem auditorias encontradas.</div>
       </div>
     </div>
+    
+    <!-- ===== Modal de Reportar Problema ===== -->
+    <div v-if="showReportModal" class="ecor-modal">
+      <div class="ecor-backdrop" @click="closeReportModal"></div>
+      <div class="ecor-panel">
+        <button class="ecor-close" @click="closeReportModal">×</button>
+        <h5 class="mb-3">Reportar Problema</h5>
+        
+        <p class="text-muted mb-3">
+          Descreva o problema encontrado neste descarte. O descartante será notificado.
+        </p>
+
+        <textarea
+          v-model="reportDescription"
+          class="form-control mb-3"
+          rows="4"
+          placeholder="Ex: O material entregue não corresponde ao informado..."
+        ></textarea>
+
+        <div class="d-flex justify-content-end gap-2">
+          <button class="btn btn-secondary" @click="closeReportModal" :disabled="reporting">
+            Cancelar
+          </button>
+          <button class="btn btn-danger" @click="submitReport" :disabled="reporting || !reportDescription.trim()">
+            <span v-if="reporting">Enviando...</span>
+            <span v-else>Enviar Reporte</span>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
