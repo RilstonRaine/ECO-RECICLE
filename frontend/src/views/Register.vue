@@ -134,6 +134,13 @@
             />
           </div>
         </div>
+        
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" v-model="aceiteTermos" id="termosCheck" required>
+          <label class="form-check-label" for="termosCheck">
+            Li e aceito os <a href="#" @click.prevent="showTerms = true">termos de uso</a>...
+          </label>
+        </div>
 
         <button type="submit" class="btn btn--primary mt-2" :disabled="loading">
           <span v-if="!loading">Criar conta</span>
@@ -147,6 +154,12 @@
       </form>
     </div>
   </div>
+<TermsModal 
+  v-if="showTerms" 
+  @close="showTerms = false" 
+  @accept="aceitarTermos" 
+/>
+  
 </template>
 
 <script setup>
@@ -270,6 +283,10 @@ function validarPJObrigatorios() {
 }
 
 async function cadastrar() {
+  if (!aceiteTermos.value) {
+    toast.error('Você deve aceitar os termos de uso para continuar.')
+    return
+  }
   if (!validarPJObrigatorios()) return
   try {
     loading.value = true
