@@ -193,8 +193,8 @@ defineEmits(['close', 'accept'])
 .terms-content li { margin-bottom: 0.25rem; }
 
 .btn--primary {
-  background: linear-gradient(135deg, #12b886 0%, #0ca678 100%);
-  color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600;
+  background: linear-gradient(135deg, #12b886 0%, #0ca678 100%) !important;
+  color: white !important;
 }
 .btn--primary:hover { filter: brightness(0.95); }
 </style>
