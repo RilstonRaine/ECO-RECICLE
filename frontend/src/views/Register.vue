@@ -163,6 +163,7 @@
 </template>
 
 <script setup>
+import TermsModal from '@/components/TermsModal.vue'
 import { reactive, computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
