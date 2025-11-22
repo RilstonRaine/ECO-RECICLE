@@ -215,10 +215,12 @@ const pontoId = computed(() =>
 )
 
 // ==== Estado ====
-const entradas = ref([])        // registros (listagem)
-const nomesPF  = ref({})        // mapa id -> nome descartante
+const entradas = ref([])        
+const nomesPF  = ref({})        
 const showModal = ref(false)
 const showAuditModal = ref(false)
+const showReportModal = ref(false)
+const reportDescription = ref('')
 const detalhe = ref(null)
 const auditorias = ref([])
 const loading = ref(false)
@@ -227,6 +229,7 @@ const reporting = ref(false)
 const from = ref('')
 const to   = ref('')
 
+  
 // ==== Lifecycle ====
 onMounted(async () => {
   if (!usuario) return router.push('/login')
@@ -473,17 +476,29 @@ async function baixar (url, filename) {
 
 async function reportarProblemaDescarte() {
   if (!detalhe.value?.id) return
-  const padrao = 'Problema reportado pelo ponto de coleta.'
-  const descricao = window.prompt('Descreva o problema (opcional):', padrao)
-  if (descricao === null) return
+  showReportModal.value = true  // Abre o modal personalizado
+  reportDescription.value = ''
+}
+
+function closeReportModal() {
+  showReportModal.value = false
+  reportDescription.value = ''
+}
+
+async function submitReport() {
+  if (!detalhe.value?.id || !reportDescription.value.trim()) return
 
   try {
     reporting.value = true
-    await auditoriaApi.reportarProblema(detalhe.value.id, descricao || padrao)
-    toast.success('Problema reportado com sucesso.')
+    await auditoriaApi.reportarProblema(detalhe.value.id, reportDescription.value)
+    
+    toast.success('Problema Registrado, o descartante foi notificado e em até 72 horas nossa equipe de suporte retornará o contato através do e-mail cadastrado', {
+      timeout: 8000
+    })
+    
+    closeReportModal()
   } catch (e) {
-    console.error('[reportarProblema]', e)
-    toast.error('Não foi possível reportar o problema.')
+    // ... erro
   } finally {
     reporting.value = false
   }
