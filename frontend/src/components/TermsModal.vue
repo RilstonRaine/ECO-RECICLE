@@ -194,15 +194,17 @@ defineEmits(['close', 'accept'])
 .terms-content li { margin-bottom: 0.25rem; }
 
 .btn--primary {
-  background: linear-gradient(135deg, #12b886 0%, #0ca678 100%) !important;
+  background-color: #12b886 !important;
+  background-image: linear-gradient(135deg, #12b886 0%, #0ca678 100%) !important;
   color: white !important;
-  border: 1px solid transparent !important; /* Evita pulo no hover */
+  border: 1px solid transparent !important;
   transition: all 0.2s ease-in-out;
 }
 .btn--primary:hover {
-  background: white !important;
+  background-color: white !important;
+  background-image: none !important;
   color: #12b886 !important;
   border: 1px solid #12b886 !important;
-  filter: none; /* Remove o brightness anterior */
+  filter: none;
 }
 </style>
