@@ -147,8 +147,9 @@
       </div>
 
       <div class="mt-3 text-end">
-        <button class="btn btn-secondary" @click="$emit('close')">Fechar</button>
         <button class="btn btn--primary ms-2" @click="$emit('accept')">Li e Concordo</button>
+        <button class="btn btn-secondary" @click="$emit('close')">Fechar</button>
+
       </div>
     </div>
   </div>
