@@ -194,8 +194,8 @@ function resolveAnexoUrl(val){
 function extractAnexos(d){
   const out = []
   const candidates = [
-    d?.foto_item_url,
-    d?.foto_local_url,
+    d?.foto_item_url_signed,
+    d?.foto_local_url_signed,
     d?.foto_item,
     d?.foto_local,
     d?.fotos,
