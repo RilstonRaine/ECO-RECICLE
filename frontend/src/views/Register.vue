@@ -222,6 +222,15 @@ const cnpjMask = ref('')
 const cepMask = ref('')
 const telefoneMask = ref('')
 
+// Controle do modal de termos
+const showTerms = ref(false)
+const aceiteTermos = ref(false)
+
+function aceitarTermos() {
+  aceiteTermos.value = true
+  showTerms.value = false
+}
+  
 function onMask(kind) {
   if (kind === 'cpf') {
     cpfMask.value = maskCPF(cpfMask.value)
