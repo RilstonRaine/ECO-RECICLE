@@ -13,7 +13,7 @@
 
         <h6>1. Controlador dos dados</h6>
         <p>1.1. Para fins da LGPD, o controlador dos dados pessoais é a responsável pela operação da plataforma Eco Recile:<br>
-        [INSERIR RAZÃO SOCIAL/CPF DO RESPONSÁVEL PELA ECO RECILE], doravante denominada simplesmente “Eco Recile”.</p>
+        doravante denominada simplesmente “Eco Recile”.</p>
 
         <h6>2. Tratamento de dados pessoais (LGPD)</h6>
         <p>2.1. Para funcionamento da plataforma, a Eco Recile poderá coletar e tratar, dentre outros:</p>
