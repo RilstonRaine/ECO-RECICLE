@@ -20,10 +20,21 @@ const routes = [
   { path: '/dashboard-pf', name: 'DashboardPF', component: DashboardPF, meta: { auth: true, role: 'descartante' } },
   { path: '/dashboard-pj', name: 'DashboardPJ', component: DashboardPJ, meta: { auth: true, role: 'ponto_coleta' } },
 
+<<<<<<< HEAD
   { path: '/relatorios/pf', name: 'RelatoriosPF', component: () => import('../views/RelatoriosPF.vue'),
     meta: { auth: true, role: 'descartante', requiresPro: 'pf' } },
   { path: '/relatorios/pj', name: 'RelatoriosPJ', component: () => import('../views/RelatoriosPJ.vue'),
     meta: { auth: true, role: 'ponto_coleta', requiresPro: 'pj' } },
+=======
+  {
+    path: '/relatorios/pf', name: 'RelatoriosPF', component: () => import('../views/RelatoriosPF.vue'),
+    meta: { auth: true, role: 'descartante', requiresPro: 'pf' }
+  },
+  {
+    path: '/relatorios/pj', name: 'RelatoriosPJ', component: () => import('../views/RelatoriosPJ.vue'),
+    meta: { auth: true, role: 'ponto_coleta', requiresPro: 'pj' }
+  },
+>>>>>>> ecc2c48 (Alteração do frontend)
 
   { path: '/recompensas', name: 'Recompensas', component: Recompensas, meta: { auth: true, requiresPro: 'both' } },
 
@@ -34,6 +45,12 @@ const routes = [
 
   // Meu Perfil (visão geral + botão “Editar perfil” abre modal)
   { path: '/perfil', name: 'Perfil', component: () => import('@/views/Perfil.vue'), meta: { auth: true } },
+<<<<<<< HEAD
+=======
+
+  // Guia de Reciclagem
+  { path: '/guia-reciclagem', name: 'GuiaReciclagem', component: () => import('../views/GuiaReciclagem.vue') },
+>>>>>>> ecc2c48 (Alteração do frontend)
 ]
 
 const router = createRouter({ history: createWebHistory(), routes })
@@ -69,11 +86,19 @@ router.beforeEach(async (to, _from, next) => {
       if (lic) {
         ativo = !!(lic?.plano === 'pro' && (lic?.pro_ativo || (lic?.pro_ativo_ate && new Date(lic.pro_ativo_ate) > new Date())))
       }
+<<<<<<< HEAD
     } catch {/* ignora e usa localActive */}
 
     const permitido =
       (need === 'pf'   && ativo && isPF) ||
       (need === 'pj'   && ativo && isPJ) ||
+=======
+    } catch {/* ignora e usa localActive */ }
+
+    const permitido =
+      (need === 'pf' && ativo && isPF) ||
+      (need === 'pj' && ativo && isPJ) ||
+>>>>>>> ecc2c48 (Alteração do frontend)
       (need === 'both' && ativo)
 
     if (!permitido) {
@@ -86,7 +111,11 @@ router.beforeEach(async (to, _from, next) => {
           ui.openProModal({ reason, need, after: to.fullPath })
           return
         }
+<<<<<<< HEAD
       } catch {}
+=======
+      } catch { }
+>>>>>>> ecc2c48 (Alteração do frontend)
       return next({ name: 'assinar-pro', query: { after: to.fullPath } })
     }
   }

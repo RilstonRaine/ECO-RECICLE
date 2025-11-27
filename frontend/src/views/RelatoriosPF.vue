@@ -1,5 +1,6 @@
 <!-- src/views/RelatoriosPF.vue -->
 <template>
+<<<<<<< HEAD
   <div class="container">
     <h3 class="mb-3">Relatórios — Pessoa Física (PRO)</h3>
 
@@ -10,6 +11,18 @@
         <div class="col-md-3">
           <label class="form-label mb-1">Tipo de relatório</label>
           <select v-model="tipoRelatorio" class="form-select">
+=======
+  <div class="container-fluid px-4 py-4 h-100 d-flex flex-column">
+    <h3 class="mb-3 fw-bold">Relatórios — Pessoa Física (PRO)</h3>
+
+    <!-- Filtros -->
+    <div class="card-metric p-3 mb-3 filters flex-shrink-0">
+      <div class="row g-2 align-items-end">
+        <!-- Tipo -->
+        <div class="col-md-3">
+          <label class="form-label mb-1 fw-semibold small">Tipo de relatório</label>
+          <select v-model="tipoRelatorio" class="form-select form-select-sm">
+>>>>>>> ecc2c48 (Alteração do frontend)
             <option value="descartes">Descartes</option>
             <option value="recompensas">Recompensas</option>
           </select>
@@ -17,13 +30,19 @@
 
         <!-- Filtro extra (apenas para descartes) -->
         <div class="col-md-3" v-if="tipoRelatorio === 'descartes'">
+<<<<<<< HEAD
           <label class="form-label mb-1">Tipo de resíduo</label>
           <select v-model="tipoResiduo" class="form-select">
+=======
+          <label class="form-label mb-1 fw-semibold small">Tipo de resíduo</label>
+          <select v-model="tipoResiduo" class="form-select form-select-sm">
+>>>>>>> ecc2c48 (Alteração do frontend)
             <option value="todos">Todos</option>
             <option v-for="t in tiposDisponiveis" :key="t" :value="t">{{ t }}</option>
           </select>
         </div>
 
+<<<<<<< HEAD
         <div class="col-md-3">
           <label class="form-label mb-1">De</label>
           <input v-model="de" type="date" class="form-control" />
@@ -40,12 +59,31 @@
           </button>
           <button class="btn btn-ghost btn-std flex-fill" @click="limpar" :disabled="gerando">
             Limpar filtro
+=======
+        <div class="col-md-2">
+          <label class="form-label mb-1 fw-semibold small">De</label>
+          <input v-model="de" type="date" class="form-control form-control-sm" />
+        </div>
+        <div class="col-md-2">
+          <label class="form-label mb-1 fw-semibold small">Até</label>
+          <input v-model="ate" type="date" class="form-control form-control-sm" />
+        </div>
+
+        <div class="col-md-2 d-flex gap-2">
+          <button class="btn btn-primary btn-sm flex-fill fw-semibold" @click="gerar" :disabled="gerando">
+            <span v-if="gerando" class="spinner-border spinner-border-sm me-1"></span>
+            Gerar
+          </button>
+          <button class="btn btn-outline-secondary btn-sm flex-fill" @click="limpar" :disabled="gerando">
+            Limpar
+>>>>>>> ecc2c48 (Alteração do frontend)
           </button>
         </div>
       </div>
     </div>
 
     <!-- Preview -->
+<<<<<<< HEAD
     <div class="report-preview">
       <!-- toolbar -->
       <div v-if="gerado" class="report-toolbar">
@@ -121,6 +159,97 @@
       <!-- Estado inicial -->
       <div v-else class="p-4 text-secondary">
         Defina os filtros e clique em <b>Gerar relatório</b>.
+=======
+    <div class="report-preview flex-fill d-flex flex-column overflow-hidden">
+      <!-- toolbar -->
+      <div v-if="gerado" class="report-toolbar flex-shrink-0">
+        <div class="report-title">Relatório de {{ tipoRelatorio }}</div>
+        <div class="toolbar-actions">
+          <button class="btn btn-primary btn-sm" @click="exportPdf" :disabled="exportando">
+            <i class="bi bi-file-earmark-pdf me-1"></i> PDF
+          </button>
+          <button class="btn btn-outline-success btn-sm" @click="exportXlsx" :disabled="exportando">
+            <i class="bi bi-file-earmark-excel me-1"></i> Excel
+          </button>
+        </div>
+      </div>
+
+      <div class="flex-fill overflow-auto p-0 position-relative bg-white">
+        <div v-if="gerando" class="p-4 text-muted text-center">
+          <div class="spinner-border text-primary mb-2" role="status"></div>
+          <div>Gerando relatório...</div>
+        </div>
+
+        <!-- DESCARTES -->
+        <div v-else-if="gerado && tipoRelatorio === 'descartes'" class="table-responsive h-100">
+          <table class="table table-sm table-hover align-middle mb-0" v-if="linhasDesc.length">
+            <thead class="table-light sticky-top">
+              <tr>
+                <th class="ps-3" style="min-width:110px">Data</th>
+                <th>Ponto</th>
+                <th>Tipo</th>
+                <th class="text-end">Qtd</th>
+                <th class="text-end">Peso (kg)</th>
+                <th class="text-end">Pontos</th>
+                <th class="text-end pe-3">CO₂ (kg)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="r in linhasDesc" :key="r.id">
+                <td class="ps-3">{{ fmtData(r.data_registro) }}</td>
+                <td>{{ nomePonto(r) }}</td>
+                <td>{{ r.tipo_residuo }}</td>
+                <td class="text-end">{{ r.quantidade_itens ?? '-' }}</td>
+                <td class="text-end">{{ peso(r).toFixed(2) }}</td>
+                <td class="text-end">{{ Number(r.pontos_gerados||0) }}</td>
+                <td class="text-end pe-3">{{ Number(r.co2_evitar_kg||0).toFixed(2) }}</td>
+              </tr>
+            </tbody>
+            <tfoot class="table-light sticky-bottom">
+              <tr>
+                <th colspan="4" class="text-end">Totais</th>
+                <th class="text-end">{{ totalPeso.toFixed(2) }}</th>
+                <th class="text-end">{{ totalPontos }}</th>
+                <th class="text-end pe-3">{{ totalCO2.toFixed(2) }}</th>
+              </tr>
+            </tfoot>
+          </table>
+          <div v-else class="h-100 d-flex align-items-center justify-content-center text-muted">
+            Nenhum descarte encontrado com os filtros.
+          </div>
+        </div>
+
+        <!-- RECOMPENSAS -->
+        <div v-else-if="gerado && tipoRelatorio === 'recompensas'" class="table-responsive h-100">
+          <table class="table table-sm table-hover align-middle mb-0" v-if="linhasRec.length">
+            <thead class="table-light sticky-top">
+              <tr>
+                <th class="ps-3">Ponto</th>
+                <th style="min-width:110px">Data</th>
+                <th>Tipo</th>
+                <th class="text-end pe-3">Pontos consumidos</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="r in linhasRec" :key="r.id">
+                <td class="ps-3">{{ nomePJ(r.pj_id) }}</td>
+                <td>{{ fmtData(r.data) }}</td>
+                <td>{{ tipoLabel(r.tipo) }}</td>
+                <td class="text-end pe-3">{{ r.pontos }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div v-else class="h-100 d-flex align-items-center justify-content-center text-muted">
+            Nenhum resgate encontrado com os filtros.
+          </div>
+        </div>
+
+        <!-- Estado inicial -->
+        <div v-else class="h-100 d-flex flex-column align-items-center justify-content-center text-secondary opacity-75">
+          <i class="bi bi-file-earmark-text display-4 mb-3 text-muted"></i>
+          <p class="mb-0">Defina os filtros acima e clique em <b>Gerar</b>.</p>
+        </div>
+>>>>>>> ecc2c48 (Alteração do frontend)
       </div>
     </div>
   </div>
@@ -304,6 +433,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+<<<<<<< HEAD
 :root{
   --mint-600:#12b886;
   --mint-200:#b7f3d6;
@@ -365,4 +495,31 @@ onMounted(async () => {
 .filters .form-control,
 .filters .form-select,
 .filters .btn{ height:42px; }
+=======
+/* cartão/preview */
+.card-metric {
+  background:#fff;
+  border-radius:12px;
+  border:1px solid rgba(2,6,23,.08);
+  box-shadow:0 4px 12px rgba(16,24,40,.03);
+}
+.report-preview{
+  background:#fff;
+  border:1px solid rgba(2,6,23,.08);
+  border-radius:12px;
+  box-shadow:0 4px 12px rgba(16,24,40,.03);
+}
+.report-toolbar{
+  display:flex; align-items:center; gap:10px;
+  padding:12px 16px;
+  background:#f8fafc;
+  border-bottom:1px solid #e2e8f0;
+}
+.report-title{ font-weight:700; color:#0f172a; font-size: 0.95rem; }
+.toolbar-actions{ margin-left:auto; display:flex; gap:8px; }
+
+/* Sticky headers */
+.sticky-top { top: 0; z-index: 10; }
+.sticky-bottom { bottom: 0; z-index: 10; }
+>>>>>>> ecc2c48 (Alteração do frontend)
 </style>

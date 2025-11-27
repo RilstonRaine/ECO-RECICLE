@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
   <div class="container">
     <h3 class="mb-3">Dashboard — Descartante</h3>
 
@@ -15,12 +16,31 @@
       <div class="col-auto d-flex gap-2">
         <button class="btn btn-primary" @click="aplicarPeriodo" :disabled="loadingFilter">Aplicar</button>
         <button class="btn btn-outline-secondary" @click="limparPeriodo" :disabled="!periodoAtivo || loadingFilter">
+=======
+  <div class="container-fluid px-4 py-4">
+    <h3 class="mb-4 fw-bold">Dashboard — Descartante</h3>
+
+    <!-- Filtro simples -->
+    <div class="row g-2 align-items-end mb-4">
+      <div class="col-6 col-md-auto">
+        <label class="form-label mb-1 fw-semibold">De</label>
+        <input type="date" v-model="from" class="form-control" />
+      </div>
+      <div class="col-6 col-md-auto">
+        <label class="form-label mb-1 fw-semibold">Até</label>
+        <input type="date" v-model="to" class="form-control" />
+      </div>
+      <div class="col-12 col-md-auto d-flex gap-2">
+        <button class="btn btn-primary w-100 w-md-auto" @click="aplicarPeriodo" :disabled="loadingFilter">Aplicar</button>
+        <button class="btn btn-outline-secondary w-100 w-md-auto" @click="limparPeriodo" :disabled="!periodoAtivo || loadingFilter">
+>>>>>>> ecc2c48 (Alteração do frontend)
           Limpar
         </button>
       </div>
     </div>
 
     <!-- Cards (totais por padrão; com período, mostram apenas o período) -->
+<<<<<<< HEAD
     <div class="row g-3">
       <div class="col-md-3">
         <Card titulo="Meus descartes" :valor="meusDescartesAtivos.length" />
@@ -32,38 +52,76 @@
         <Card titulo="Pontos resgatados" :valor="pontosResgatadosCard" />
       </div>
       <div class="col-md-3">
+=======
+    <div class="row g-3 mb-4">
+      <div class="col-12 col-sm-6 col-xl-3">
+        <Card titulo="Meus descartes" :valor="meusDescartesAtivos.length" />
+      </div>
+      <div class="col-12 col-sm-6 col-xl-3">
+        <Card titulo="Meus pontos" :valor="pontosCard" />
+      </div>
+      <div class="col-12 col-sm-6 col-xl-3">
+        <Card titulo="Pontos resgatados" :valor="pontosResgatadosCard" />
+      </div>
+      <div class="col-12 col-sm-6 col-xl-3">
+>>>>>>> ecc2c48 (Alteração do frontend)
         <Card titulo="CO₂ evitado (kg)" :valor="co2Ativo.toFixed(2)" />
       </div>
     </div>
 
+<<<<<<< HEAD
     <div class="row g-3 mt-1">
       <div class="col-md-6">
         <div class="card-metric p-3">
+=======
+    <div class="row g-4">
+      <div class="col-12 col-lg-6 col-xl-5">
+        <div class="card-metric p-4 h-100">
+>>>>>>> ecc2c48 (Alteração do frontend)
           <GraficoPizza :labels="labelsAtivo" :data="seriesAtivo" title="Tipos de resíduo" />
         </div>
       </div>
 
+<<<<<<< HEAD
       <div class="col-md-6">
         <div class="card-metric p-3">
           <div class="d-flex justify-content-between align-items-center">
             <h6 class="mb-2">Últimos descartes</h6>
+=======
+      <div class="col-12 col-lg-6 col-xl-7">
+        <div class="card-metric p-4 h-100">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0 fw-bold">Últimos descartes</h5>
+>>>>>>> ecc2c48 (Alteração do frontend)
           </div>
 
           <ul v-if="ultimosAtivos.length" class="list-unstyled m-0">
             <li
               v-for="d in ultimosAtivos"
               :key="d.id"
+<<<<<<< HEAD
               class="py-2 border-bottom d-flex align-items-center justify-content-between gap-3"
             >
               <div class="min-w-0">
                 <div class="fw-semibold text-truncate">
                   {{ nomePontoByDescarte(d) }}
                   <span class="text-muted">• {{ formatDate(getDateFromDescarte(d)) }}</span>
+=======
+              class="py-3 border-bottom d-flex align-items-center justify-content-between gap-3"
+            >
+              <div class="min-w-0">
+                <div class="fw-semibold text-truncate fs-5">
+                  {{ nomePontoByDescarte(d) }}
+                </div>
+                <div class="text-muted small">
+                  {{ formatDate(getDateFromDescarte(d)) }} • {{ d.tipo_residuo }}
+>>>>>>> ecc2c48 (Alteração do frontend)
                 </div>
               </div>
 
               <button
                 type="button"
+<<<<<<< HEAD
                 class="btn btn-details"
                 @click="abrirDetalhe(d.id)"
                 aria-label="Obter detalhes do descarte"
@@ -73,6 +131,19 @@
             </li>
           </ul>
           <div v-else class="text-muted">Sem descartes {{ periodoAtivo ? 'no período' : 'registrados' }}.</div>
+=======
+                class="btn btn-details btn-sm text-nowrap"
+                @click="abrirDetalhe(d.id)"
+                aria-label="Obter detalhes do descarte"
+              >
+                Detalhes
+              </button>
+            </li>
+          </ul>
+          <div v-else class="text-muted py-5 text-center">
+            Sem descartes {{ periodoAtivo ? 'no período' : 'registrados' }}.
+          </div>
+>>>>>>> ecc2c48 (Alteração do frontend)
         </div>
       </div>
     </div>

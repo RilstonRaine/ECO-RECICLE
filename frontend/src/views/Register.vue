@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!-- src/views/Register.vue -->
 <template>
   <div class="container narrow">
@@ -152,6 +153,161 @@
           <router-link to="/login">Faça login</router-link>
         </div>
       </form>
+=======
+<template>
+
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-8 col-xl-7">
+        <div class="card-metric p-4 p-md-5">
+          <h3 class="mb-4 text-center fw-bold text-mint">Crie sua conta</h3>
+          <p class="text-muted mb-4 text-center">
+            Cadastre-se para ter acesso completo à plataforma e monitorar o descarte responsável.
+          </p>
+
+          <form class="d-grid gap-3" @submit.prevent="cadastrar">
+            <div>
+              <label class="form-label fw-semibold">Tipo de usuário</label>
+              <select v-model="form.tipo_usuario" class="form-select form-select-lg" required>
+                <option value="descartante">Descartante (PF)</option>
+                <option value="ponto_coleta">Ponto de Coleta (PJ)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="form-label fw-semibold">
+                {{ isPJ ? 'Nome do ponto de coleta' : 'Nome completo' }}
+              </label>
+              <input v-model.trim="form.nome" class="form-control form-control-lg" required placeholder="Seu nome ou nome fantasia" />
+            </div>
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Email</label>
+                <input v-model.trim="form.email" type="email" class="form-control form-control-lg" required placeholder="seu@email.com"/>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Senha</label>
+                <input v-model="form.senha" type="password" minlength="6" class="form-control form-control-lg" required placeholder="Mínimo 6 caracteres"/>
+              </div>
+            </div>
+
+            <div class="row g-3">
+              <div class="col-md-6" v-if="!isPJ">
+                <label class="form-label fw-semibold">CPF (opcional)</label>
+                <input
+                  v-model="cpfMask"
+                  @input="onMask('cpf')"
+                  inputmode="numeric"
+                  class="form-control form-control-lg"
+                  placeholder="000.000.000-00"
+                />
+              </div>
+
+              <div class="col-md-6" v-if="isPJ">
+                <label class="form-label fw-semibold">CNPJ <span class="text-danger">*</span></label>
+                <input
+                  v-model="cnpjMask"
+                  @input="onMask('cnpj')"
+                  inputmode="numeric"
+                  class="form-control form-control-lg"
+                  :required="isPJ"
+                  placeholder="00.000.000/0000-00"
+                />
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Telefone</label>
+                <input
+                  v-model="telefoneMask"
+                  @input="onMask('telefone')"
+                  inputmode="numeric"
+                  class="form-control form-control-lg"
+                  placeholder="(00) 00000-0000"
+                />
+              </div>
+            </div>
+
+            <div class="row g-3">
+              <div class="col-md-4">
+                <label class="form-label fw-semibold">
+                  CEP <span v-if="isPJ" class="text-danger">*</span>
+                </label>
+                <input
+                  v-model="cepMask"
+                  @input="onMask('cep')"
+                  @blur="buscarCEP"
+                  inputmode="numeric"
+                  class="form-control form-control-lg"
+                  placeholder="00000-000"
+                  :required="isPJ"
+                />
+                <div class="form-text">Ao sair do campo, buscamos o endereço (ViaCEP).</div>
+              </div>
+
+              <div class="col-md-8">
+                <label class="form-label fw-semibold">
+                  Logradouro <span v-if="isPJ" class="text-danger">*</span>
+                </label>
+                <input v-model.trim="form.logradouro" class="form-control form-control-lg" :required="isPJ" placeholder="Rua, Avenida, etc." />
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label fw-semibold">
+                  Número <span v-if="isPJ" class="text-danger">*</span>
+                </label>
+                <input v-model.trim="form.numero" class="form-control form-control-lg" :required="isPJ" placeholder="nº" />
+              </div>
+
+              <div class="col-md-8">
+                <label class="form-label fw-semibold">
+                  Bairro <span v-if="isPJ" class="text-danger">*</span>
+                </label>
+                <input v-model.trim="form.bairro" class="form-control form-control-lg" :required="isPJ" placeholder="Bairro" />
+              </div>
+
+              <div class="col-md-8">
+                <label class="form-label fw-semibold">
+                  Cidade <span v-if="isPJ" class="text-danger">*</span>
+                </label>
+                <input v-model.trim="form.cidade" class="form-control form-control-lg" :required="isPJ" placeholder="Cidade" />
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label fw-semibold">
+                  Estado (UF) <span v-if="isPJ" class="text-danger">*</span>
+                </label>
+                <input
+                  v-model.trim="form.estado"
+                  maxlength="2"
+                  class="form-control form-control-lg"
+                  :required="isPJ"
+                  placeholder="UF"
+                  @blur="form.estado = normalizeUF(form.estado)"
+                />
+              </div>
+            </div>
+            
+            <div class="form-check mt-2">
+              <input class="form-check-input" type="checkbox" v-model="aceiteTermos" id="termosCheck" required>
+              <label class="form-check-label" for="termosCheck">
+                Li e aceito os <a href="#" @click.prevent="showTerms = true">termos de uso</a>...
+              </label>
+            </div>
+
+            <button type="submit" class="btn btn--primary btn-lg mt-3" :disabled="loading">
+              <span v-if="!loading">Criar conta</span>
+              <span v-else>Criando conta…</span>
+            </button>
+
+            <div class="text-center mt-3">
+              Já tem uma conta?
+              <router-link to="/login" class="fw-bold">Faça login</router-link>
+            </div>
+          </form>
+        </div>
+      </div>
+>>>>>>> ecc2c48 (Alteração do frontend)
     </div>
   </div>
 <TermsModal 
@@ -329,7 +485,11 @@ async function cadastrar() {
 </script>
 
 <style scoped>
+<<<<<<< HEAD
 .narrow{ max-width: 760px; margin: 24px auto; }
+=======
+
+>>>>>>> ecc2c48 (Alteração do frontend)
 
 .text-muted{ color: var(--ecor-ink-600); }
 </style>
