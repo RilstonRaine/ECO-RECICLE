@@ -38,7 +38,7 @@ async function resolveFileUrl(path, fallbackUrl, expiresIn = 600) {
       const { data: pub } = supabaseService.storage.from(BUCKET_DESCARTES).getPublicUrl(path)
       if (pub?.publicUrl) return pub.publicUrl
     }
-  } catch {}
+  } catch { }
   return fallbackUrl || null
 }
 
@@ -67,7 +67,7 @@ async function cadastrarDescarte(req, res) {
       return res.status(403).json({ message: 'Apenas descartantes podem registrar descartes.' })
     }
 
-    const { ponto_coleta_id, tipo_residuo, quantidade_itens, peso_por_item_kg, peso_kg } = req.body
+    const { ponto_coleta_id, tipo_residuo, quantidade_itens, peso_por_item_kg, peso_kg, status_peso } = req.body
     if (!ponto_coleta_id) return badReq(res, 'ponto_coleta_id é obrigatório.')
 
     const qtd = toNum(quantidade_itens)
@@ -92,14 +92,14 @@ async function cadastrarDescarte(req, res) {
     if (!ponto || ponto.tipo_usuario !== 'ponto_coleta') return badReq(res, 'Ponto de coleta inválido.')
 
     // arquivos
-    const fotoItemFile  = req.files?.foto_item?.[0]
+    const fotoItemFile = req.files?.foto_item?.[0]
     const fotoLocalFile = req.files?.foto_local?.[0]
     try {
       assertImage(fotoItemFile, 'foto_item')
       assertImage(fotoLocalFile, 'foto_local')
     } catch (e) { return badReq(res, e.message) }
 
-    const upItem  = await uploadToSupabase(fotoItemFile,  user.id, 'item')
+    const upItem = await uploadToSupabase(fotoItemFile, user.id, 'item')
     const upLocal = await uploadToSupabase(fotoLocalFile, user.id, 'local')
 
     const pontosPorKg = 4
@@ -122,7 +122,8 @@ async function cadastrarDescarte(req, res) {
       peso_kg: pesoFinal,
       pontos_gerados,
       co2_evitar_kg,
-      foto_item_path:  upItem.path,  foto_item_url:  upItem.publicUrl,
+      status_peso: status_peso || 'medido',
+      foto_item_path: upItem.path, foto_item_url: upItem.publicUrl,
       foto_local_path: upLocal.path, foto_local_url: upLocal.publicUrl,
     }
 
@@ -168,19 +169,19 @@ function endOfDayLocal(d) {
 async function listarDescartes(req, res) {
   try {
     const userId = req.usuario?.id
-    const role   = req.usuario?.tipo_usuario
+    const role = req.usuario?.tipo_usuario
     if (!userId) return res.status(401).json({ message: 'Não autenticado' })
 
     const { from, to } = req.query
     const fromDate = parseDateParam(from)
-    const toDate   = parseDateParam(to)
+    const toDate = parseDateParam(to)
 
     let q = supabaseService.from('descartes').select('*')
     if (role === 'descartante') q = q.eq('usuario_id', userId)
     else if (role === 'ponto_coleta') q = q.eq('ponto_coleta_id', userId)
 
     if (fromDate) q = q.gte('data_registro', fromDate.toISOString())
-    if (toDate)   q = q.lte('data_registro', endOfDayLocal(toDate).toISOString())
+    if (toDate) q = q.lte('data_registro', endOfDayLocal(toDate).toISOString())
 
     const { data, error } = await q.order('data_registro', { ascending: false })
     if (error) throw error
@@ -195,8 +196,8 @@ async function listarDescartes(req, res) {
 async function ultimos(req, res) {
   try {
     const userId = req.usuario?.id
-    const role   = req.usuario?.tipo_usuario
-    const limit  = Math.max(1, Math.min(10, Number(req.query.limit) || 5))
+    const role = req.usuario?.tipo_usuario
+    const limit = Math.max(1, Math.min(10, Number(req.query.limit) || 5))
 
     if (!userId) return res.status(401).json({ message: 'Não autenticado' })
     if (!['descartante', 'ponto_coleta', 'admin'].includes(role)) {
@@ -205,7 +206,7 @@ async function ultimos(req, res) {
 
     const { from, to } = req.query
     const fromDate = parseDateParam(from)
-    const toDate   = parseDateParam(to)
+    const toDate = parseDateParam(to)
 
     let q = supabaseService
       .from('descartes')
@@ -217,7 +218,7 @@ async function ultimos(req, res) {
     else if (role === 'ponto_coleta') q = q.eq('ponto_coleta_id', userId)
 
     if (fromDate) q = q.gte('data_registro', fromDate.toISOString())
-    if (toDate)   q = q.lte('data_registro', endOfDayLocal(toDate).toISOString())
+    if (toDate) q = q.lte('data_registro', endOfDayLocal(toDate).toISOString())
 
     const { data, error } = await q
     if (error) throw error
@@ -247,8 +248,8 @@ async function ultimos(req, res) {
 async function obterDetalhe(req, res) {
   try {
     const userId = req.usuario?.id
-    const role   = req.usuario?.tipo_usuario
-    const id     = Number(req.params.id)
+    const role = req.usuario?.tipo_usuario
+    const id = Number(req.params.id)
 
     const { data: row, error } = await supabaseService
       .from('descartes')
@@ -269,10 +270,10 @@ async function obterDetalhe(req, res) {
     }
 
     // Fallback de path a partir da URL salva
-    const itemPath  = row.foto_item_path  || urlToPath(row.foto_item_url)
+    const itemPath = row.foto_item_path || urlToPath(row.foto_item_url)
     const localPath = row.foto_local_path || urlToPath(row.foto_local_url)
 
-    const foto_item_signed  = await resolveFileUrl(itemPath,  row.foto_item_url)
+    const foto_item_signed = await resolveFileUrl(itemPath, row.foto_item_url)
     const foto_local_signed = await resolveFileUrl(localPath, row.foto_local_url)
 
     return res.json({ ...row, foto_item_signed, foto_local_signed })
