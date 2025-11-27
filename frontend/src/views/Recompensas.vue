@@ -1,19 +1,7 @@
-<<<<<<< HEAD
-<!-- src/views/Recompensas.vue -->
-<template>
-  <div class="container py-3">
-    <!-- Título + botão -->
-      <div class="d-flex align-items-center gap-2 mb-3">
-        <h3 class="m-0">Recompensas</h3>
-
-        <!-- só aparece para PJ PRO -->
-=======
 <template>
   <div class="container-fluid p-3">
     <div class="d-flex align-items-center gap-2 mb-3">
         <h3 class="m-0">Recompensas</h3>
-
->>>>>>> ecc2c48 (Alteração do frontend)
         <button
           v-if="isPJ && isPro"
           class="btn btn--primary btn-sm"
@@ -24,10 +12,7 @@
         </button>
       </div>
 
-<<<<<<< HEAD
-    <!-- Estado inicial/erro -->
-=======
->>>>>>> ecc2c48 (Alteração do frontend)
+
     <div v-if="loadingUser" class="text-muted">Carregando...</div>
     <div v-else-if="!usuario" class="text-danger">Sessão não encontrada. Faça login novamente.</div>
     <div v-else>
@@ -35,18 +20,9 @@
         Esta funcionalidade é exclusiva para assinantes <b>PRO</b>.
       </div>
 
-<<<<<<< HEAD
-      <!-- ================= PJ PRO ================= -->
-      <template v-if="isPJ && isPro">
-        <div class="row g-3">
-          <!-- COL ESQUERDA -->
-          <div class="col-lg-7">
-            <!-- Filtro de período -->
-=======
       <template v-if="isPJ && isPro">
         <div class="row g-3">
           <div class="col-lg-7">
->>>>>>> ecc2c48 (Alteração do frontend)
             <div class="card-metric p-3">
               <div class="row g-2 align-items-end">
                 <div class="col-sm-6">
@@ -60,10 +36,7 @@
               </div>
             </div>
 
-<<<<<<< HEAD
-            <!-- Ranking (Top 5) -->
-=======
->>>>>>> ecc2c48 (Alteração do frontend)
+
             <div class="card-metric p-3 mt-3">
               <h6 class="mb-2">Ranking de pontuadores no período</h6>
               <div v-if="rankLoading" class="text-muted">Calculando ranking...</div>
@@ -89,10 +62,7 @@
             </div>
           </div>
 
-<<<<<<< HEAD
-          <!-- COL DIREITA -->
-=======
->>>>>>> ecc2c48 (Alteração do frontend)
+
           <div class="col-lg-5">
             <div class="card-metric p-3">
               <div class="d-flex align-items-center gap-2 mb-2">
@@ -145,10 +115,7 @@
           </div>
         </div>
 
-<<<<<<< HEAD
-        <!-- Modal criar recompensa -->
-=======
->>>>>>> ecc2c48 (Alteração do frontend)
+
         <div v-if="showModal" class="ecor-modal">
           <div class="ecor-backdrop" @click="fecharModal"></div>
           <div class="ecor-panel">
@@ -199,10 +166,7 @@
         </div>
       </template>
 
-<<<<<<< HEAD
-      <!-- ================= PF PRO (inalterado) ================= -->
-=======
->>>>>>> ecc2c48 (Alteração do frontend)
+
       <template v-else-if="isPF && isPro">
         <div class="card-metric p-3">
           <h6 class="mb-3">Recompensas disponíveis</h6>
@@ -219,17 +183,6 @@
                   </small>
                 </div>
 
-<<<<<<< HEAD
-                <div class="reward-card__hover">
-                  <div class="mb-2">
-                    <div><b>Recompensa disponível</b></div>
-                    <div>Tipo: {{ r.tipo === 'fisica' ? 'Física' : 'Digital' }}</div>
-                    <div>Pontos mínimos: {{ r.pontos_minimos }}</div>
-                    <div>Data limite: {{ formatDate(r.data_limite) }}</div>
-                    <div v-if="r.descricao" class="preline">Descrição: {{ r.descricao }}</div>
-                  </div>
-                  <button class="btn btn--primary btn-sm" @click="resgatar(r)" :disabled="resgatando.has(r.id)">
-=======
                 <div class="reward-card__body mt-2 pt-2 border-top border-dashed">
                   <div class="row g-1 mb-2 small text-muted">
                     <div class="col-6"><b>Tipo:</b> {{ r.tipo === 'fisica' ? 'Física' : 'Digital' }}</div>
@@ -238,7 +191,6 @@
                     <div v-if="r.descricao" class="col-12 text-truncate" :title="r.descricao">{{ r.descricao }}</div>
                   </div>
                   <button class="btn btn--primary btn-sm w-100" @click="resgatar(r)" :disabled="resgatando.has(r.id)">
->>>>>>> ecc2c48 (Alteração do frontend)
                     Resgatar
                   </button>
                 </div>
@@ -252,10 +204,7 @@
         </div>
       </template>
 
-<<<<<<< HEAD
-      <!-- Quem não é PRO -->
-=======
->>>>>>> ecc2c48 (Alteração do frontend)
+
       <template v-else>
         <div class="alert alert-info">Faça o upgrade para o plano PRO para acessar recompensas.</div>
       </template>
@@ -269,10 +218,7 @@ import store from '@/store'
 import { recompensasApi, usuariosApi } from '@/services/api'
 import { getLicencaCached } from '@/services/licenca'
 
-<<<<<<< HEAD
-/* ================= helpers ================= */
-=======
->>>>>>> ecc2c48 (Alteração do frontend)
+
 function isProAtivo(lic) {
   if (!lic) return false
   const planoOk = lic.plano === 'pro'
@@ -285,10 +231,7 @@ function formatDate(d) {
   return Number.isNaN(+dt) ? String(d) : dt.toLocaleDateString()
 }
 
-<<<<<<< HEAD
-/* ================= estado usuário ================= */
-=======
->>>>>>> ecc2c48 (Alteração do frontend)
+
 const loadingUser = ref(true)
 const usuario = ref(null)
 const licenca = ref(null)
@@ -298,10 +241,7 @@ const isPJ = computed(() => usuario.value?.tipo_usuario === 'ponto_coleta')
 const isPro = computed(() => isProAtivo(licenca.value))
 const podeGerar = computed(() => isPJ.value && isPro.value)
 
-<<<<<<< HEAD
-/* ================= filtros período (PJ) ================= */
-=======
->>>>>>> ecc2c48 (Alteração do frontend)
+
 const today = new Date()
 const defaultFrom = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 30).toISOString().slice(0,10)
 const defaultTo   = today.toISOString().slice(0,10)
@@ -309,10 +249,7 @@ const from = ref(defaultFrom)
 const to   = ref(defaultTo)
 const statusFiltro = ref('ativa') // ativas | encerrada | ''(todas)
 
-<<<<<<< HEAD
-/* ==================== PJ: ranking + minhas recompensas ==================== */
-=======
->>>>>>> ecc2c48 (Alteração do frontend)
+
 const rankLoading = ref(false)
 const ranking = ref([])
 
@@ -353,10 +290,7 @@ async function carregarMinhas() {
 }
 watch([from, to, statusFiltro], () => { montarRanking(); carregarMinhas() })
 
-<<<<<<< HEAD
-/* Encerrar */
-=======
->>>>>>> ecc2c48 (Alteração do frontend)
+
 const encerrando = ref(new Set())
 async function encerrarRecompensa(r) {
   if (!confirm('Encerrar esta recompensa? Ela deixará de aparecer para os descartantes.')) return;
@@ -372,10 +306,7 @@ async function encerrarRecompensa(r) {
   }
 }
 
-<<<<<<< HEAD
-/* Modal criar recompensa */
-=======
->>>>>>> ecc2c48 (Alteração do frontend)
+
 const showModal = ref(false)
 const saving = ref(false)
 const form = ref({
@@ -423,10 +354,7 @@ async function criarRecompensa() {
   }
 }
 
-<<<<<<< HEAD
-/* ==================== PF: recompensas ativas ==================== */
-=======
->>>>>>> ecc2c48 (Alteração do frontend)
+
 const ativas = ref([])
 const ativasLoading = ref(false)
 const msg = ref('')
@@ -480,10 +408,7 @@ async function resgatar(r) {
   }
 }
 
-<<<<<<< HEAD
-/* ==================== Mount ==================== */
-=======
->>>>>>> ecc2c48 (Alteração do frontend)
+
 onMounted(async () => {
   try {
     const authLS = JSON.parse(localStorage.getItem('auth') || '{}')
@@ -519,11 +444,7 @@ onMounted(async () => {
   transform: translateY(-2px);
   box-shadow: 0 12px 24px rgba(16,24,40,.12);
 }
-<<<<<<< HEAD
-.reward-card__head{ min-height: 68px; }
-=======
 .reward-card__head{ margin-bottom: 4px; }
->>>>>>> ecc2c48 (Alteração do frontend)
 .reward-card__hover{
   margin-top: 8px;
   border-top: 1px dashed rgba(2,6,23,.12);
@@ -531,9 +452,6 @@ onMounted(async () => {
 }
 .preline { white-space: pre-line; }
 
-<<<<<<< HEAD
-/* pequenos ajustes visuais */
-=======
->>>>>>> ecc2c48 (Alteração do frontend)
+
 .card-metric { background:#fff; border-radius:14px; box-shadow:0 2px 16px rgba(16,24,40,.06); }
 </style>

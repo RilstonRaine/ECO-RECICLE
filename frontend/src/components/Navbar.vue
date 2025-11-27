@@ -1,111 +1,12 @@
 <!-- src/components/Navbar.vue -->
 <template>
-<<<<<<< HEAD
-  <header class="ecor-navbar">
-    <div class="container d-flex align-items-center justify-content-between">
-      <router-link to="/" class="brand d-flex align-items-center gap-2">
-=======
   <header class="ecor-navbar navbar navbar-expand-lg">
     <div class="container-fluid px-4">
       <router-link to="/" class="navbar-brand d-flex align-items-center gap-2">
->>>>>>> ecc2c48 (Alteração do frontend)
         <i class="bi bi-recycle brand-icon"></i>
         <span class="brand-text">EcoRecicle</span>
       </router-link>
 
-<<<<<<< HEAD
-      <nav class="nav-links d-flex align-items-center gap-3">
-        <router-link class="nav-link" to="/">
-          <i class="bi bi-house"></i> Início
-        </router-link>
-
-        <router-link class="nav-link" to="/pontos">
-          <i class="bi bi-geo-alt"></i> Pontos
-        </router-link>
-
-        <!-- PF -->
-        <router-link
-          v-if="isAuth && isPF"
-          class="nav-link"
-          :to="{ name: 'CadastroDispositivo' }"
-        >
-          <i class="bi bi-recycle"></i> Realizar Descarte
-        </router-link>
-        <router-link
-          v-if="isAuth && isPF"
-          class="nav-link"
-          to="/relatorios/pf"
-        >
-          <i class="bi bi-graph-up"></i> Relatórios
-        </router-link>
-        <router-link
-          v-if="isAuth && isPF"
-          class="nav-link"
-          to="/dashboard-pf"
-        >
-          <i class="bi bi-speedometer2"></i> Dashboard
-        </router-link>
-
-        <!-- PJ -->
-        <router-link
-          v-if="isAuth && isPJ"
-          class="nav-link"
-          to="/relatorios/pj"
-        >
-          <i class="bi bi-graph-up"></i> Relatórios
-        </router-link>
-        <router-link
-          v-if="isAuth && isPJ"
-          class="nav-link"
-          to="/dashboard-pj"
-        >
-          <i class="bi bi-speedometer2"></i> Dashboard
-        </router-link>
-
-        <!-- Auth -->
-        <template v-if="!isAuth">
-          <router-link class="nav-link" to="/login">
-            <i class="bi bi-box-arrow-in-right"></i> Entrar
-          </router-link>
-          <router-link class="nav-link" to="/cadastro">
-            <i class="bi bi-person-plus"></i> Cadastrar
-          </router-link>
-        </template>
-
-        <div v-else class="dropdown">
-          <button
-            class="btn btn--ghost dropdown-toggle"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <i class="bi bi-person-circle"></i>
-            {{ usuario?.nome || usuario?.email || 'Minha conta' }}
-          </button>
-          <ul class="dropdown-menu dropdown-menu-end">
-            <li>
-              <router-link class="dropdown-item" to="/recompensas">
-                <i class="bi bi-trophy"></i> Recompensas
-              </router-link>
-            </li>
-
-            <li>
-              <router-link to="/perfil"  class="dropdown-item d-flex align-items-center gap-2"
->              <i class="bi bi-person-circle fs-5"></i>
-  <span>Meu Perfil</span>
-</router-link>
-            </li>
-
-            <li><hr class="dropdown-divider" /></li>
-            <li>
-              <button class="dropdown-item text-danger" @click="logout">
-                <i class="bi bi-box-arrow-right"></i> Sair
-              </button>
-            </li>
-          </ul>
-        </div>
-      </nav>
-=======
       <button
         class="navbar-toggler border-0"
         type="button"
@@ -172,7 +73,7 @@
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link class="nav-link" to="/cadastro">
+              <router-link class="nav-link" to="/register">
                 <i class="bi bi-person-plus"></i> Cadastrar
               </router-link>
             </li>
@@ -180,7 +81,7 @@
 
           <li v-else class="nav-item dropdown">
             <a
-              class="nav-link dropdown-toggle btn btn--ghost d-flex align-items-center gap-2"
+              class="nav-link dropdown-toggle d-flex align-items-center gap-2"
               href="#"
               role="button"
               data-bs-toggle="dropdown"
@@ -211,7 +112,6 @@
           </li>
         </ul>
       </div>
->>>>>>> ecc2c48 (Alteração do frontend)
     </div>
   </header>
 </template>
@@ -251,11 +151,46 @@ function logout() {
   position: sticky;
   top: 0;
   z-index: 20;
+  background-color: var(--ecor-mint-600);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 }
 .nav-links { gap: 0.75rem; }
 .brand { gap: .5rem; }
-<<<<<<< HEAD
-=======
+
+/* Links e Brand com cor clara */
+.ecor-navbar .nav-link,
+.ecor-navbar .navbar-brand {
+  color: var(--ecor-ink-50) !important;
+  transition: opacity 0.2s;
+}
+.ecor-navbar .nav-link:hover {
+  opacity: 0.9;
+}
+.ecor-navbar .navbar-toggler-icon {
+  filter: invert(1); /* Garante ícone branco */
+}
+
+/* Dropdown (mantém fundo branco, texto escuro) */
+.dropdown-menu {
+  border: none;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  border-radius: 12px;
+  margin-top: 10px;
+}
+.dropdown-item {
+  color: var(--ecor-ink-700);
+  padding: 8px 16px;
+}
+.dropdown-item:hover {
+  background-color: var(--ecor-mint-50);
+  color: var(--ecor-mint-700);
+}
+.dropdown-item.text-danger {
+  color: #dc3545 !important;
+}
+.dropdown-item.text-danger:hover {
+  background-color: #fee2e2;
+}
 
 /* Mobile Overlay Menu */
 @media (max-width: 991px) {
@@ -264,12 +199,11 @@ function logout() {
     top: 100%;
     left: 0;
     right: 0;
-    background-color: var(--nav-bg); /* Use the navbar background variable */
+    background-color: var(--ecor-mint-600); /* Fundo verde no mobile também */
     padding: 1rem;
     box-shadow: 0 10px 20px rgba(0,0,0,0.1);
     z-index: 1000;
     border-radius: 0 0 12px 12px;
   }
 }
->>>>>>> ecc2c48 (Alteração do frontend)
 </style>

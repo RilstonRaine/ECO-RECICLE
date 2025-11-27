@@ -1,28 +1,4 @@
 <template>
-<<<<<<< HEAD
-  <div class="container-narrow card-metric">
-    <h4 class="mb-3">Entrar</h4>
-
-    <form @submit.prevent="login">
-      <div class="mb-2">
-        <label class="form-label">Email</label>
-        <input v-model="state.email" type="email" class="form-control" required />
-      </div>
-      <div class="mb-3">
-        <label class="form-label">Senha</label>
-        <input v-model="state.senha" type="password" class="form-control" required />
-      </div>
-
-      <button class="btn btn-eco w-100" :disabled="state.loading">
-        {{ state.loading ? 'Entrando...' : 'Entrar' }}
-      </button>
-    </form>
-
-    <p class="mt-3 mb-0">
-      Não tem conta?
-      <RouterLink to="/cadastro">Cadastre-se</RouterLink>
-    </p>
-=======
   <div class="container-fluid d-flex align-items-center justify-content-center bg-light" style="min-height: calc(100vh - 76px);">
     <div class="w-100 p-3" style="max-width: 550px;">
       <div class="card-metric p-5 shadow-sm border-0 bg-white rounded-4">
@@ -49,7 +25,6 @@
         </p>
       </div>
     </div>
->>>>>>> ecc2c48 (Alteração do frontend)
   </div>
 </template>
 
@@ -75,9 +50,6 @@ async function login() {
   }
 }
 </script>
-<<<<<<< HEAD
-=======
-
 <style scoped>
 .text-mint { color: #10b981 !important; }
 .bg-mint { background-color: #10b981 !important; }
@@ -103,4 +75,3 @@ async function login() {
   box-shadow: 0 10px 30px rgba(0,0,0,0.08) !important;
 }
 </style>
->>>>>>> ecc2c48 (Alteração do frontend)

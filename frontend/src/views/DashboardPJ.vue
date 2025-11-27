@@ -1,141 +1,82 @@
 <template>
-<<<<<<< HEAD
-  <div class="container">
-    <h3 class="mb-3">Dashboard — Ponto de Coleta</h3>
-
-    <!-- ===== Cards ===== -->
-    <div class="row g-3 align-items-stretch">
-      <!-- 1) Período -->
-      <div class="col-md-3">
-=======
   <div class="container-fluid px-4 py-4">
     <h3 class="mb-4 fw-bold">Dashboard — Ponto de Coleta</h3>
 
     <!-- ===== Cards ===== -->
-    <div class="row g-3 align-items-stretch mb-4">
-      <!-- 1) Período -->
-      <div class="col-12 col-sm-6 col-xl-3">
->>>>>>> ecc2c48 (Alteração do frontend)
-        <div class="card-metric h-100 p-3 d-grid gap-2">
-          <div class="fw-semibold">Período</div>
-          <div class="d-grid gap-2">
-            <input v-model="from" type="date" class="form-control" />
-            <input v-model="to" type="date" class="form-control" />
-          </div>
-          <div class="d-flex gap-2 mt-1">
-<<<<<<< HEAD
-            <button class="btn btn-primary btn-sm" @click="aplicarFiltro" :disabled="loading">Aplicar</button>
-            <button class="btn btn-outline-secondary btn-sm" @click="limparFiltro" :disabled="(!from && !to) || loading">
-              Limpar filtro
-=======
-            <button class="btn btn-primary btn-sm flex-fill" @click="aplicarFiltro" :disabled="loading">Aplicar</button>
-            <button class="btn btn-outline-secondary btn-sm flex-fill" @click="limparFiltro" :disabled="(!from && !to) || loading">
-              Limpar
->>>>>>> ecc2c48 (Alteração do frontend)
-            </button>
-          </div>
-        </div>
+    <!-- Filtro simples (estilo DashboardPF) -->
+    <div class="row g-2 align-items-end mb-4">
+      <div class="col-6 col-md-auto">
+        <label class="form-label mb-1 fw-semibold">De</label>
+        <input type="date" v-model="from" class="form-control" />
       </div>
+      <div class="col-6 col-md-auto">
+        <label class="form-label mb-1 fw-semibold">Até</label>
+        <input type="date" v-model="to" class="form-control" />
+      </div>
+      <div class="col-12 col-md-auto d-flex gap-2">
+        <button class="btn btn-primary w-100 w-md-auto" @click="aplicarFiltro" :disabled="loading">Aplicar</button>
+        <button class="btn btn-outline-secondary w-100 w-md-auto" @click="limparFiltro" :disabled="(!from && !to) || loading">
+          Limpar
+        </button>
+      </div>
+    </div>
 
-      <!-- 2) Descartes -->
-<<<<<<< HEAD
-      <div class="col-md-3">
-=======
-      <div class="col-12 col-sm-6 col-xl-3">
->>>>>>> ecc2c48 (Alteração do frontend)
+    <!-- ===== Cards ===== -->
+    <div class="row g-3 align-items-stretch mb-4">
+      <!-- 1) Descartes -->
+      <div class="col-12 col-sm-6 col-xl-4">
         <Card titulo="Descartes" :valor="descartesCount" />
       </div>
 
-      <!-- 3) Peso total (kg) -->
-<<<<<<< HEAD
-      <div class="col-md-3">
-=======
-      <div class="col-12 col-sm-6 col-xl-3">
->>>>>>> ecc2c48 (Alteração do frontend)
+      <!-- 2) Peso total (kg) -->
+      <div class="col-12 col-sm-6 col-xl-4">
         <Card titulo="Peso total (kg)" :valor="pesoTotalFiltrado.toFixed(2)" />
       </div>
 
-      <!-- 4) CO₂ evitado (kg) -->
-<<<<<<< HEAD
-      <div class="col-md-3">
-=======
-      <div class="col-12 col-sm-6 col-xl-3">
->>>>>>> ecc2c48 (Alteração do frontend)
+      <!-- 3) CO₂ evitado (kg) -->
+      <div class="col-12 col-sm-6 col-xl-4">
         <Card titulo="CO₂ evitado (kg)" :valor="co2TotalFiltrado.toFixed(2)" />
       </div>
     </div>
 
-<<<<<<< HEAD
-    <div class="row g-3 mt-1">
-      <!-- Gráfico: Peso por tipo -->
-      <div class="col-md-6">
-        <div class="card-metric p-3">
-          <h6 class="mb-2">Peso por tipo de resíduo</h6>
-=======
     <div class="row g-4">
       <!-- Gráfico: Peso por tipo -->
       <div class="col-12 col-lg-6 col-xl-5">
         <div class="card-metric p-4 h-100">
           <h5 class="mb-3 fw-bold">Peso por tipo de resíduo</h5>
->>>>>>> ecc2c48 (Alteração do frontend)
           <GraficoBarras :labels="barLabels" :data="barSeries" />
         </div>
       </div>
 
       <!-- Últimos 5 descartes -->
-<<<<<<< HEAD
-      <div class="col-md-6">
-        <div class="card-metric p-3">
-          <div class="d-flex justify-content-between align-items-center mb-2">
-            <h6 class="mb-0">Últimos descartes recebidos</h6>
-=======
       <div class="col-12 col-lg-6 col-xl-7">
         <div class="card-metric p-4 h-100">
           <div class="d-flex justify-content-between align-items-center mb-3">
             <h5 class="mb-0 fw-bold">Últimos descartes recebidos</h5>
->>>>>>> ecc2c48 (Alteração do frontend)
           </div>
 
           <ul v-if="ultimos.length" class="list-unstyled m-0">
             <li
               v-for="d in ultimos"
               :key="d.id"
-<<<<<<< HEAD
-              class="py-2 border-bottom d-flex align-items-center justify-content-between gap-3"
-            >
-              <div class="min-w-0">
-                <div class="fw-semibold text-truncate">
-                  {{ nomeDescartante(d) }}
-                  <span class="text-muted">• {{ formatDate(getDate(d)) }}</span>
-                </div>
-              </div>
-
-              <button type="button" class="btn btn-details btn-sm" @click="abrirDetalhe(d.id)">
-                Obter detalhes
-=======
               class="py-3 border-bottom d-flex align-items-center justify-content-between gap-3"
             >
               <div class="min-w-0">
                 <div class="fw-semibold text-truncate fs-5">
                   {{ nomeDescartante(d) }}
                 </div>
-                <div class="text-muted small">
+                <div class="text-muted small text-truncate">
                   {{ formatDate(getDate(d)) }} • {{ d.tipo_residuo }}
                 </div>
               </div>
 
               <button type="button" class="btn btn-details btn-sm text-nowrap" @click="abrirDetalhe(d.id)">
                 Detalhes
->>>>>>> ecc2c48 (Alteração do frontend)
               </button>
             </li>
           </ul>
 
-<<<<<<< HEAD
-          <div v-else class="text-muted">Sem entradas no período.</div>
-=======
           <div v-else class="text-muted py-5 text-center">Sem entradas no período.</div>
->>>>>>> ecc2c48 (Alteração do frontend)
         </div>
       </div>
     </div>
@@ -763,64 +704,5 @@ async function submitReport() {
   .audit-actions .ecor-btn{ width:auto; }
 }
 /* ==== FIX FINAL – alinhamento e respiro dos botões do modal ==== */
-
-/* dá um pouco mais de respiro à direita do painel */
-.ecor-panel{ padding-right: 28px !important; }
-
-/* coluna de ações mais confortável e alinhada ao grid */
-.ecor-detail-grid{
-  grid-template-columns: minmax(0,1fr) 260px !important; /* largura da coluna direita */
-}
-
-/* coluna de ações colada à direita com respiro interno */
-.ecor-actions{
-  justify-self: end !important;
-  width: 260px !important;
-  min-width: 260px !important;
-  margin-right: 12px !important;       /* <-- distancia da margem direita */
-  display: flex; flex-direction: column;
-  gap: 10px; align-items: stretch; justify-content: flex-end;
-}
-
-/* botões com o mesmo tamanho/raio/padding */
-.ecor-actions > .ecor-attach-btn,
-.ecor-actions > .ecor-report-btn{
-  display: block !important;
-  width: 100% !important;
-  text-align: center;
-  padding: .40rem .72rem !important;
-  border-radius: 12px !important;
-  font-size: .86rem; line-height: 1;
-  background-image: none !important;
-  color: #fff !important;
-  box-shadow: 0 2px 10px rgba(0,0,0,.08);
-}
-
-/* cores */
-.ecor-attach-btn{ background: #12b886 !important; }
-.ecor-attach-btn:hover{ filter: brightness(.97); }
-.ecor-attach-btn:active{ background:#0fae79 !important; }
-.ecor-report-btn{ background:#f59e0b !important; }
-.ecor-report-btn:hover{ filter: brightness(.98); }
-.ecor-report-btn:active{ background:#ea9405 !important; }
-
-/* mata qualquer badge/contador herdado do tema */
-.ecor-actions .ecor-attach-btn .badge,
-.ecor-actions .ecor-attach-btn::after{
-  display: none !important;
-  content: none !important;
-}
-
-/* neutraliza margens automáticas do tema dentro do modal */
-.ecor-panel .btn{ margin: 0 !important; }
-
-/* Garante que o grid do modal tenha espaço para a coluna de ações */
-.ecor-detail-grid{
-  grid-template-columns: minmax(0,1fr) 260px !important;
-  column-gap: 20px;
-}
-
-/* Um pouco mais de respiro à direita do painel */
-.ecor-panel{ padding-right: 28px !important; }
 
 </style>

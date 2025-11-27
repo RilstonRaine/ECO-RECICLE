@@ -1,15 +1,4 @@
 <template>
-<<<<<<< HEAD
-  <div class="container">
-    <h3 class="mb-3">Relatórios — Ponto de Coleta (PRO)</h3>
-
-    <!-- Filtros -->
-    <div class="card-metric p-3 mb-3 filters">
-      <div class="row g-2 align-items-end">
-        <div class="col-md-3">
-          <label class="form-label mb-1">Tipo de relatório</label>
-          <select v-model="tipoRelatorio" class="form-select">
-=======
   <div class="container-fluid px-4 py-4 h-100 d-flex flex-column">
     <h3 class="mb-3 fw-bold">Relatórios — Ponto de Coleta (PRO)</h3>
 
@@ -19,7 +8,6 @@
         <div class="col-md-3">
           <label class="form-label mb-1 fw-semibold small">Tipo de relatório</label>
           <select v-model="tipoRelatorio" class="form-select form-select-sm">
->>>>>>> ecc2c48 (Alteração do frontend)
             <option value="descartes">Descartes</option>
             <option value="recompensas">Recompensas</option>
           </select>
@@ -27,49 +15,21 @@
 
         <!-- Filtro específico por tipo -->
         <div class="col-md-3" v-if="tipoRelatorio === 'descartes'">
-<<<<<<< HEAD
-          <label class="form-label mb-1">Tipo de resíduo</label>
-          <select v-model="tipoResiduo" class="form-select">
-=======
           <label class="form-label mb-1 fw-semibold small">Tipo de resíduo</label>
           <select v-model="tipoResiduo" class="form-select form-select-sm">
->>>>>>> ecc2c48 (Alteração do frontend)
             <option value="todos">Todos</option>
             <option v-for="t in tiposDisponiveis" :key="t" :value="t">{{ t }}</option>
           </select>
         </div>
         <div class="col-md-3" v-else>
-<<<<<<< HEAD
-          <label class="form-label mb-1">Status</label>
-          <select v-model="statusRec" class="form-select">
-=======
           <label class="form-label mb-1 fw-semibold small">Status</label>
           <select v-model="statusRec" class="form-select form-select-sm">
->>>>>>> ecc2c48 (Alteração do frontend)
             <option value="todas">Todas</option>
             <option value="ativas">Ativas</option>
             <option value="encerradas">Encerradas</option>
           </select>
         </div>
 
-<<<<<<< HEAD
-        <div class="col-md-3">
-          <label class="form-label mb-1">De</label>
-          <input v-model="from" type="date" class="form-control" />
-        </div>
-        <div class="col-md-3">
-          <label class="form-label mb-1">Até</label>
-          <input v-model="to" type="date" class="form-control" />
-        </div>
-
-        <!-- Ações -->
-        <div class="col-md-3 d-flex gap-2">
-          <button class="btn btn-primary btn-std flex-fill" @click="gerar" :disabled="gerando">
-            <span v-if="gerando" class="spinner-border spinner-border-sm me-1"></span>
-            Gerar relatório
-          </button>
-          <button class="btn btn-ghost btn-std flex-fill" @click="limpar" :disabled="gerando">Limpar filtro</button>
-=======
         <div class="col-md-2">
           <label class="form-label mb-1 fw-semibold small">De</label>
           <input v-model="from" type="date" class="form-control form-control-sm" />
@@ -86,86 +46,11 @@
             Gerar
           </button>
           <button class="btn btn-outline-secondary btn-sm flex-fill" @click="limpar" :disabled="gerando">Limpar</button>
->>>>>>> ecc2c48 (Alteração do frontend)
         </div>
       </div>
     </div>
 
     <!-- PREVIEW -->
-<<<<<<< HEAD
-    <div class="report-preview">
-      <div v-if="gerado" class="report-toolbar">
-        <div class="report-title">Relatório de {{ tipoRelatorio }}</div>
-        <div class="toolbar-actions">
-          <button class="btn btn-primary btn-std" @click="exportPdf" :disabled="exportando">Exportar PDF</button>
-          <button class="btn btn-ghost btn-std" @click="exportXlsx" :disabled="exportando">Exportar Excel</button>
-        </div>
-      </div>
-
-      <div v-if="gerando" class="p-4 text-muted">Gerando…</div>
-
-      <!-- DESCARTES -->
-      <div v-else-if="gerado && tipoRelatorio === 'descartes'" class="table-responsive p-2">
-        <table class="table table-sm align-middle">
-          <thead>
-            <tr>
-              <th style="min-width:110px">Data</th>
-              <th>Descartante</th>
-              <th>Tipo</th>
-              <th class="text-end">Qtd</th>
-              <th class="text-end">Peso (kg)</th>
-              <th class="text-end">Pontos</th>
-              <th class="text-end">CO₂ (kg)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="r in linhasDesc" :key="r.id">
-              <td>{{ fmtData(r.data_registro) }}</td>
-              <td>{{ nomePF(r.usuario_id) }}</td>
-              <td>{{ r.tipo_residuo }}</td>
-              <td class="text-end">{{ r.quantidade_itens ?? '-' }}</td>
-              <td class="text-end">{{ peso(r).toFixed(2) }}</td>
-              <td class="text-end">{{ Number(r.pontos_gerados||0) }}</td>
-              <td class="text-end">{{ Number(r.co2_evitar_kg||0).toFixed(2) }}</td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <th colspan="4" class="text-end">Totais</th>
-              <th class="text-end">{{ totalPeso.toFixed(2) }}</th>
-              <th class="text-end">{{ totalPontos }}</th>
-              <th class="text-end">{{ totalCO2.toFixed(2) }}</th>
-            </tr>
-          </tfoot>
-        </table>
-        <div v-if="!linhasDesc.length" class="p-4 text-muted">Nenhum dado encontrado com os filtros.</div>
-      </div>
-
-      <!-- RECOMPENSAS (RESGATES DO PJ) -->
-      <div v-else-if="gerado && tipoRelatorio === 'recompensas'" class="table-responsive p-2">
-        <table class="table table-sm align-middle">
-          <thead>
-            <tr>
-              <th>Descartante</th>
-              <th style="min-width:110px">Data</th>
-              <th>Tipo</th>
-              <th class="text-end">Pontos necessários</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="r in linhasRec" :key="r.id">
-              <td>{{ r.descartante || '—' }}</td>
-              <td>{{ fmtData(r.data) }}</td>
-              <td>{{ capitalize(r.tipo) }}</td>
-              <td class="text-end">{{ Number(r.pontos || 0) }}</td>
-            </tr>
-          </tbody>
-        </table>
-        <div v-if="!linhasRec.length" class="p-4 text-muted">Nenhum dado encontrado com os filtros.</div>
-      </div>
-
-      <div v-else class="p-4 text-secondary">Defina os filtros e clique em <b>Gerar relatório</b>.</div>
-=======
     <div class="report-preview flex-fill d-flex flex-column overflow-hidden">
       <div v-if="gerado" class="report-toolbar flex-shrink-0">
         <div class="report-title">Relatório de {{ tipoRelatorio }}</div>
@@ -254,7 +139,6 @@
           <p class="mb-0">Defina os filtros acima e clique em <b>Gerar</b>.</p>
         </div>
       </div>
->>>>>>> ecc2c48 (Alteração do frontend)
     </div>
   </div>
 </template>
@@ -409,29 +293,6 @@ async function exportXlsx(){
 </script>
 
 <style scoped>
-<<<<<<< HEAD
-:root{ --mint-600:#12b886; --mint-200:#b7f3d6; --mint-glow:rgba(18,184,134,.12); }
-.btn-std{ height:42px; padding:.45rem 1rem; border-radius:14px; font-weight:600; }
-.btn-ghost{
-  background:#fff; color:var(--mint-600);
-  border:1px solid var(--mint-200); border-radius:14px;
-  box-shadow:0 0 0 3px var(--mint-glow);
-}
-.filters .form-control, .filters .form-select, .filters .btn{ height:42px; }
-.report-preview{
-  min-height:360px; background:#fff; border:1px solid var(--mint-200); border-radius:16px;
-  box-shadow:0 0 0 3px var(--mint-glow) inset, 0 8px 24px rgba(16,24,40,.06); padding:8px; position:relative;
-}
-.report-toolbar{
-  position:sticky; top:0; z-index:2; display:flex; align-items:center; gap:10px;
-  padding:12px; background:linear-gradient(#ffffff,#ffffffcc);
-  border-bottom:1px solid #e9ecef; border-radius:12px 12px 0 0;
-}
-.report-title{ font-weight:700; color:#0f172a; }
-.toolbar-actions{ margin-left:auto; display:flex; gap:10px; }
-.table thead th{ white-space:nowrap; }
-.text-end{ text-align:end; }
-=======
 /* cartão/preview */
 .card-metric {
   background:#fff;
@@ -457,5 +318,4 @@ async function exportXlsx(){
 /* Sticky headers */
 .sticky-top { top: 0; z-index: 10; }
 .sticky-bottom { bottom: 0; z-index: 10; }
->>>>>>> ecc2c48 (Alteração do frontend)
 </style>

@@ -1,704 +1,62 @@
-/* ===========================
-   TOKENS / TEMA
-   =========================== */
-<<<<<<< HEAD
-:root{
-  /* Verdes unificados */
-  --ecor-mint-50:  #ecfdf5;
-  --ecor-mint-100: #d1fae5;
-  --ecor-mint-150: #c9f2e6;
-  --ecor-mint-200: #a7f3d0;
-  --ecor-mint-600: #10b981; /* CTA primária */
-  --ecor-mint-700: #0ea371; /* Navbar */
-
-  /* Neutros */
-  --ecor-ink-900:#0f172a;   /* texto forte */
-  --ecor-ink-800:#1f2937;
-  --ecor-ink-700:#334155;
-  --ecor-ink-600:#475569;
-=======
 :root {
-  /* Verdes unificados */
-  --ecor-mint-50: #ecfdf5;
-  --ecor-mint-100: #d1fae5;
-  --ecor-mint-150: #c9f2e6;
-  --ecor-mint-200: #a7f3d0;
-  --ecor-mint-600: #10b981;
-  /* CTA primária */
-  --ecor-mint-700: #0ea371;
-  /* Navbar */
+  /* Cores principais (Mint) */
+  --ecor-mint-50: #f0fdf4;
+  --ecor-mint-100: #dcfce7;
+  --ecor-mint-150: #bbf7d0;
+  --ecor-mint-200: #86efac;
+  --ecor-mint-300: #4ade80;
+  --ecor-mint-400: #22c55e;
+  --ecor-mint-500: #10b981;
+  /* Cor principal */
+  --ecor-mint-600: #059669;
+  --ecor-mint-700: #047857;
+  --ecor-mint-800: #065f46;
+  --ecor-mint-900: #064e3b;
 
-  /* Neutros */
-  --ecor-ink-900: #0f172a;
-  /* texto forte */
-  --ecor-ink-800: #1f2937;
-  --ecor-ink-700: #334155;
-  --ecor-ink-600: #475569;
->>>>>>> ecc2c48 (Alteração do frontend)
-
-  /* Superfícies */
-  --eco-bg: #f6f9fb;
-  --surface: #ffffff;
-<<<<<<< HEAD
-  --border-soft: 1px solid rgba(2,6,23,.06);
-=======
-  --border-soft: 1px solid rgba(2, 6, 23, .06);
->>>>>>> ecc2c48 (Alteração do frontend)
-
-  /* Aliases (compat) */
-  --brand: var(--ecor-mint-700);
-  --on-brand: #ffffff;
-  --bg: var(--eco-bg);
-  --text: var(--ecor-ink-900);
-<<<<<<< HEAD
-  --border: rgba(2,6,23,.06);
-=======
-  --border: rgba(2, 6, 23, .06);
->>>>>>> ecc2c48 (Alteração do frontend)
-
-  /* Navbar (derivados) */
-  --nav-bg: var(--ecor-mint-700);
-  --nav-bg-hover: #0c8a5f;
-  --nav-text: #ffffff;
-}
-
-/* ===========================
-   BASE
-   =========================== */
-<<<<<<< HEAD
-html, body { background: var(--eco-bg); color: var(--ecor-ink-900); }
-a { color: var(--ecor-mint-700); text-decoration: none; }
-a:hover { text-decoration: underline; }
-=======
-html,
-body {
-  background: var(--eco-bg);
-  color: var(--ecor-ink-900);
-}
-
-a {
-  color: var(--ecor-mint-700);
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
->>>>>>> ecc2c48 (Alteração do frontend)
-
-/* ===========================
-   NAVBAR / TOPBAR
-   =========================== */
-<<<<<<< HEAD
-.ecor-navbar{
-  background: var(--nav-bg);
-  box-shadow: 0 6px 18px rgba(2,6,23,.18);
-}
-=======
-.ecor-navbar {
-  background: var(--nav-bg);
-  box-shadow: 0 6px 18px rgba(2, 6, 23, .18);
-}
-
->>>>>>> ecc2c48 (Alteração do frontend)
-.ecor-navbar .brand-icon,
-.ecor-navbar .brand-text,
-.ecor-navbar .nav-link,
-.ecor-navbar .dropdown-toggle {
-  color: var(--nav-text) !important;
-  font-weight: 600;
-}
-<<<<<<< HEAD
-=======
-
->>>>>>> ecc2c48 (Alteração do frontend)
-.ecor-navbar .nav-link:hover,
-.ecor-navbar .dropdown-toggle:hover {
-  color: #eafff5 !important;
-  opacity: .96;
-}
-<<<<<<< HEAD
-/* Dropdown */
-.ecor-navbar .dropdown-menu{
-  background: var(--surface);
-  border: var(--border-soft);
-  border-radius: 12px;
-  box-shadow: 0 12px 24px rgba(16,24,40,.12);
-  overflow: hidden;
-}
-.ecor-navbar .dropdown-item{
-  color: var(--ecor-ink-800);
-  padding: .6rem .9rem;
-}
-.ecor-navbar .dropdown-item:hover{
-  background: var(--ecor-mint-50);
-  color: var(--ecor-ink-900);
-}
-/* Botão “fantasma” dentro da navbar */
-.ecor-navbar .btn--ghost{
-  background: transparent;
-  color: var(--nav-text);
-  border: 1px solid rgba(255,255,255,.45);
-}
-.ecor-navbar .btn--ghost:hover{
-  background: rgba(255,255,255,.10);
-}
-=======
-
-/* Dropdown */
-.ecor-navbar .dropdown-menu {
-  background: var(--surface);
-  border: var(--border-soft);
-  border-radius: 12px;
-  box-shadow: 0 12px 24px rgba(16, 24, 40, .12);
-  overflow: hidden;
-}
-
-.ecor-navbar .dropdown-item {
-  color: var(--ecor-ink-800);
-  padding: .6rem .9rem;
-}
-
-.ecor-navbar .dropdown-item:hover {
-  background: var(--ecor-mint-50);
-  color: var(--ecor-ink-900);
-}
-
-/* Botão “fantasma” dentro da navbar */
-.ecor-navbar .btn--ghost {
-  background: transparent;
-  color: var(--nav-text);
-  border: 1px solid rgba(255, 255, 255, .45);
-}
-
-.ecor-navbar .btn--ghost:hover {
-  background: rgba(255, 255, 255, .10);
-}
-
->>>>>>> ecc2c48 (Alteração do frontend)
-/* Nunca sublinhar nada dentro da navbar */
-.ecor-navbar a,
-.ecor-navbar a:hover,
-.ecor-navbar .brand,
-.ecor-navbar .nav-link {
-  text-decoration: none !important;
-}
-<<<<<<< HEAD
-/* Acessibilidade na navbar */
-.ecor-navbar a:focus { outline: none; }
-.ecor-navbar a:focus-visible {
-  outline: 0;
-  box-shadow: 0 0 0 3px rgba(16,185,129,.35);
-=======
-
-/* Acessibilidade na navbar */
-.ecor-navbar a:focus {
-  outline: none;
-}
-
-.ecor-navbar a:focus-visible {
-  outline: 0;
-  box-shadow: 0 0 0 3px rgba(16, 185, 129, .35);
->>>>>>> ecc2c48 (Alteração do frontend)
-  border-radius: 8px;
-}
-
-/* ===========================
-   BOTÕES (global)
-   =========================== */
-<<<<<<< HEAD
-.btn{
-  display:inline-flex; align-items:center; gap:.5rem;
-  border:0; border-radius:12px; font-weight:600;
-  padding:.8rem 1.05rem;
-  transition: background .15s ease, color .15s ease, border-color .15s ease, box-shadow .15s ease;
-}
-/* Primário: VERDE por padrão, BRANCO no hover */
-.btn-eco, .btn--primary, .btn.btn-primary{
-  background: var(--ecor-mint-600);
-  color:#fff;
-  border: 1px solid var(--ecor-mint-600);
-  box-shadow: 0 12px 28px rgba(16,185,129,.18);
-}
-.btn-eco:hover, .btn--primary:hover, .btn.btn-primary:hover{
-  background:#fff;
-  color: var(--ecor-mint-700);
-  border-color: var(--ecor-mint-700);
-  box-shadow: 0 12px 28px rgba(16,185,129,.12);
-}
-.btn:focus-visible{ outline:2px solid var(--ecor-mint-700); outline-offset:2px; }
-.btn:disabled{ opacity:.6; cursor:not-allowed; box-shadow:none; }
-/* Tamanho pequeno para “Obter detalhes” */
-.btn-sm{ padding:.45rem .7rem; border-radius:10px; font-size:.9rem; }
-
-/* Fantasma (neutro) */
-.btn--ghost{
-  background:#fff; color:var(--ecor-ink-800);
-  border:1px solid var(--ecor-mint-200);
-}
-.btn--ghost:hover{ background: var(--ecor-mint-50); }
-
-/* Link “parece link”, mas é botão */
-.link-like{
-=======
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: .5rem;
-  border: 0;
-  border-radius: 12px;
-  font-weight: 600;
-  padding: .8rem 1.05rem;
-  transition: background .15s ease, color .15s ease, border-color .15s ease, box-shadow .15s ease;
-}
-
-/* Primário: VERDE por padrão, BRANCO no hover */
-.btn-eco,
-.btn--primary,
-.btn.btn-primary {
-  background: var(--ecor-mint-600);
-  color: #fff;
-  border: 1px solid var(--ecor-mint-600);
-  box-shadow: 0 12px 28px rgba(16, 185, 129, .18);
-}
-
-.btn-eco:hover,
-.btn--primary:hover,
-.btn.btn-primary:hover {
-  background: #fff;
-  color: var(--ecor-mint-700);
-  border-color: var(--ecor-mint-700);
-  box-shadow: 0 12px 28px rgba(16, 185, 129, .12);
-}
-
-.btn:focus-visible {
-  outline: 2px solid var(--ecor-mint-700);
-  outline-offset: 2px;
-}
-
-.btn:disabled {
-  opacity: .6;
-  cursor: not-allowed;
-  box-shadow: none;
-}
-
-/* Tamanho pequeno para “Obter detalhes” */
-.btn-sm {
-  padding: .45rem .7rem;
-  border-radius: 10px;
-  font-size: .9rem;
-}
-
-/* Fantasma (neutro) */
-.btn--ghost {
-  background: #fff;
-  color: var(--ecor-ink-800);
-  border: 1px solid var(--ecor-mint-200);
-}
-
-.btn--ghost:hover {
-  background: var(--ecor-mint-50);
-}
-
-/* Link “parece link”, mas é botão */
-.link-like {
->>>>>>> ecc2c48 (Alteração do frontend)
-  background: none;
-  border: 0;
-  color: var(--ecor-mint-700);
+  /* Cores de texto/fundo (Ink) */
+  --ecor-ink-50: #f8fafc;
+  --ecor-ink-100: #f1f5f9;
+  --ecor-ink-200: #e2e8f0;
+  --ecor-ink-300: #cbd5e1;
+  --ecor-ink-400: #94a3b8;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .06);
   font-weight: 600;
   cursor: pointer;
 }
 
-/* ===========================
-   CONTAINERS / CARDS
-   =========================== */
-.card-metric {
-  background: var(--surface);
-  border-radius: 16px;
-  border: var(--border-soft);
-<<<<<<< HEAD
-  box-shadow: 0 8px 24px rgba(16,24,40,.06);
-  padding: 16px;
-}
-.container-narrow { max-width: 760px; margin: 20px auto; }
-=======
-  box-shadow: 0 8px 24px rgba(16, 24, 40, .06);
-  padding: 16px;
+.ecor-attach-btn:hover {
+  background: #ffffff;
 }
 
-.container-narrow {
-  max-width: 500px;
-  margin: 40px auto;
-}
-
-@media (min-width: 768px) {
-  .container-narrow {
-    max-width: 600px;
-  }
-}
->>>>>>> ecc2c48 (Alteração do frontend)
-
-/* ===========================
-   HERO (Home)
-   =========================== */
-<<<<<<< HEAD
-.hero { background: linear-gradient(180deg, #ffffff, #f7fafc); }
-.hero .container { padding: 40px 16px; }
-.hero-title { font-weight:800; color:#111827; }
-.hero-desc { color:#4b5563; max-width:720px; }
-
-/* Ícones/steps da Home */
-.hero__right{ padding: 22px 22px 12px; }
-.hero-icon{
-  width:62px; height:62px; border-radius:16px;
-  display:grid; place-items:center; margin-bottom:8px;
-  background: var(--ecor-mint-100); font-size: 1.2rem; color: var(--ecor-mint-700);
-}
-.steps{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:12px; }
-.steps li{
-  background: white; border: 1px solid var(--ecor-mint-150); padding:.85rem 1rem; border-radius:12px;
-  display:flex; align-items:center; gap:.7rem; color: var(--ecor-ink-700);
-}
-.steps li span{
-  width:28px; height:28px; border-radius:10px; display:grid; place-items:center;
-  background: var(--ecor-mint-600); color:white; font-weight:700; font-size:.9rem;
-=======
-.hero {
-  background: linear-gradient(180deg, #ffffff, #f7fafc);
-}
-
-.hero .container {
-  padding: 40px 16px;
-}
-
-.hero-title {
-  font-weight: 800;
-  color: #111827;
-}
-
-.hero-desc {
-  color: #4b5563;
-  max-width: 720px;
-}
-
-/* Ícones/steps da Home */
-.hero__right {
-  padding: 22px 22px 12px;
-}
-
-.hero-icon {
-  width: 62px;
-  height: 62px;
-  border-radius: 16px;
-  display: grid;
-  place-items: center;
-  margin-bottom: 8px;
-  background: var(--ecor-mint-100);
-  font-size: 1.2rem;
-  color: var(--ecor-mint-700);
-}
-
-.steps {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.steps li {
-  background: white;
-  border: 1px solid var(--ecor-mint-150);
-  padding: .85rem 1rem;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  gap: .7rem;
-  color: var(--ecor-ink-700);
-}
-
-.steps li span {
-  width: 28px;
-  height: 28px;
-  border-radius: 10px;
-  display: grid;
-  place-items: center;
-  background: var(--ecor-mint-600);
-  color: white;
-  font-weight: 700;
-  font-size: .9rem;
->>>>>>> ecc2c48 (Alteração do frontend)
-}
-
-/* ===========================
-   DROPDOWN DE SUGESTÕES (busca)
-   =========================== */
-<<<<<<< HEAD
-.sugestoes{
-=======
-.sugestoes {
->>>>>>> ecc2c48 (Alteração do frontend)
-  position: absolute;
-  top: calc(100% + 4px);
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  max-height: 260px;
+/* modal de anexos mais compacto */
+.anx-panel {
+  width: min(560px, calc(100vw - 32px));
+  max-height: 80vh;
   overflow: auto;
-  border-radius: 10px;
-<<<<<<< HEAD
-  box-shadow: 0 10px 28px rgba(2,6,23,.12);
-=======
-  box-shadow: 0 10px 28px rgba(2, 6, 23, .12);
->>>>>>> ecc2c48 (Alteração do frontend)
 }
 
-/* ===========================
-   MODAL (genérico)
-   =========================== */
-<<<<<<< HEAD
-.ecor-modal{ position:fixed; inset:0; z-index:1000; display:grid; place-items:center; }
-.ecor-backdrop{ position:absolute; inset:0; background:rgba(15,23,42,.35); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); }
-.ecor-panel{
-  position:relative; width:min(680px, calc(100vw - 32px));
-  background:#fff; border-radius:12px; box-shadow:0 24px 48px rgba(16,24,40,.18);
-  padding:18px; animation:pop .14s ease-out;
-}
-.ecor-close{ position:absolute; top:8px; right:10px; font-size:22px; border:0; background:transparent; cursor:pointer }
-@keyframes pop{ from{transform:scale(.98); opacity:0} to{transform:scale(1); opacity:1} }
-=======
-.ecor-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  display: grid;
-  place-items: center;
-}
-
-.ecor-backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(15, 23, 42, .35);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-}
-
-.ecor-panel {
-  position: relative;
-  width: min(680px, calc(100vw - 32px));
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 24px 48px rgba(16, 24, 40, .18);
-  padding: 18px;
-  animation: pop .14s ease-out;
-}
-
-.ecor-close {
-  position: absolute;
-  top: 8px;
-  right: 10px;
-  font-size: 22px;
-  border: 0;
-  background: transparent;
-  cursor: pointer
-}
-
-@keyframes pop {
-  from {
-    transform: scale(.98);
-    opacity: 0
-  }
-
-  to {
-    transform: scale(1);
-    opacity: 1
-  }
-}
->>>>>>> ecc2c48 (Alteração do frontend)
-
-/* ===========================
-   RESPONSIVO
-   =========================== */
-<<<<<<< HEAD
-@media (max-width: 576px){
-  .hero .cta-row { display: grid; gap: 10px; }
-  .hero .cta-row > * { width: 100%; }
-}
-
-:root{
-  --ecor-red-600: #ef4444;
-  --ecor-red-700: #dc2626;
-}
-.btn--danger{
-  background: var(--ecor-red-600);
-  color:#fff;
-  border: 1px solid var(--ecor-red-600);
-  box-shadow: 0 12px 28px rgba(239,68,68,.18);
-}
-.btn--danger:hover{
-  background:#fff;
-  color: var(--ecor-red-700);
-  border-color: var(--ecor-red-700);
-  box-shadow: 0 12px 28px rgba(239,68,68,.12);
-=======
-@media (max-width: 576px) {
-  .hero .cta-row {
-    display: grid;
-    gap: 10px;
-  }
-
-  .hero .cta-row>* {
-    width: 100%;
-  }
-}
-
-:root {
-  --ecor-red-600: #ef4444;
-  --ecor-red-700: #dc2626;
-}
-
-.btn--danger {
-  background: var(--ecor-red-600);
-  color: #fff;
-  border: 1px solid var(--ecor-red-600);
-  box-shadow: 0 12px 28px rgba(239, 68, 68, .18);
-}
-
-.btn--danger:hover {
-  background: #fff;
-  color: var(--ecor-red-700);
-  border-color: var(--ecor-red-700);
-  box-shadow: 0 12px 28px rgba(239, 68, 68, .12);
->>>>>>> ecc2c48 (Alteração do frontend)
-}
-
+/* grade e thumbs */
 .anx-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
 }
-<<<<<<< HEAD
-=======
 
->>>>>>> ecc2c48 (Alteração do frontend)
 .anx-item {
   position: relative;
-  border-radius: 12px;
-  overflow: hidden;
-<<<<<<< HEAD
-  box-shadow: 0 8px 20px rgba(16,24,40,.12);
-  cursor: zoom-in;
-}
-=======
-  box-shadow: 0 8px 20px rgba(16, 24, 40, .12);
-  cursor: zoom-in;
-}
-
->>>>>>> ecc2c48 (Alteração do frontend)
-.anx-item img {
-  width: 100%;
-  height: 160px;
-  object-fit: cover;
-  display: block;
-}
-<<<<<<< HEAD
-.anx-actions {
-  position: absolute;
-  right: 8px; bottom: 8px; left: 8px;
-  display: flex; gap: 8px; justify-content: flex-end;
-  opacity: 0; transition: opacity .15s ease-in-out;
-}
-.anx-item:hover .anx-actions { opacity: 1; }
-=======
-
-.anx-actions {
-  position: absolute;
-  right: 8px;
-  bottom: 8px;
-  left: 8px;
-  display: flex;
-  gap: 8px;
-  justify-content: flex-end;
-  opacity: 0;
-  transition: opacity .15s ease-in-out;
-}
-
-.anx-item:hover .anx-actions {
-  opacity: 1;
-}
-
->>>>>>> ecc2c48 (Alteração do frontend)
-.anx-actions a {
   background: #fff;
-  padding: 6px 10px;
-  border-radius: 8px;
-  font-size: 12px;
-  text-decoration: none;
-<<<<<<< HEAD
-  box-shadow: 0 2px 8px rgba(16,24,40,.14);
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(16, 24, 40, .08);
+  overflow: hidden;
+  cursor: zoom-in;
 }
 
-
-.ecor-panel { padding-bottom: 68px; }
-
-
-.ecor-attach-btn{
-=======
-  box-shadow: 0 2px 8px rgba(16, 24, 40, .14);
-}
-
-
-.ecor-panel {
-  padding-bottom: 68px;
-}
-
-
-.ecor-attach-btn {
->>>>>>> ecc2c48 (Alteração do frontend)
-  position: absolute;
-  right: 16px;
-  bottom: 16px;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+.anx-thumb {
+  width: 100%;
   padding: 8px 12px;
   border-radius: 10px;
   background: #f8fafc;
   border: 1px solid #e5e7eb;
-<<<<<<< HEAD
-  box-shadow: 0 2px 6px rgba(0,0,0,.06);
-  font-weight: 600;
-  cursor: pointer;
-}
-.ecor-attach-btn:hover{ background:#ffffff; }
-
-/* modal de anexos mais compacto */
-.anx-panel{ width: min(560px, calc(100vw - 32px)); max-height: 80vh; overflow: auto; }
-
-/* grade e thumbs */
-.anx-grid{
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0,1fr));
-  gap: 14px;
-}
-.anx-item{
-  position: relative;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(16,24,40,.08);
-  overflow: hidden;
-  cursor: zoom-in;
-}
-.anx-thumb{
-  width: 100%;
-  aspect-ratio: 4 / 3;        /* cria uma miniatura consistente */
-  object-fit: cover;
-  display: block;
-}
-.anx-actions{
-=======
   box-shadow: 0 2px 6px rgba(0, 0, 0, .06);
   font-weight: 600;
   cursor: pointer;
@@ -740,461 +98,8 @@ a:hover {
 }
 
 .anx-actions {
->>>>>>> ecc2c48 (Alteração do frontend)
   position: absolute;
   right: 10px;
-  bottom: 10px;
-  display: flex;
-  gap: 8px;
-}
-
-/* lightbox de preview */
-<<<<<<< HEAD
-.ecor-preview{
-=======
-.ecor-preview {
->>>>>>> ecc2c48 (Alteração do frontend)
-  position: relative;
-  max-width: min(90vw, 820px);
-  max-height: 90vh;
-  background: #fff;
-  padding: 10px;
-  border-radius: 12px;
-<<<<<<< HEAD
-  box-shadow: 0 24px 48px rgba(16,24,40,.18);
-}
-.ecor-preview img{
-=======
-  box-shadow: 0 24px 48px rgba(16, 24, 40, .18);
-}
-
-.ecor-preview img {
->>>>>>> ecc2c48 (Alteração do frontend)
-  display: block;
-  max-width: 80vw;
-  max-height: 80vh;
-  object-fit: contain;
-}
-<<<<<<< HEAD
-/* modal de anexos mais compacto */
-.anx-panel{
-=======
-
-/* modal de anexos mais compacto */
-.anx-panel {
->>>>>>> ecc2c48 (Alteração do frontend)
-  width: min(560px, calc(100vw - 32px));
-  max-height: 80vh;
-  overflow: auto;
-}
-
-/* grade e miniaturas */
-<<<<<<< HEAD
-.anx-grid{
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0,1fr));
-  gap: 14px;
-}
-.anx-item{
-  position: relative;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(16,24,40,.08);
-  overflow: hidden;
-  cursor: zoom-in;
-}
-.anx-thumb{
-=======
-.anx-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-}
-
-.anx-item {
-  position: relative;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(16, 24, 40, .08);
-  overflow: hidden;
-  cursor: zoom-in;
-}
-
-.anx-thumb {
->>>>>>> ecc2c48 (Alteração do frontend)
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-  display: block;
-}
-<<<<<<< HEAD
-.anx-actions{
-=======
-
-.anx-actions {
->>>>>>> ecc2c48 (Alteração do frontend)
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  display: flex;
-  gap: 8px;
-}
-
-/* lightbox de pré-visualização */
-<<<<<<< HEAD
-.ecor-preview{
-=======
-.ecor-preview {
->>>>>>> ecc2c48 (Alteração do frontend)
-  position: relative;
-  max-width: min(90vw, 820px);
-  max-height: 90vh;
-  background: #fff;
-  padding: 10px;
-  border-radius: 12px;
-<<<<<<< HEAD
-  box-shadow: 0 24px 48px rgba(16,24,40,.18);
-}
-.ecor-preview img{
-=======
-  box-shadow: 0 24px 48px rgba(16, 24, 40, .18);
-}
-
-.ecor-preview img {
->>>>>>> ecc2c48 (Alteração do frontend)
-  display: block;
-  max-width: 80vw;
-  max-height: 80vh;
-  object-fit: contain;
-}
-<<<<<<< HEAD
-/* painel mais compacto */
-.anx-panel{
-=======
-
-/* painel mais compacto */
-.anx-panel {
->>>>>>> ecc2c48 (Alteração do frontend)
-  width: min(680px, calc(100vw - 32px));
-  max-height: 82vh;
-  overflow: auto;
-}
-
-/* layout split: thumbs (esq) + preview (dir) */
-<<<<<<< HEAD
-.anx-split{
-=======
-.anx-split {
->>>>>>> ecc2c48 (Alteração do frontend)
-  display: grid;
-  grid-template-columns: 170px 1fr;
-  gap: 14px;
-  align-items: start;
-}
-<<<<<<< HEAD
-@media (max-width: 680px){
-  .anx-split{ grid-template-columns: 1fr; }
-}
-
-/* thumbs */
-.anx-thumbs{
-=======
-
-@media (max-width: 680px) {
-  .anx-split {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* thumbs */
-.anx-thumbs {
->>>>>>> ecc2c48 (Alteração do frontend)
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 10px;
-  max-height: 66vh;
-  overflow: auto;
-  padding-right: 2px;
-}
-<<<<<<< HEAD
-.anx-thumbbtn{
-  border: 0; padding: 0; background: none; cursor: pointer;
-  border-radius: 12px; overflow: hidden;
-  box-shadow: 0 6px 16px rgba(16,24,40,.08);
-}
-.anx-thumbbtn.active{ outline: 2px solid #12b886; outline-offset: 2px; }
-.anx-thumb{ width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
-
-/* preview grande */
-.anx-preview-pane{ position: relative; min-height: 260px; }
-.anx-preview-img{
-=======
-
-.anx-thumbbtn {
-  border: 0;
-  padding: 0;
-  background: none;
-  cursor: pointer;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 6px 16px rgba(16, 24, 40, .08);
-}
-
-.anx-thumbbtn.active {
-  outline: 2px solid #12b886;
-  outline-offset: 2px;
-}
-
-.anx-thumb {
-  width: 100%;
-  aspect-ratio: 4/3;
-  object-fit: cover;
-  display: block;
-}
-
-/* preview grande */
-.anx-preview-pane {
-  position: relative;
-  min-height: 260px;
-}
-
-.anx-preview-img {
->>>>>>> ecc2c48 (Alteração do frontend)
-  width: 100%;
-  max-height: 66vh;
-  object-fit: contain;
-  border-radius: 12px;
-  background: #f8fafc;
-  box-shadow: inset 0 0 0 1px #eef2f7;
-}
-
-/* ações no canto do preview */
-<<<<<<< HEAD
-.anx-actions{
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  display: flex; gap: 8px;
-}
-/* dá espaço pro botão não cobrir conteúdo */
-.ecor-panel { position: relative; padding-bottom: 72px; }
-
-/* botão preso no canto inferior direito */
-.ecor-attach-btn{
-  position: absolute; right: 16px; bottom: 16px;
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 8px 12px; border-radius: 10px;
-  background: #f8fafc; border: 1px solid #e5e7eb;
-  box-shadow: 0 2px 6px rgba(0,0,0,.06); font-weight: 600; cursor: pointer;
-}
-.ecor-attach-btn:hover { background: #fff; }
-/* painel de anexos mais compacto */
-.anx-panel{
-=======
-.anx-actions {
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  display: flex;
-  gap: 8px;
-}
-
-/* dá espaço pro botão não cobrir conteúdo */
-.ecor-panel {
-  position: relative;
-  padding-bottom: 72px;
-}
-
-/* botão preso no canto inferior direito */
-.ecor-attach-btn {
-  position: absolute;
-  right: 16px;
-  bottom: 16px;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 12px;
-  border-radius: 10px;
-  background: #f8fafc;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, .06);
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.ecor-attach-btn:hover {
-  background: #fff;
-}
-
-/* painel de anexos mais compacto */
-.anx-panel {
->>>>>>> ecc2c48 (Alteração do frontend)
-  width: min(640px, calc(100vw - 32px));
-  max-height: 82vh;
-  overflow: auto;
-}
-
-/* layout: thumbs à esquerda + preview à direita */
-<<<<<<< HEAD
-.anx-split{
-=======
-.anx-split {
->>>>>>> ecc2c48 (Alteração do frontend)
-  display: grid;
-  grid-template-columns: 180px 1fr;
-  gap: 14px;
-  align-items: start;
-}
-<<<<<<< HEAD
-@media (max-width: 720px){
-  .anx-split{ grid-template-columns: 1fr; }
-}
-
-/* thumbs */
-.anx-thumbs{
-=======
-
-@media (max-width: 720px) {
-  .anx-split {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* thumbs */
-.anx-thumbs {
->>>>>>> ecc2c48 (Alteração do frontend)
-  display: grid;
-  gap: 10px;
-  max-height: 66vh;
-  overflow: auto;
-  padding-right: 2px;
-}
-<<<<<<< HEAD
-.anx-thumbbtn{
-  border: 0; padding: 0; background: none; cursor: pointer;
-  border-radius: 12px; overflow: hidden;
-  box-shadow: 0 6px 16px rgba(16,24,40,.08);
-  position: relative;
-}
-.anx-thumbbtn.active{ outline: 2px solid #12b886; outline-offset: 2px; }
-.anx-thumb{
-=======
-
-.anx-thumbbtn {
-  border: 0;
-  padding: 0;
-  background: none;
-  cursor: pointer;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 6px 16px rgba(16, 24, 40, .08);
-  position: relative;
-}
-
-.anx-thumbbtn.active {
-  outline: 2px solid #12b886;
-  outline-offset: 2px;
-}
-
-.anx-thumb {
->>>>>>> ecc2c48 (Alteração do frontend)
-  width: 100%;
-  height: 110px;
-  object-fit: cover;
-  display: block;
-  background: #f1f5f9;
-}
-<<<<<<< HEAD
-.anx-thumb.ph{
-  display: grid; place-items: center;
-  height: 110px; color: #64748b; background: #f8fafc;
-}
-
-/* preview grande */
-.anx-preview-pane{ position: relative; min-height: 260px; }
-.anx-preview-img{
-=======
-
-.anx-thumb.ph {
-  display: grid;
-  place-items: center;
-  height: 110px;
-  color: #64748b;
-  background: #f8fafc;
-}
-
-/* preview grande */
-.anx-preview-pane {
-  position: relative;
-  min-height: 260px;
-}
-
-.anx-preview-img {
->>>>>>> ecc2c48 (Alteração do frontend)
-  width: 100%;
-  max-height: 66vh;
-  object-fit: contain;
-  display: block;
-  border-radius: 12px;
-  background: #f8fafc;
-  box-shadow: inset 0 0 0 1px #eef2f7;
-}
-<<<<<<< HEAD
-.anx-empty{
-  display: grid; place-items: center;
-  min-height: 260px; color: #64748b; background: #f8fafc;
-  border-radius: 12px; box-shadow: inset 0 0 0 1px #eef2f7;
-}
-
-/* ações sobre o preview */
-.anx-actions{
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  display: flex; gap: 8px;
-}
-/* ==== Detalhes: botão no rodapé ==== */
-.detail-panel { position: relative; padding-bottom: 72px; }
-.ecor-attach-btn{
-  position: absolute; right: 16px; bottom: 16px;
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 8px 12px; border-radius: 10px; font-weight: 600; cursor: pointer;
-  background: #f8fafc; border: 1px solid #e5e7eb; box-shadow: 0 2px 6px rgba(0,0,0,.06);
-}
-.ecor-attach-btn:hover{ background:#fff; }
-
-/* ==== Anexos: painel menor + layout com preview interno ==== */
-.anx-panel{ width: min(640px, calc(100vw - 32px)); max-height: 82vh; overflow: auto; }
-
-.anx-split{
-  display: grid; grid-template-columns: 180px 1fr; gap: 14px; align-items: start;
-}
-@media (max-width: 720px){ .anx-split{ grid-template-columns: 1fr; } }
-
-.anx-thumbs{ display: grid; gap: 10px; max-height: 66vh; overflow: auto; padding-right: 2px; }
-.anx-thumbbtn{
-  border:0; padding:0; background:none; cursor:pointer;
-  border-radius:12px; overflow:hidden; box-shadow:0 6px 16px rgba(16,24,40,.08);
-}
-.anx-thumbbtn.active{ outline:2px solid #12b886; outline-offset:2px; }
-.anx-thumb{ width:100%; height:110px; object-fit:cover; display:block; background:#f1f5f9; }
-
-.anx-preview-pane{ position: relative; min-height: 260px; }
-.anx-preview-img{
-  width:100%; max-height:66vh; object-fit:contain; display:block;
-  border-radius:12px; background:#f8fafc; box-shadow: inset 0 0 0 1px #eef2f7;
-}
-.anx-actions{ position:absolute; right:10px; bottom:10px; display:flex; gap:8px; }
-/* painel um pouco mais largo */
-.anx-cards { width: min(900px, calc(100vw - 32px)); }
-=======
-
-.anx-empty {
-  display: grid;
-  place-items: center;
-  min-height: 260px;
-  color: #64748b;
-  background: #f8fafc;
   border-radius: 12px;
   box-shadow: inset 0 0 0 1px #eef2f7;
 }
@@ -1312,7 +217,6 @@ a:hover {
 .anx-cards {
   width: min(900px, calc(100vw - 32px));
 }
->>>>>>> ecc2c48 (Alteração do frontend)
 
 /* grid com 2 colunas */
 .anx-gridCards {
@@ -1320,16 +224,11 @@ a:hover {
   grid-template-columns: 1fr 1fr;
   gap: 14px;
 }
-<<<<<<< HEAD
-@media (max-width: 768px) {
-  .anx-gridCards { grid-template-columns: 1fr; }
-=======
 
 @media (max-width: 768px) {
   .anx-gridCards {
     grid-template-columns: 1fr;
   }
->>>>>>> ecc2c48 (Alteração do frontend)
 }
 
 /* card da imagem */
@@ -1338,14 +237,9 @@ a:hover {
   border-radius: 14px;
   overflow: hidden;
   background: #f1f5f9;
-<<<<<<< HEAD
-  box-shadow: 0 8px 24px rgba(16,24,40,.08);
-  height: 210px;                    /* deixa compacto como no mock */
-=======
   box-shadow: 0 8px 24px rgba(16, 24, 40, .08);
   height: 210px;
   /* deixa compacto como no mock */
->>>>>>> ecc2c48 (Alteração do frontend)
   cursor: zoom-in;
 }
 
@@ -1362,11 +256,7 @@ a:hover {
   position: absolute;
   left: 10px;
   top: 10px;
-<<<<<<< HEAD
-  background: rgba(255,255,255,.85);
-=======
   background: rgba(255, 255, 255, .85);
->>>>>>> ecc2c48 (Alteração do frontend)
   -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
   color: #0f172a;
@@ -1396,15 +286,6 @@ a:hover {
 
 /* em dispositivos touch (sem hover), deixa visível sempre */
 @media (hover: none) {
-<<<<<<< HEAD
-  .anx-btnDl { opacity: 1; transform: none; }
-}
-/* === EcoRecicle – hardening global para modais do dashboard === */
-.ecor-modal, .ecor-panel{ box-sizing: border-box; }
-
-/* anula margens e gradientes que alguns temas aplicam em .btn */
-.ecor-panel .btn{
-=======
   .anx-btnDl {
     opacity: 1;
     transform: none;
@@ -1419,23 +300,12 @@ a:hover {
 
 /* anula margens e gradientes que alguns temas aplicam em .btn */
 .ecor-panel .btn {
->>>>>>> ecc2c48 (Alteração do frontend)
   margin: 0 !important;
   background-image: none !important;
 }
 
 /* impede qualquer contador/bolha implícito no botão */
 .ecor-panel .btn .badge,
-<<<<<<< HEAD
-.ecor-panel .btn::after{
-  display: none !important;
-  content: none !important;
-}
-/* === FIX: modal de detalhes não usa botão flutuante === */
-/* Reseta qualquer regra global que force absolute no botão dentro do modal */
-.ecor-panel .ecor-actions .ecor-attach-btn,
-.ecor-panel .ecor-actions .ecor-report-btn{
-=======
 .ecor-panel .btn::after {
   display: none !important;
   content: none !important;
@@ -1445,7 +315,6 @@ a:hover {
 /* Reseta qualquer regra global que force absolute no botão dentro do modal */
 .ecor-panel .ecor-actions .ecor-attach-btn,
 .ecor-panel .ecor-actions .ecor-report-btn {
->>>>>>> ecc2c48 (Alteração do frontend)
   position: static !important;
   right: auto !important;
   left: auto !important;
@@ -1455,15 +324,6 @@ a:hover {
 }
 
 /* Garante mesma largura/estética na coluna de ações */
-<<<<<<< HEAD
-.ecor-panel .ecor-actions{
-  justify-self: end !important;
-  width: 260px !important;
-  min-width: 260px !important;
-  margin-right: 12px !important;   /* <-- respiro da borda direita */
-  display: flex; flex-direction: column;
-  align-items: stretch; justify-content: flex-end;
-=======
 .ecor-panel .ecor-actions {
   justify-self: end !important;
   width: 260px !important;
@@ -1474,44 +334,182 @@ a:hover {
   flex-direction: column;
   align-items: stretch;
   justify-content: flex-end;
->>>>>>> ecc2c48 (Alteração do frontend)
   gap: 10px;
 }
 
 /* Botões com mesmo padding/raio */
 .ecor-panel .ecor-actions .ecor-attach-btn,
-<<<<<<< HEAD
-.ecor-panel .ecor-actions .ecor-report-btn{
-=======
 .ecor-panel .ecor-actions .ecor-report-btn {
->>>>>>> ecc2c48 (Alteração do frontend)
   display: block !important;
   width: 100% !important;
   text-align: center;
   padding: .40rem .72rem !important;
   border-radius: 12px !important;
-<<<<<<< HEAD
-  box-shadow: 0 2px 10px rgba(0,0,0,.08);
-=======
+  object-fit: cover;
+  display: block;
+  background: #f1f5f9;
+}
+
+.anx-preview-pane {
+  position: relative;
+  min-height: 260px;
+}
+
+.anx-preview-img {
+  width: 100%;
+  max-height: 66vh;
+  object-fit: contain;
+  display: block;
+  border-radius: 12px;
+  background: #f8fafc;
+  box-shadow: inset 0 0 0 1px #eef2f7;
+}
+
+.anx-actions {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  display: flex;
+  gap: 8px;
+}
+
+/* painel um pouco mais largo */
+.anx-cards {
+  width: min(900px, calc(100vw - 32px));
+}
+
+/* grid com 2 colunas */
+.anx-gridCards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+@media (max-width: 768px) {
+  .anx-gridCards {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* card da imagem */
+.anx-card2 {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #f1f5f9;
+  box-shadow: 0 8px 24px rgba(16, 24, 40, .08);
+  height: 210px;
+  /* deixa compacto como no mock */
+  cursor: zoom-in;
+}
+
+/* imagem ocupa tudo com corte elegante */
+.anx-img2 {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+/* título no canto superior esquerdo */
+.anx-badge {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  background: rgba(255, 255, 255, .85);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  color: #0f172a;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+/* botão “Baixar” no canto inferior direito */
+.anx-btnDl {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  transform: translateY(6px);
+  opacity: 0;
+  transition: opacity .15s ease, transform .15s ease;
+}
+
+/* aparece no hover do card */
+.anx-card2:hover .anx-btnDl {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* em dispositivos touch (sem hover), deixa visível sempre */
+@media (hover: none) {
+  .anx-btnDl {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* === EcoRecicle – hardening global para modais do dashboard === */
+.ecor-modal,
+.ecor-panel {
+  box-sizing: border-box;
+}
+
+/* anula margens e gradientes que alguns temas aplicam em .btn */
+.ecor-panel .btn {
+  margin: 0 !important;
+  background-image: none !important;
+}
+
+/* impede qualquer contador/bolha implícito no botão */
+.ecor-panel .btn .badge,
+.ecor-panel .btn::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* === FIX: modal de detalhes não usa botão flutuante === */
+/* Reseta qualquer regra global que force absolute no botão dentro do modal */
+.ecor-panel .ecor-actions .ecor-attach-btn,
+.ecor-panel .ecor-actions .ecor-report-btn {
+  position: static !important;
+  right: auto !important;
+  left: auto !important;
+  bottom: auto !important;
+  margin: 0 !important;
+  background-image: none !important;
+}
+
+/* Garante mesma largura/estética na coluna de ações */
+.ecor-panel .ecor-actions {
+  justify-self: end !important;
+  width: 260px !important;
+  min-width: 260px !important;
+  margin-right: 12px !important;
+  /* <-- respiro da borda direita */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* Botões com mesmo padding/raio */
+.ecor-panel .ecor-actions .ecor-attach-btn,
+.ecor-panel .ecor-actions .ecor-report-btn {
+  display: block !important;
+  width: 100% !important;
+  text-align: center;
+  padding: .40rem .72rem !important;
+  border-radius: 12px !important;
   box-shadow: 0 2px 10px rgba(0, 0, 0, .08);
->>>>>>> ecc2c48 (Alteração do frontend)
   color: #fff !important;
 }
 
 /* Cores (mantém seu tema) */
-<<<<<<< HEAD
-.ecor-panel .ecor-actions .ecor-attach-btn{ background: #12b886 !important; }
-.ecor-panel .ecor-actions .ecor-attach-btn:active{ background:#0fae79 !important; }
-.ecor-panel .ecor-actions .ecor-report-btn{ background: #f59e0b !important; }
-.ecor-panel .ecor-actions .ecor-report-btn:active{ background:#ea9405 !important; }
-
-/* Se algum tema injeta contadores/bolhas, desliga no modal */
-.ecor-panel .ecor-actions .ecor-attach-btn .badge,
-.ecor-panel .ecor-actions .ecor-attach-btn::after{
-  display: none !important;
-  content: none !important;
-}
-=======
 .ecor-panel .ecor-actions .ecor-attach-btn {
   background: #12b886 !important;
 }
@@ -1534,4 +532,75 @@ a:hover {
   display: none !important;
   content: none !important;
 }
->>>>>>> ecc2c48 (Alteração do frontend)
+
+/* Utility for flex truncation */
+.min-w-0 {
+  min-width: 0 !important;
+}
+
+/* === Botões Globais (System Colors) === */
+.btn--primary,
+.btn-primary {
+  background-color: var(--ecor-mint-600) !important;
+  border-color: var(--ecor-mint-600) !important;
+  color: #fff !important;
+  font-weight: 600;
+}
+
+.btn--primary:hover,
+.btn-primary:hover {
+  background-color: var(--ecor-mint-700) !important;
+  border-color: var(--ecor-mint-700) !important;
+}
+
+.btn--primary:active,
+.btn-primary:active,
+.btn-primary:focus {
+  background-color: var(--ecor-mint-800) !important;
+  border-color: var(--ecor-mint-800) !important;
+  box-shadow: 0 0 0 0.25rem rgba(16, 185, 129, 0.25) !important;
+  /* Mint shadow */
+}
+
+.btn--secondary,
+.btn-secondary {
+  background-color: var(--ecor-ink-100) !important;
+  border-color: var(--ecor-ink-200) !important;
+  color: var(--ecor-ink-700) !important;
+  font-weight: 600;
+}
+
+.btn--secondary:hover,
+.btn-secondary:hover {
+  background-color: var(--ecor-ink-200) !important;
+  color: var(--ecor-ink-900) !important;
+}
+
+.btn--ghost {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  color: var(--ecor-mint-600) !important;
+  font-weight: 600;
+}
+
+.btn--ghost:hover {
+  background-color: var(--ecor-mint-50) !important;
+  color: var(--ecor-mint-700) !important;
+}
+
+.btn-outline-primary {
+  color: var(--ecor-mint-600) !important;
+  border-color: var(--ecor-mint-600) !important;
+  font-weight: 600;
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--ecor-mint-600) !important;
+  color: #fff !important;
+}
+
+/* Ajuste para links que parecem botões */
+a.btn--primary,
+a.btn-primary {
+  color: #fff !important;
+}

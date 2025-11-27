@@ -1,22 +1,4 @@
 <template>
-<<<<<<< HEAD
-  <div class="container">
-    <h3 class="mb-3">Dashboard — Descartante</h3>
-
-    <!-- Filtro simples -->
-    <div class="row g-2 align-items-end mb-3">
-      <div class="col-auto">
-        <label class="form-label mb-1">De</label>
-        <input type="date" v-model="from" class="form-control" />
-      </div>
-      <div class="col-auto">
-        <label class="form-label mb-1">Até</label>
-        <input type="date" v-model="to" class="form-control" />
-      </div>
-      <div class="col-auto d-flex gap-2">
-        <button class="btn btn-primary" @click="aplicarPeriodo" :disabled="loadingFilter">Aplicar</button>
-        <button class="btn btn-outline-secondary" @click="limparPeriodo" :disabled="!periodoAtivo || loadingFilter">
-=======
   <div class="container-fluid px-4 py-4">
     <h3 class="mb-4 fw-bold">Dashboard — Descartante</h3>
 
@@ -33,26 +15,12 @@
       <div class="col-12 col-md-auto d-flex gap-2">
         <button class="btn btn-primary w-100 w-md-auto" @click="aplicarPeriodo" :disabled="loadingFilter">Aplicar</button>
         <button class="btn btn-outline-secondary w-100 w-md-auto" @click="limparPeriodo" :disabled="!periodoAtivo || loadingFilter">
->>>>>>> ecc2c48 (Alteração do frontend)
           Limpar
         </button>
       </div>
     </div>
 
     <!-- Cards (totais por padrão; com período, mostram apenas o período) -->
-<<<<<<< HEAD
-    <div class="row g-3">
-      <div class="col-md-3">
-        <Card titulo="Meus descartes" :valor="meusDescartesAtivos.length" />
-      </div>
-      <div class="col-md-3">
-        <Card titulo="Meus pontos" :valor="pontosCard" />
-      </div>
-      <div class="col-md-3">
-        <Card titulo="Pontos resgatados" :valor="pontosResgatadosCard" />
-      </div>
-      <div class="col-md-3">
-=======
     <div class="row g-3 mb-4">
       <div class="col-12 col-sm-6 col-xl-3">
         <Card titulo="Meus descartes" :valor="meusDescartesAtivos.length" />
@@ -64,75 +32,41 @@
         <Card titulo="Pontos resgatados" :valor="pontosResgatadosCard" />
       </div>
       <div class="col-12 col-sm-6 col-xl-3">
->>>>>>> ecc2c48 (Alteração do frontend)
         <Card titulo="CO₂ evitado (kg)" :valor="co2Ativo.toFixed(2)" />
       </div>
     </div>
 
-<<<<<<< HEAD
-    <div class="row g-3 mt-1">
-      <div class="col-md-6">
-        <div class="card-metric p-3">
-=======
     <div class="row g-4">
       <div class="col-12 col-lg-6 col-xl-5">
         <div class="card-metric p-4 h-100">
->>>>>>> ecc2c48 (Alteração do frontend)
           <GraficoPizza :labels="labelsAtivo" :data="seriesAtivo" title="Tipos de resíduo" />
         </div>
       </div>
 
-<<<<<<< HEAD
-      <div class="col-md-6">
-        <div class="card-metric p-3">
-          <div class="d-flex justify-content-between align-items-center">
-            <h6 class="mb-2">Últimos descartes</h6>
-=======
       <div class="col-12 col-lg-6 col-xl-7">
         <div class="card-metric p-4 h-100">
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5 class="mb-0 fw-bold">Últimos descartes</h5>
->>>>>>> ecc2c48 (Alteração do frontend)
-          </div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="mb-0 fw-bold">Últimos descartes</h5>
+            </div>
 
-          <ul v-if="ultimosAtivos.length" class="list-unstyled m-0">
-            <li
-              v-for="d in ultimosAtivos"
-              :key="d.id"
-<<<<<<< HEAD
-              class="py-2 border-bottom d-flex align-items-center justify-content-between gap-3"
-            >
-              <div class="min-w-0">
-                <div class="fw-semibold text-truncate">
-                  {{ nomePontoByDescarte(d) }}
-                  <span class="text-muted">• {{ formatDate(getDateFromDescarte(d)) }}</span>
-=======
-              class="py-3 border-bottom d-flex align-items-center justify-content-between gap-3"
-            >
-              <div class="min-w-0">
-                <div class="fw-semibold text-truncate fs-5">
-                  {{ nomePontoByDescarte(d) }}
-                </div>
-                <div class="text-muted small">
-                  {{ formatDate(getDateFromDescarte(d)) }} • {{ d.tipo_residuo }}
->>>>>>> ecc2c48 (Alteração do frontend)
-                </div>
-              </div>
-
-              <button
-                type="button"
-<<<<<<< HEAD
-                class="btn btn-details"
-                @click="abrirDetalhe(d.id)"
-                aria-label="Obter detalhes do descarte"
+            <ul class="list-group list-group-flush" v-if="ultimosAtivos.length">
+              <li
+                v-for="d in ultimosAtivos"
+                :key="d.id"
+                class="list-group-item px-0 py-3 d-flex justify-content-between align-items-center"
               >
-                Obter detalhes
-              </button>
-            </li>
-          </ul>
-          <div v-else class="text-muted">Sem descartes {{ periodoAtivo ? 'no período' : 'registrados' }}.</div>
-=======
-                class="btn btn-details btn-sm text-nowrap"
+                <div>
+                  <div class="fw-bold text-dark mb-1">
+                    {{ d.tipo_residuo }}
+                    <span class="fw-normal text-muted ms-1">({{ d.quantidade_itens }} itens)</span>
+                  </div>
+                  <div class="small text-muted">
+                    {{ formatDate(d.data_registro || d.created_at) }} •
+                    {{ nomePontoByDescarte(d) }}
+                  </div>
+                </div>
+                <button
+                  class="btn btn-details btn-sm text-nowrap"
                 @click="abrirDetalhe(d.id)"
                 aria-label="Obter detalhes do descarte"
               >
@@ -143,7 +77,6 @@
           <div v-else class="text-muted py-5 text-center">
             Sem descartes {{ periodoAtivo ? 'no período' : 'registrados' }}.
           </div>
->>>>>>> ecc2c48 (Alteração do frontend)
         </div>
       </div>
     </div>
@@ -546,19 +479,19 @@ function formatDate (d, withTime = false) {
 .ecor-close{ position:absolute; top:8px; right:10px; font-size:22px; border:0; background:transparent; cursor:pointer }
 @keyframes pop{ from{transform:scale(.98); opacity:0} to{transform:scale(1); opacity:1} }
 .btn-details{
-  background:#12b886;
+  background: var(--ecor-mint-600);
   color:#fff;
   border:none;
   border-radius:12px;       /* menos arredondado */
   padding:.42rem .8rem;     /* um pouco mais compacto */
   font-weight:600;
-  box-shadow:0 6px 16px rgba(18,184,134,.20);
+  box-shadow:0 6px 16px rgba(5, 150, 105, .20);
   transition:transform .08s ease, box-shadow .2s ease, filter .2s ease;
 }
 
 .btn-details:hover{
-  filter:brightness(.95);
-  box-shadow:0 8px 20px rgba(18,184,134,.28);
+  background: var(--ecor-mint-700);
+  box-shadow:0 8px 20px rgba(5, 150, 105, .28);
 }
 .btn-details:active{
   transform:translateY(1px);
@@ -596,14 +529,14 @@ function formatDate (d, withTime = false) {
 .anexo-acao{
   position:absolute;
   right:8px; bottom:8px;
-  background:#12b886;
+  background: var(--ecor-mint-600);
   color:#fff;
   padding:.28rem .5rem;
   border-radius:8px;
   font-weight:600;
   font-size:.85rem;
-  box-shadow:0 4px 12px rgba(18,184,134,.25);
+  box-shadow:0 4px 12px rgba(5, 150, 105, .25);
 }
-.anexo-thumb:hover .anexo-acao{ filter:brightness(.95); }
+.anexo-thumb:hover .anexo-acao{ background: var(--ecor-mint-700); }
 
 </style>

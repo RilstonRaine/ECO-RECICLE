@@ -1,112 +1,8 @@
 <template>
-<<<<<<< HEAD
-  <div class="container" style="max-width: 720px;">
-    <div class="card-metric" style="padding: 22px;">
-      <h3 class="mb-3">Cadastrar Descarte</h3>
-
-      <form @submit.prevent="salvar" class="d-grid gap-3" novalidate>
-        <!-- Ponto de coleta -->
-        <div>
-          <label class="form-label fw-semibold">Ponto de Coleta</label>
-          <select v-model.number="form.ponto_coleta_id" class="form-select" required>
-            <option :value="null" disabled>Selecione</option>
-            <option
-              v-for="p in pontosColeta"
-              :key="p.id"
-              :value="p.id"
-            >
-              {{ p.nome || ('Ponto #' + p.id) }} — {{ resumoEndereco(p) }}
-            </option>
-          </select>
-          <div class="form-text" v-if="!pontosColeta.length">
-            Nenhum ponto encontrado. Verifique se há pontos de coleta cadastrados.
-          </div>
-        </div>
-
-        <!-- Tipo de resíduo -->
-        <div>
-          <label class="form-label fw-semibold">Tipo de resíduo</label>
-          <select v-model="form.tipo_residuo" class="form-select" required>
-            <option v-for="t in tipos" :key="t" :value="t">{{ t }}</option>
-          </select>
-        </div>
-
-        <!-- Quantidade e Peso por item -->
-        <div class="row g-3">
-          <div class="col-md-6">
-            <label class="form-label fw-semibold">Quantidade de itens</label>
-            <input
-              v-model.number="form.quantidade"
-              type="number"
-              min="1"
-              step="1"
-              class="form-control"
-              required
-            />
-            <div class="invalid-feedback d-block" v-if="!qtdValida">
-              Informe uma quantidade.
-            </div>
-          </div>
-
-          <div class="col-md-6">
-            <label class="form-label fw-semibold">Peso por item (kg)</label>
-            <div class="input-group">
-              <input
-                v-model.number="form.peso_por_item"
-                type="number"
-                min="0.01"
-                step="0.01"
-                class="form-control"
-                :readonly="naoSeiPeso"
-                required
-              />
-            </div>
-            <div class="form-check mt-2">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                id="naoSeiPesoCheck"
-                v-model="naoSeiPeso"
-              />
-              <label class="form-check-label small text-muted" for="naoSeiPesoCheck">
-                Não sei o peso (usar média estimada)
-              </label>
-            </div>
-            <div class="invalid-feedback d-block" v-if="!ppiValido && !naoSeiPeso">
-              O peso por item deve ser maior que 0.
-            </div>
-          </div>
-        </div>
-
-        <div class="small text-muted">
-          Peso total: <strong>{{ pesoTotal.toFixed(2) }} kg</strong>
-          <span v-if="naoSeiPeso" class="badge bg-info text-dark ms-2">Estimado</span>
-        </div>
-
-        <!-- Campos para upload das fotos -->
-        <div>
-          <label class="form-label fw-semibold">Foto do Item</label>
-          <input type="file" @change="handleFileChange('foto_item', $event)" class="form-control" accept="image/*" required />
-        </div>
-        <div>
-          <label class="form-label fw-semibold">Foto do Local</label>
-          <input type="file" @change="handleFileChange('foto_local', $event)" class="form-control" accept="image/*" required />
-        </div>
-
-        <button
-          type="submit"
-          class="btn btn--primary w-100"
-          :disabled="loading || !podeSalvar"
-        >
-          <span v-if="!loading">Registrar descarte</span>
-          <span v-else>Registrando…</span>
-        </button>
-      </form>
-=======
-  <div class="container-fluid p-0" style="min-height: calc(100vh - 76px);">
-    <div class="row g-0" style="min-height: calc(100vh - 76px);">
-      <div class="col-lg-7 col-xl-8 overflow-auto" style="max-height: calc(100vh - 76px);">
-        <div class="p-4 h-100 d-flex flex-column justify-content-center">
+  <div class="container-fluid p-0 layout-container">
+    <div class="row g-0 layout-row">
+      <div class="col-lg-7 col-xl-8 scrollable-col">
+        <div class="p-3 p-md-4 h-100 d-flex flex-column justify-content-center">
           <div class="w-100">
             <h3 class="mb-4 fw-bold text-mint">Cadastrar Descarte</h3>
 
@@ -205,8 +101,8 @@
         </div>
       </div>
 
-      <div class="col-lg-5 col-xl-4 h-100">
-        <div class="p-5 h-100 bg-mint text-white position-relative overflow-hidden d-flex flex-column justify-content-center">
+      <div class="col-lg-5 col-xl-4 info-col">
+        <div class="p-4 p-md-5 h-100 bg-mint text-white position-relative overflow-hidden d-flex flex-column justify-content-center">
           <div class="position-absolute top-0 end-0 opacity-10 p-3">
              <i class="bi bi-recycle display-1"></i>
           </div>
@@ -255,7 +151,6 @@
           </div>
         </div>
       </div>
->>>>>>> ecc2c48 (Alteração do frontend)
     </div>
   </div>
 </template>
@@ -270,10 +165,7 @@ import { usuariosApi, descartesApi } from '@/services/api'
 const router = useRouter()
 const toast = useToast()
 
-<<<<<<< HEAD
 // Usuário precisa estar logado e ser PF
-=======
->>>>>>> ecc2c48 (Alteração do frontend)
 const usuario = computed(() => store?.state?.usuario ?? store?.usuario ?? null)
 
 onMounted(async () => {
@@ -324,10 +216,7 @@ const tipos = [
   'Componentes Eletrônicos'
 ]
 
-<<<<<<< HEAD
 // Mapa de pesos médios (em kg)
-=======
->>>>>>> ecc2c48 (Alteração do frontend)
 const pesoMedio = {
   'Smartphone': 0.20,
   'Computador': 7.00,
@@ -387,10 +276,7 @@ const form = ref({
 
 const naoSeiPeso = ref(false)
 
-<<<<<<< HEAD
 // Atualiza peso quando muda o tipo ou marca o checkbox
-=======
->>>>>>> ecc2c48 (Alteração do frontend)
 watch([() => form.value.tipo_residuo, naoSeiPeso], ([novoTipo, isEstimado]) => {
   if (isEstimado) {
     const peso = pesoMedio[novoTipo]
@@ -459,13 +345,6 @@ async function salvar() {
 </script>
 
 <style scoped>
-<<<<<<< HEAD
-/* só para manter o visual consistente caso falte o style global */
-.card-metric {
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(16,24,40,.06);
-=======
 /* Cores do tema (Verde/Mint) */
 .text-mint { color: #10b981 !important; }
 .bg-mint { background-color: #10b981 !important; }
@@ -484,6 +363,38 @@ async function salvar() {
   background-color: #10b981;
   border-color: #10b981;
   opacity: 0.65;
->>>>>>> ecc2c48 (Alteração do frontend)
+}
+
+/* Layout Responsivo */
+.layout-container {
+  min-height: auto; /* Mobile: altura natural */
+}
+.layout-row {
+  min-height: auto; /* Mobile: altura natural */
+}
+.scrollable-col {
+  max-height: none; /* Mobile: sem scroll interno */
+  overflow: visible;
+}
+.info-col {
+  height: auto; /* Mobile: altura natural */
+  min-height: 500px; /* Garante altura mínima no mobile */
+}
+
+/* Desktop (lg = 992px+) */
+@media (min-width: 992px) {
+  .layout-container {
+    min-height: calc(100vh - 76px);
+  }
+  .layout-row {
+    min-height: calc(100vh - 76px);
+  }
+  .scrollable-col {
+    max-height: calc(100vh - 76px);
+    overflow-y: auto;
+  }
+  .info-col {
+    height: 100%; /* Desktop: preenche altura */
+  }
 }
 </style>
