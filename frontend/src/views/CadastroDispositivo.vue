@@ -49,15 +49,29 @@
 
           <div class="col-md-6">
             <label class="form-label fw-semibold">Peso por item (kg)</label>
-            <input
-              v-model.number="form.peso_por_item"
-              type="number"
-              min="0.01"
-              step="0.01"
-              class="form-control"
-              required
-            />
-            <div class="invalid-feedback d-block" v-if="!ppiValido">
+            <div class="input-group">
+              <input
+                v-model.number="form.peso_por_item"
+                type="number"
+                min="0.01"
+                step="0.01"
+                class="form-control"
+                :readonly="naoSeiPeso"
+                required
+              />
+            </div>
+            <div class="form-check mt-2">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="naoSeiPesoCheck"
+                v-model="naoSeiPeso"
+              />
+              <label class="form-check-label small text-muted" for="naoSeiPesoCheck">
+                Não sei o peso (usar média estimada)
+              </label>
+            </div>
+            <div class="invalid-feedback d-block" v-if="!ppiValido && !naoSeiPeso">
               O peso por item deve ser maior que 0.
             </div>
           </div>
@@ -65,6 +79,7 @@
 
         <div class="small text-muted">
           Peso total: <strong>{{ pesoTotal.toFixed(2) }} kg</strong>
+          <span v-if="naoSeiPeso" class="badge bg-info text-dark ms-2">Estimado</span>
         </div>
 
         <!-- Campos para upload das fotos -->
@@ -91,7 +106,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 import store from '@/store'
@@ -143,13 +158,62 @@ const tipos = [
   'Impressora','Roteador',  'ONT', 'Switch de Rede',
   'Cabos', 'Adaptadores', 'Carregadores',
   'Pilha', 'Bateria', 'Caixa de Som', 'Câmera Digital',
-  'HD', 'SSD', 'Pen Drive', 'Cartão de Memória', 
+  'HD', 'SSD', 'Pen Drive', 'Cartão de Memória', 'Unidade Óptica (CD/DVD)',
   'Placa Eletrônica', 'Placa-mãe', 'Placa de Vídeo (GPU)', 'Memória RAM', 'Processador', 'Fonte ATX',
   'Nobreak', 'Estabilizador', 'Filtro de Linha',
   'Smartwatch', 'Set-top Box ', 'TV Box', 'Decoder',
   'Antenas', 'Receptores',
   'Componentes Eletrônicos'
 ]
+
+// Mapa de pesos médios (em kg)
+const pesoMedio = {
+  'Smartphone': 0.20,
+  'Computador': 7.00,
+  'Notebooks': 1.70,
+  'Televisor': 7.00,
+  'Monitores': 4.00,
+  'Tablet': 0.50,
+  'Kindle': 0.25,
+  'Consoles': 3.00,
+  'Mouses': 0.10,
+  'Teclados': 0.70,
+  'Webcam': 0.15,
+  'Headset': 0.30,
+  'Microfone': 0.30,
+  'Impressora': 7.00,
+  'Roteador': 0.40,
+  'ONT': 0.30,
+  'Switch de Rede': 1.00,
+  'Cabos': 0.20,
+  'Adaptadores': 0.10,
+  'Carregadores': 0.20,
+  'Pilha': 0.03,
+  'Bateria': 0.30,
+  'Caixa de Som': 1.50,
+  'Câmera Digital': 0.40,
+  'HD': 0.40,
+  'SSD': 0.05,
+  'Pen Drive': 0.02,
+  'Cartão de Memória': 0.01,
+  'Unidade Óptica (CD/DVD)': 0.70,
+  'Placa Eletrônica': 0.20,
+  'Placa-mãe': 0.80,
+  'Placa de Vídeo (GPU)': 1.00,
+  'Memória RAM': 0.05,
+  'Processador': 0.05,
+  'Fonte ATX': 1.80,
+  'Nobreak': 6.00,
+  'Estabilizador': 4.00,
+  'Filtro de Linha': 0.40,
+  'Smartwatch': 0.05,
+  'Set-top Box ': 0.60,
+  'TV Box': 0.20,
+  'Decoder': 0.80,
+  'Antenas': 0.50,
+  'Receptores': 1.00,
+  'Componentes Eletrônicos': 0.05
+}
 
 const form = ref({
   ponto_coleta_id: null,
@@ -158,6 +222,18 @@ const form = ref({
   peso_por_item: 1.00,
   foto_item: null,
   foto_local: null
+})
+
+const naoSeiPeso = ref(false)
+
+// Atualiza peso quando muda o tipo ou marca o checkbox
+watch([() => form.value.tipo_residuo, naoSeiPeso], ([novoTipo, isEstimado]) => {
+  if (isEstimado) {
+    const peso = pesoMedio[novoTipo]
+    if (peso) {
+      form.value.peso_por_item = peso
+    }
+  }
 })
 
 const qtdValida = computed(() =>
@@ -202,6 +278,7 @@ async function salvar() {
     fd.append('quantidade_itens', String(form.value.quantidade));
     fd.append('peso_por_item_kg', String(form.value.peso_por_item));
     fd.append('peso_kg', String(pesoTotal.value));
+    fd.append('status_peso', naoSeiPeso.value ? 'estimado' : 'medido');
     fd.append('foto_item', form.value.foto_item);   // arquivos
     fd.append('foto_local', form.value.foto_local); // arquivos
 
