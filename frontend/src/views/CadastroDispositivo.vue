@@ -1,113 +1,115 @@
 <template>
   <div class="container-fluid p-0 layout-container">
     <div class="row g-0 layout-row">
-      <div class="col-lg-7 col-xl-8 scrollable-col">
-        <div class="p-3 p-md-4 h-100 d-flex flex-column justify-content-center">
-          <div class="w-100">
-            <h3 class="mb-4 fw-bold text-mint">Cadastrar Descarte</h3>
+      <div class="col-lg-7 col-xl-8 scrollable-col bg-light">
+        <div class="p-3 p-md-4 h-100 d-flex flex-column justify-content-center align-items-center">
+          <div class="w-100" style="max-width: 800px;">
+            <div class="card-metric p-4 p-md-5 shadow-sm border-0 bg-white rounded-4">
+              <h3 class="mb-4 fw-bold text-mint text-center">Cadastrar Descarte</h3>
 
-            <form @submit.prevent="salvar" class="row g-3" novalidate>
-              <div class="col-md-12">
-                <label class="form-label fw-semibold">Ponto de Coleta</label>
-                <select v-model.number="form.ponto_coleta_id" class="form-select form-select-lg" required>
-                  <option :value="null" disabled>Selecione um ponto de entrega</option>
-                  <option
-                    v-for="p in pontosColeta"
-                    :key="p.id"
-                    :value="p.id"
-                  >
-                    {{ p.nome || ('Ponto #' + p.id) }} — {{ resumoEndereco(p) }}
-                  </option>
-                </select>
-                <div class="form-text" v-if="!pontosColeta.length">
-                  Nenhum ponto encontrado. Verifique se há pontos de coleta cadastrados.
+              <form @submit.prevent="salvar" class="row g-3" novalidate>
+                <div class="col-md-12">
+                  <label class="form-label fw-semibold">Ponto de Coleta</label>
+                  <select v-model.number="form.ponto_coleta_id" class="form-select form-select-lg bg-light border-0" required>
+                    <option :value="null" disabled>Selecione um ponto de entrega</option>
+                    <option
+                      v-for="p in pontosColeta"
+                      :key="p.id"
+                      :value="p.id"
+                    >
+                      {{ p.nome || ('Ponto #' + p.id) }} — {{ resumoEndereco(p) }}
+                    </option>
+                  </select>
+                  <div class="form-text" v-if="!pontosColeta.length">
+                    Nenhum ponto encontrado. Verifique se há pontos de coleta cadastrados.
+                  </div>
                 </div>
-              </div>
 
-              <div class="col-md-6">
-                <label class="form-label fw-semibold">Tipo de resíduo</label>
-                <select v-model="form.tipo_residuo" class="form-select" required>
-                  <option v-for="t in tipos" :key="t" :value="t">{{ t }}</option>
-                </select>
-              </div>
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Tipo de resíduo</label>
+                  <select v-model="form.tipo_residuo" class="form-select bg-light border-0" required>
+                    <option v-for="t in tipos" :key="t" :value="t">{{ t }}</option>
+                  </select>
+                </div>
 
-              <div class="col-md-3">
-                <label class="form-label fw-semibold">Qtd. Itens</label>
-                <input
-                  v-model.number="form.quantidade"
-                  type="number"
-                  min="1"
-                  step="1"
-                  class="form-control"
-                  required
-                />
-              </div>
-
-              <div class="col-md-6">
-                <label class="form-label fw-semibold">Peso por item (kg)</label>
-                <div class="input-group">
+                <div class="col-md-3">
+                  <label class="form-label fw-semibold">Qtd. Itens</label>
                   <input
-                    v-model.number="form.peso_por_item"
+                    v-model.number="form.quantidade"
                     type="number"
-                    min="0.01"
-                    step="0.01"
-                    class="form-control"
-                    :readonly="naoSeiPeso"
+                    min="1"
+                    step="1"
+                    class="form-control bg-light border-0"
                     required
                   />
                 </div>
-                <div class="form-check mt-2">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="naoSeiPesoCheck"
-                    v-model="naoSeiPeso"
-                  />
-                  <label class="form-check-label small text-muted" for="naoSeiPesoCheck">
-                    Não sei o peso (usar média estimada)
-                  </label>
+
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Peso por item (kg)</label>
+                  <div class="input-group">
+                    <input
+                      v-model.number="form.peso_por_item"
+                      type="number"
+                      min="0.01"
+                      step="0.01"
+                      class="form-control bg-light border-0"
+                      :readonly="naoSeiPeso"
+                      required
+                    />
+                  </div>
+                  <div class="form-check mt-2">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="naoSeiPesoCheck"
+                      v-model="naoSeiPeso"
+                    />
+                    <label class="form-check-label small text-muted" for="naoSeiPesoCheck">
+                      Não sei o peso (usar média estimada)
+                    </label>
+                  </div>
+                  <div class="invalid-feedback d-block" v-if="!ppiValido && !naoSeiPeso">
+                    O peso por item deve ser maior que 0.
+                  </div>
                 </div>
-                <div class="invalid-feedback d-block" v-if="!ppiValido && !naoSeiPeso">
-                  O peso por item deve ser maior que 0.
+
+                <div class="col-12 small text-muted">
+                  Peso total: <strong>{{ pesoTotal.toFixed(2) }} kg</strong>
+                  <span v-if="naoSeiPeso" class="badge bg-info text-dark ms-2">Estimado</span>
                 </div>
-              </div>
 
-              <div class="col-12 small text-muted">
-                Peso total: <strong>{{ pesoTotal.toFixed(2) }} kg</strong>
-                <span v-if="naoSeiPeso" class="badge bg-info text-dark ms-2">Estimado</span>
-              </div>
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Foto do Item</label>
+                  <input type="file" @change="handleFileChange('foto_item', $event)" class="form-control bg-light border-0" accept="image/*" required />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Foto do Local</label>
+                  <input type="file" @change="handleFileChange('foto_local', $event)" class="form-control bg-light border-0" accept="image/*" required />
+                </div>
 
-              <div class="col-md-6">
-                <label class="form-label fw-semibold">Foto do Item</label>
-                <input type="file" @change="handleFileChange('foto_item', $event)" class="form-control" accept="image/*" required />
-              </div>
-              <div class="col-md-6">
-                <label class="form-label fw-semibold">Foto do Local</label>
-                <input type="file" @change="handleFileChange('foto_local', $event)" class="form-control" accept="image/*" required />
-              </div>
-
-              <div class="col-12 mt-4">
-                <button
-                  type="submit"
-                  class="btn btn--primary w-100"
-                  :disabled="loading || !podeSalvar"
-                >
-                  <span v-if="!loading">Registrar descarte</span>
-                  <span v-else>Registrando…</span>
-                </button>
-              </div>
-            </form>
+                <div class="col-12 mt-4">
+                  <button
+                    type="submit"
+                    class="btn btn-mint w-100 btn-lg fw-bold py-3"
+                    :disabled="loading || !podeSalvar"
+                  >
+                    <span v-if="!loading">Registrar descarte</span>
+                    <span v-else>Registrando…</span>
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>
 
       <div class="col-lg-5 col-xl-4 info-col">
-        <div class="p-4 p-md-5 h-100 bg-mint text-white position-relative overflow-hidden d-flex flex-column justify-content-center">
+        <div class="p-4 p-md-5 h-100 flex-grow-1 bg-mint text-white position-relative overflow-hidden d-flex flex-column justify-content-between">
           <div class="position-absolute top-0 end-0 opacity-10 p-3">
              <i class="bi bi-recycle display-1"></i>
           </div>
 
-          <div class="position-relative z-1 d-flex flex-column h-100 justify-content-center">
+          <div class="position-relative z-1 d-flex flex-column h-100 justify-content-between">
             <h3 class="fw-bold mb-5 display-6">Por que reciclar com a EcoRecicle?</h3>
 
             <div class="d-flex flex-column gap-5 flex-fill justify-content-center">
@@ -165,7 +167,6 @@ import { usuariosApi, descartesApi } from '@/services/api'
 const router = useRouter()
 const toast = useToast()
 
-// Usuário precisa estar logado e ser PF
 const usuario = computed(() => store?.state?.usuario ?? store?.usuario ?? null)
 
 onMounted(async () => {
@@ -216,7 +217,6 @@ const tipos = [
   'Componentes Eletrônicos'
 ]
 
-// Mapa de pesos médios (em kg)
 const pesoMedio = {
   'Smartphone': 0.20,
   'Computador': 7.00,
@@ -276,7 +276,6 @@ const form = ref({
 
 const naoSeiPeso = ref(false)
 
-// Atualiza peso quando muda o tipo ou marca o checkbox
 watch([() => form.value.tipo_residuo, naoSeiPeso], ([novoTipo, isEstimado]) => {
   if (isEstimado) {
     const peso = pesoMedio[novoTipo]
@@ -302,8 +301,8 @@ const podeSalvar = computed(() =>
   !!form.value.tipo_residuo &&
   qtdValida.value &&
   ppiValido.value &&
-  form.value.foto_item && // Verificando se a foto do item foi selecionada
-  form.value.foto_local    // Verificando se a foto do local foi selecionada
+  form.value.foto_item &&
+  form.value.foto_local
 )
 
 const loading = ref(false)
@@ -329,10 +328,10 @@ async function salvar() {
     fd.append('peso_por_item_kg', String(form.value.peso_por_item));
     fd.append('peso_kg', String(pesoTotal.value));
     fd.append('status_peso', naoSeiPeso.value ? 'estimado' : 'medido');
-    fd.append('foto_item', form.value.foto_item);   // arquivos
-    fd.append('foto_local', form.value.foto_local); // arquivos
+    fd.append('foto_item', form.value.foto_item);
+    fd.append('foto_local', form.value.foto_local);
 
-    await descartesApi.criar(fd); // agora manda multipart
+    await descartesApi.criar(fd);
     toast.success('Descarte registrado com sucesso!');
     router.push('/dashboard-pf');
   } catch (e) {
@@ -345,7 +344,6 @@ async function salvar() {
 </script>
 
 <style scoped>
-/* Cores do tema (Verde/Mint) */
 .text-mint { color: #10b981 !important; }
 .bg-mint { background-color: #10b981 !important; }
 
@@ -353,21 +351,28 @@ async function salvar() {
   background-color: #10b981;
   border-color: #10b981;
   color: white;
+  transition: all 0.2s;
 }
 .btn-mint:hover {
   background-color: #059669;
   border-color: #059669;
   color: white;
+  transform: translateY(-1px);
 }
 .btn-mint:disabled {
   background-color: #10b981;
   border-color: #10b981;
-  opacity: 0.65;
+  opacity: 0.7;
+}
+
+.card-metric {
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08) !important;
 }
 
 /* Layout Responsivo */
 .layout-container {
   min-height: auto; /* Mobile: altura natural */
+  background-color: #10b981; /* Garante fundo verde se sobrar espaço embaixo */
 }
 .layout-row {
   min-height: auto; /* Mobile: altura natural */
@@ -375,26 +380,33 @@ async function salvar() {
 .scrollable-col {
   max-height: none; /* Mobile: sem scroll interno */
   overflow: visible;
+  background-color: #f8f9fa; /* Garante fundo claro na esquerda */
 }
 .info-col {
   height: auto; /* Mobile: altura natural */
   min-height: 500px; /* Garante altura mínima no mobile */
+  background-color: #10b981;
 }
 
 /* Desktop (lg = 992px+) */
 @media (min-width: 992px) {
   .layout-container {
-    min-height: calc(100vh - 76px);
+    min-height: calc(100vh - 60px); /* Ajuste fino para cobrir viewport */
+    height: calc(100vh - 60px);      /* Força altura */
+    overflow: hidden;                /* Evita scroll duplo se passar um pouco */
   }
   .layout-row {
-    min-height: calc(100vh - 76px);
+    height: 100%;
   }
   .scrollable-col {
-    max-height: calc(100vh - 76px);
+    height: 100%;
     overflow-y: auto;
   }
   .info-col {
-    height: 100%; /* Desktop: preenche altura */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 }
 </style>
+```
