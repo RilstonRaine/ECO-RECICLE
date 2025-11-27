@@ -16,13 +16,13 @@ module.exports = async function pjDescartes(pontoId, { from, to, tipo }) {
 
   let q = supabaseService
     .from('descartes')
-    .select('id, data_registro, tipo_residuo, quantidade_itens, peso_kg, pontos_gerados, usuario_id')
+    .select('id, data_registro, tipo_residuo, quantidade_itens, peso_kg, pontos_gerados, usuario_id, status_peso')
     .eq('ponto_coleta_id', pontoId)
     .order('data_registro', { ascending: false });
 
   if (range.from) q = q.gte('data_registro', toIsoUTC(range.from));
-  if (range.to)   q = q.lt('data_registro', toIsoUTC(range.to));
-  if (tipo)       q = q.eq('tipo_residuo', tipo);
+  if (range.to) q = q.lt('data_registro', toIsoUTC(range.to));
+  if (tipo) q = q.eq('tipo_residuo', tipo);
 
   const { data, error } = await q;
   if (error) throw new Error(error.message);
@@ -40,12 +40,13 @@ module.exports = async function pjDescartes(pontoId, { from, to, tipo }) {
   }
 
   return (data || []).map(r => ({
-    id:      r.id,
-    data:    dateOnlyLocal(r.data_registro),           // <<< só a data
+    id: r.id,
+    data: dateOnlyLocal(r.data_registro),           // <<< só a data
     usuario: pfMap[r.usuario_id] || `Usuário #${r.usuario_id ?? ''}`,
-    tipo:    r.tipo_residuo || '',
-    qtd:     r.quantidade_itens ?? '',
-    peso:    r.peso_kg ?? '',
-    pontos:  r.pontos_gerados ?? 0,
+    tipo: r.tipo_residuo || '',
+    qtd: r.quantidade_itens ?? '',
+    peso: r.peso_kg ?? '',
+    status_peso: r.status_peso || '',
+    pontos: r.pontos_gerados ?? 0,
   }));
 };
