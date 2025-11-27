@@ -143,7 +143,7 @@ const tipos = [
   'Impressora','Roteador',  'ONT', 'Switch de Rede',
   'Cabos', 'Adaptadores', 'Carregadores',
   'Pilha', 'Bateria', 'Caixa de Som', 'Câmera Digital',
-  'HD', 'SSD', 'Pen Drive', 'Cartão de Memória', 'Unidade Óptica (CD/DVD)',
+  'HD', 'SSD', 'Pen Drive', 'Cartão de Memória', 
   'Placa Eletrônica', 'Placa-mãe', 'Placa de Vídeo (GPU)', 'Memória RAM', 'Processador', 'Fonte ATX',
   'Nobreak', 'Estabilizador', 'Filtro de Linha',
   'Smartwatch', 'Set-top Box ', 'TV Box', 'Decoder',
