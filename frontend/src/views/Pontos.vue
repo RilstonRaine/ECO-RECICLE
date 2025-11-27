@@ -451,7 +451,7 @@ async function buscarSelecionado() {
 /* Mobile Layout */
 @media (max-width: 768px) {
   .pontos-layout {
-    display: block; /* Remove flex para permitir sobreposição */
+    display: block;
   }
   
   .map-container {
@@ -466,17 +466,15 @@ async function buscarSelecionado() {
     inset: 0;
     width: 100%;
     height: 100%;
-    background: transparent; /* Fundo transparente para ver o mapa */
+    background: transparent;
     border: none;
-    pointer-events: none; /* Cliques passam para o mapa */
+    pointer-events: none; 
   }
 
-  /* Título oculto no mobile para economizar espaço */
   .sidebar-container > h3 {
     display: none;
   }
 
-  /* Barra de busca flutuante e interativa */
   .sidebar-container > .px-3.mb-3 {
     pointer-events: auto;
     background: transparent;
@@ -490,22 +488,19 @@ async function buscarSelecionado() {
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   }
 
-  /* Área de detalhes */
   .sidebar-container > .flex-grow-1 {
-    pointer-events: none; /* Permite clicar no mapa através da área vazia */
+    pointer-events: none;
     display: flex;
     flex-direction: column;
   }
 
-  /* Se não tiver ponto selecionado, esconde a área de detalhes (vazia) para ver o mapa */
   .sidebar-container > .flex-grow-1 > .text-center {
     display: none;
   }
 
-  /* Se tiver ponto selecionado, fundo branco e ocupa o resto da tela */
   .details-active {
     background: #fff;
-    position: fixed; /* Garante que fique sobre tudo */
+    position: fixed;
     inset: 0;
     z-index: 99999;
     width: 100%;
@@ -516,11 +511,10 @@ async function buscarSelecionado() {
     pointer-events: auto;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centraliza verticalmente */
+    justify-content: center;
   }
 }
 
-/* Sugestões (dropdown) */
 .sugestoes{
   position: absolute;
   top: 100%;
