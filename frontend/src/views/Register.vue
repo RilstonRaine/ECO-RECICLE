@@ -328,7 +328,12 @@ async function cadastrar() {
 </script>
 
 <style scoped>
-
-
-.text-muted{ color: var(--ecor-ink-600); }
+a {
+  color: var(--ecor-mint-600);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+  color: var(--ecor-mint-700);
+}
 </style>
