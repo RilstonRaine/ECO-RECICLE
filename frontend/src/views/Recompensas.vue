@@ -190,8 +190,13 @@
                     <div class="col-12"><b>Validade:</b> {{ formatDate(r.data_limite) }}</div>
                     <div v-if="r.descricao" class="col-12 text-truncate" :title="r.descricao">{{ r.descricao }}</div>
                   </div>
-                  <button class="btn btn--primary btn-sm w-100" @click="resgatar(r)" :disabled="resgatando.has(r.id)">
-                    Resgatar
+                  <button 
+                    class="btn btn--primary btn-sm w-100" 
+                    @click="resgatar(r)" 
+                    :disabled="resgatando.has(r.id) || !temSaldoPara(r)"
+                    :class="{ 'btn-secondary': !temSaldoPara(r) }"
+                  >
+                    {{ !temSaldoPara(r) ? 'Pontos Insuficientes' : 'Resgatar' }}
                   </button>
                 </div>
               </div>
@@ -200,6 +205,22 @@
 
           <div v-if="msg" class="alert mt-3" :class="msgType === 'ok' ? 'alert-success' : 'alert-warning'">
             {{ msg }}
+          </div>
+
+          <!-- Modal de Sucesso -->
+          <div v-if="showSuccessModal" class="ecor-modal">
+            <div class="ecor-backdrop" @click="fecharSuccessModal"></div>
+            <div class="ecor-panel text-center">
+              <button class="ecor-close" @click="fecharSuccessModal">×</button>
+              <div class="mb-3 text-success" style="font-size: 3rem;">
+                <i class="bi bi-check-circle-fill"></i>
+              </div>
+              <h4 class="mb-3 fw-bold text-success">Resgate realizado!</h4>
+              <p class="mb-4 text-muted">{{ successMessage }}</p>
+              <button class="btn btn--primary w-100" @click="fecharSuccessModal">
+                Entendido
+              </button>
+            </div>
           </div>
         </div>
       </template>
@@ -215,7 +236,7 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import store from '@/store'
-import { recompensasApi, usuariosApi } from '@/services/api'
+import { recompensasApi, usuariosApi, descartesApi } from '@/services/api'
 import { getLicencaCached } from '@/services/licenca'
 
 
@@ -388,21 +409,31 @@ async function carregarAtivas(preserveMsg = false) {
     ativasLoading.value = false
   }
 }
+// ===== Modal de Sucesso =====
+const showSuccessModal = ref(false)
+const successMessage = ref('')
+
+function fecharSuccessModal() {
+  showSuccessModal.value = false
+  successMessage.value = ''
+}
+
 async function resgatar(r) {
   try {
     resgatando.value.add(r.id)
     await recompensasApi.resgatar(r.id)
     ativas.value = ativas.value.filter(item => item.id !== r.id)
-    msgType.value = 'ok'
-    msg.value =
-      r.tipo === 'digital'
-        ? 'Parabéns, enviamos os detalhes da sua recompensa para seu e-mail cadastrado.'
-        : 'Parabéns, desloque-se até o ponto de coleta para receber a recompensa. Os detalhes desse resgate foram enviados para seu e-mail cadastrado.'
+    
+    successMessage.value = r.tipo === 'digital'
+      ? 'Parabéns, enviamos os detalhes da sua recompensa para seu e-mail cadastrado.'
+      : 'Parabéns, desloque-se até o ponto de coleta para receber a recompensa. Os detalhes desse resgate foram enviados para seu e-mail cadastrado.'
+    
+    showSuccessModal.value = true
     await refreshPerfilUsuario()
   } catch (e) {
     msgType.value = 'warn'
     const serverMsg = e?.response?.data?.message
-    msg.value = serverMsg || 'Não foi possível resgatar. Verifique seus pontos nesse ponto de coleta e a data limite.'
+    msg.value = serverMsg || 'Não foi possível resgatar. Verifique seus pontos e a data limite.'
   } finally {
     resgatando.value.delete(r.id)
   }
@@ -425,9 +456,46 @@ onMounted(async () => {
     await Promise.all([montarRanking(), carregarMinhas()])
   }
   if (isPF.value && isPro.value) {
-    await carregarAtivas()
+    await Promise.all([carregarAtivas(), refreshPerfilUsuario(), carregarDescartes()])
   }
 })
+
+// ===== Lógica de Pontos (Global) =====
+const descartes = ref([])
+
+async function carregarDescartes() {
+  if (!isPF.value) return
+  try {
+    const { data } = await descartesApi.listar({ params: { limit: 1000 } })
+    descartes.value = data || []
+  } catch (e) {
+    console.error('[carregarDescartes] falhou', e)
+  }
+}
+
+const saldoGlobal = computed(() => {
+  // 1. Tenta usar o valor que vem do backend (se existir)
+  const backend = Number(usuario.value?.pontos_acumulados)
+  if (!Number.isNaN(backend)) return backend
+
+  // 2. Fallback: calcula client-side (total gerado - total resgatado)
+  const gerados = descartes.value.reduce((acc, d) => {
+    const pts = Number(d.pontos_gerados)
+    if (!isNaN(pts)) return acc + pts
+    const peso = Number(d.peso_kg ?? ((d.quantidade_itens ?? 0) * (d.peso_por_item_kg ?? 0)))
+    return acc + Math.round((peso || 0) * 4)
+  }, 0)
+
+  const resgates = usuario.value?.resgates || []
+  const gastos = resgates.reduce((acc, r) => acc + Number(r.pontos_gastos ?? r.pontos ?? 0), 0)
+
+  return Math.max(0, gerados - gastos)
+})
+
+// Verifica se tem saldo suficiente (Global)
+function temSaldoPara(r) {
+  return saldoGlobal.value >= r.pontos_minimos
+}
 </script>
 
 <style scoped>

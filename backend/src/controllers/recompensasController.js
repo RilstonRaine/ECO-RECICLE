@@ -23,7 +23,7 @@ function toDateOnly(v) {
   if (!v) return null;
   const d = new Date(v);
   if (isNaN(d)) return null;
-  return d.toISOString().slice(0,10);
+  return d.toISOString().slice(0, 10);
 }
 
 // soma pontos de um PF em um PJ, dentro de janela (opcional)
@@ -36,7 +36,7 @@ async function somaPontosPFnoPJ({ pfId, pjId, from, to }) {
     .eq('ponto_coleta_id', pjId);
 
   if (from) q = q.gte('data_registro', from);
-  if (to)   q = q.lte('data_registro', to);
+  if (to) q = q.lte('data_registro', to);
 
   const { data: ganhos, error: e1 } = await q;
   if (e1) throw new Error(e1.message);
@@ -52,7 +52,7 @@ async function somaPontosPFnoPJ({ pfId, pjId, from, to }) {
     .eq('pj_id', pjId);
 
   if (from) qc = qc.gte('created_at', from);
-  if (to)   qc = qc.lte('created_at', to);
+  if (to) qc = qc.lte('created_at', to);
 
   const { data: consumos, error: e2 } = await qc;
   if (e2) throw new Error(e2.message);
@@ -106,7 +106,7 @@ exports.pjLeaderboard = async (req, res) => {
       .eq('ponto_coleta_id', me.id);
 
     if (from) q = q.gte('data_registro', from);
-    if (to)   q = q.lte('data_registro', to);
+    if (to) q = q.lte('data_registro', to);
 
     const { data, error } = await q;
     if (error) throw new Error(error.message);
@@ -114,7 +114,7 @@ exports.pjLeaderboard = async (req, res) => {
     const somaPorPF = new Map();
     for (const r of (data || [])) {
       const pf = r.usuario_id;
-      const p  = Number(r.pontos_gerados) || 0;
+      const p = Number(r.pontos_gerados) || 0;
       somaPorPF.set(pf, (somaPorPF.get(pf) || 0) + p);
     }
 
@@ -131,7 +131,7 @@ exports.pjLeaderboard = async (req, res) => {
 
     const ranking = ids
       .map(id => ({ usuario_id: id, pontos: somaPorPF.get(id), ...(nomes[id] || {}) }))
-      .sort((a,b) => b.pontos - a.pontos)
+      .sort((a, b) => b.pontos - a.pontos)
       .slice(0, limit);
 
     return res.json({ from, to, ranking });
@@ -255,7 +255,7 @@ exports.minhasRecompensas = async (req, res) => {
     };
 
     const from = toDateOnly(req.query.from);
-    const to   = toDateOnly(req.query.to);
+    const to = toDateOnly(req.query.to);
 
     let q = supabaseService
       .from('recompensas')
@@ -264,7 +264,7 @@ exports.minhasRecompensas = async (req, res) => {
 
     if (statusMap[rawStatus]) q = q.eq('status', statusMap[rawStatus]);
     if (from) q = q.gte('created_at', from + 'T00:00:00Z');
-    if (to)   q = q.lte('created_at', to   + 'T23:59:59Z');
+    if (to) q = q.lte('created_at', to + 'T23:59:59Z');
 
     const { data, error } = await q.order('created_at', { ascending: false });
     if (error) throw new Error(error.message);
@@ -282,7 +282,7 @@ exports.minhasRecompensas = async (req, res) => {
     }
 
     // fecha automaticamente as vencidas/esgotadas
-    const hoje = new Date().toISOString().slice(0,10);
+    const hoje = new Date().toISOString().slice(0, 10);
     const toClose = [];
     const enriched = (data || []).map(r => {
       const usados = counts[r.id] || 0;
@@ -291,7 +291,7 @@ exports.minhasRecompensas = async (req, res) => {
       const vagas_restantes = hasMax ? Math.max(0, maxNum - usados) : 0;
 
       const esgotou = hasMax && usados >= maxNum;
-      const venceu  = r.data_limite && r.data_limite < hoje;
+      const venceu = r.data_limite && r.data_limite < hoje;
       if (r.status === 'ativa' && (esgotou || venceu)) toClose.push(r.id);
 
       return { ...r, resgates: usados, vagas_restantes };
@@ -372,7 +372,7 @@ exports.listarAtivas = async (req, res) => {
       return res.status(403).json({ message: 'Apenas PF PRO' });
     }
 
-    const hoje = new Date().toISOString().slice(0,10);
+    const hoje = new Date().toISOString().slice(0, 10);
 
     const { data, error } = await supabaseService
       .from('recompensas')
@@ -437,8 +437,8 @@ exports.listarAtivas = async (req, res) => {
       if (ja.has(r.id)) continue; // <- PF já resgatou: não mostrar
 
       const pj = pjs[r.pj_id] || {};
-      const from = r.created_at.slice(0,10) + 'T00:00:00Z';
-      const to   = r.data_limite + 'T23:59:59Z';
+      const from = r.created_at.slice(0, 10) + 'T00:00:00Z';
+      const to = r.data_limite + 'T23:59:59Z';
 
       const total = await somaPontosPFnoPJ({ pfId: me.id, pjId: r.pj_id, from, to });
       const faltam = Math.max(0, (r.pontos_minimos - total));
@@ -510,26 +510,38 @@ exports.resgatar = async (req, res) => {
       .maybeSingle();
     if (ja) return res.status(400).json({ message: 'Você já resgatou esta recompensa' });
 
-    // pontos do PF no PJ (janela da campanha) - já desconta consumos (somaPontosPFnoPJ atualizado)
-    const from = r.created_at.slice(0, 10) + 'T00:00:00Z';
-    const to   = r.data_limite + 'T23:59:59Z';
-    const total = await somaPontosPFnoPJ({ pfId: me.id, pjId: r.pj_id, from, to });
-    if (total < r.pontos_minimos) {
+    // pontos do PF (Global) - verifica saldo na carteira
+    const { data: userRow, error: eGet } = await supabaseService
+      .from('usuarios')
+      .select('pontos_acumulados')
+      .eq('id', me.id)
+      .maybeSingle();
+
+    if (eGet) throw new Error(eGet.message);
+
+    const saldoGlobal = Number(userRow?.pontos_acumulados) || 0;
+    if (saldoGlobal < r.pontos_minimos) {
       return res.status(400).json({
-        message: 'Pontos insuficientes neste ponto de coleta',
-        faltam_pontos: r.pontos_minimos - total,
-        data_limite: r.data_limite
+        message: 'Pontos insuficientes (saldo global)',
+        faltam_pontos: r.pontos_minimos - saldoGlobal,
+        saldo_atual: saldoGlobal
       });
     }
+
+    // calcula total no PJ apenas para registro
+    const from = r.created_at.slice(0, 10) + 'T00:00:00Z';
+    const to = r.data_limite + 'T23:59:59Z';
+    const totalNoPJ = await somaPontosPFnoPJ({ pfId: me.id, pjId: r.pj_id, from, to });
 
     // cria resgate (já registra consumo e pj_id)
     const payload = {
       recompensa_id: recompensaId,
       pf_id: me.id,
       pj_id: r.pj_id,
-      pontos_no_pj: total,
+      pontos_no_pj: totalNoPJ,
       pontos_consumidos: r.pontos_minimos
     };
+
     const { data: novo, error: ierr } = await supabaseService
       .from('recompensas_resgates')
       .insert([payload])
