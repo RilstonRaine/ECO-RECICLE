@@ -423,6 +423,201 @@ body {
   font-weight: 600;
 }
 
+.anx-gridCards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+@media (max-width: 768px) {
+  .anx-gridCards {
+    grid-template-columns: 1fr;
+  }
+}
+
+.anx-card2 {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #f1f5f9;
+  box-shadow: 0 8px 24px rgba(16, 24, 40, .08);
+  height: 210px;
+  cursor: zoom-in;
+}
+
+.anx-img2 {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.anx-badge {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  background: rgba(255, 255, 255, .85);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  color: #0f172a;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+.anx-btnDl {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  transform: translateY(6px);
+  opacity: 0;
+  transition: opacity .15s ease, transform .15s ease;
+}
+
+.anx-card2:hover .anx-btnDl {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (hover: none) {
+  .anx-btnDl {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.ecor-modal,
+.ecor-panel {
+  box-sizing: border-box;
+}
+
+.ecor-panel .btn {
+  margin: 0 !important;
+  background-image: none !important;
+}
+
+.ecor-panel .btn .badge,
+.ecor-panel .btn::after {
+  display: none !important;
+  content: none !important;
+}
+
+.ecor-panel .ecor-actions .ecor-attach-btn,
+.ecor-panel .ecor-actions .ecor-report-btn {
+  position: static !important;
+  right: auto !important;
+  left: auto !important;
+  bottom: auto !important;
+  margin: 0 !important;
+  background-image: none !important;
+}
+
+.ecor-panel .ecor-actions {
+  justify-self: end !important;
+  width: 260px !important;
+  min-width: 260px !important;
+  margin-right: 12px !important;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.ecor-panel .ecor-actions .ecor-attach-btn,
+.ecor-panel .ecor-actions .ecor-report-btn {
+  display: block !important;
+  width: 100% !important;
+  text-align: center;
+  padding: .40rem .72rem !important;
+  border-radius: 12px !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .08);
+  color: #fff !important;
+}
+
+.ecor-panel .ecor-actions .ecor-attach-btn {
+  background: #12b886 !important;
+}
+
+.ecor-panel .ecor-actions .ecor-attach-btn:active {
+  background: #0fae79 !important;
+}
+
+.ecor-panel .ecor-actions .ecor-report-btn {
+  background: #f59e0b !important;
+}
+
+.ecor-panel .ecor-actions .ecor-report-btn:active {
+  background: #ea9405 !important;
+}
+
+.ecor-panel .ecor-actions .ecor-attach-btn .badge,
+.ecor-panel .ecor-actions .ecor-attach-btn::after {
+  display: none !important;
+  content: none !important;
+}
+
+.min-w-0 {
+  min-width: 0 !important;
+}
+
+.btn--primary,
+.btn-primary {
+  background-color: var(--ecor-mint-600) !important;
+  border-color: var(--ecor-mint-600) !important;
+  color: #fff !important;
+  font-weight: 600;
+}
+
+.btn--primary:hover,
+.btn-primary:hover {
+  background-color: var(--ecor-mint-700) !important;
+  border-color: var(--ecor-mint-700) !important;
+}
+
+.btn--primary:active,
+.btn-primary:active,
+.btn-primary:focus {
+  background-color: var(--ecor-mint-800) !important;
+  border-color: var(--ecor-mint-800) !important;
+  box-shadow: 0 0 0 0.25rem rgba(16, 185, 129, 0.25) !important;
+}
+
+.btn--secondary,
+.btn-secondary {
+  background-color: var(--ecor-ink-100) !important;
+  border-color: var(--ecor-ink-200) !important;
+  color: var(--ecor-ink-700) !important;
+  font-weight: 600;
+}
+
+.btn--secondary:hover,
+.btn-secondary:hover {
+  background-color: var(--ecor-ink-200) !important;
+  color: var(--ecor-ink-900) !important;
+}
+
+.btn--ghost {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  color: var(--ecor-mint-600) !important;
+  font-weight: 600;
+}
+
+.btn--ghost:hover {
+  background-color: var(--ecor-mint-50) !important;
+  color: var(--ecor-mint-700) !important;
+}
+
+.btn-outline-primary {
+  color: var(--ecor-mint-600) !important;
+  border-color: var(--ecor-mint-600) !important;
+  font-weight: 600;
+}
+
 .btn-outline-primary:hover {
   background-color: var(--ecor-mint-600) !important;
   color: #fff !important;
@@ -431,4 +626,61 @@ body {
 a.btn--primary,
 a.btn-primary {
   color: #fff !important;
+}
+
+/* ===== Global Modal Styles ===== */
+.ecor-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+}
+
+.ecor-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, .35);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 0;
+}
+
+.ecor-panel {
+  position: relative;
+  z-index: 1;
+  width: min(680px, calc(100vw - 32px));
+  background: #fff;
+  color: #111827;
+  border-radius: 12px;
+  box-shadow: 0 24px 48px rgba(16, 24, 40, .18);
+  padding: 18px 22px;
+  max-height: 85vh;
+  overflow: auto;
+  background-clip: padding-box;
+  animation: pop .14s ease-out;
+}
+
+@keyframes pop {
+  from {
+    transform: scale(.985);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.ecor-close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 22px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  color: #6b7280;
 }

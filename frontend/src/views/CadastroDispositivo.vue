@@ -377,7 +377,6 @@ async function salvar() {
 
       <div class="col-lg-5 col-xl-4 info-col">
         <div class="p-4 p-md-5 h-100 flex-grow-1 bg-mint text-white position-relative overflow-hidden d-flex flex-column justify-content-between anime-fade-in-right">
-          <!-- Icon removed -->
           
           <div class="position-relative z-1 d-flex flex-column h-100 justify-content-between">
             <h3 class="fw-bold mb-5 display-6">Por que reciclar com a EcoRecicle?</h3>
@@ -509,7 +508,7 @@ async function salvar() {
   }
 }
 
-.anime-fade-in {
+/* .anime-fade-in {
   animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 .anime-fade-in-right {
@@ -524,5 +523,5 @@ async function salvar() {
 @keyframes fadeInRight {
   from { opacity: 0; transform: translateX(20px); }
   to { opacity: 1; transform: translateX(0); }
-}
+} */
 </style>

@@ -410,7 +410,6 @@ const ultimos = computed(() =>
     .slice(0, 5)
 )
 
-// ==== Nome do descartante (fallback via detalhe + cache) ====
 const descartantesCache = ref(new Map())
 const fetchInFlight = new Set()
 
@@ -443,7 +442,6 @@ async function hydrateDescartantes(list) {
 }
 watch(ultimos, (arr) => { hydrateDescartantes(arr) }, { immediate: true })
 
-// ==== Detalhe ====
 async function abrirDetalhe (id) {
   showModal.value = true
   detalhe.value = null
@@ -460,7 +458,6 @@ async function abrirDetalhe (id) {
 }
 function closeModal () { showModal.value = false }
 
-// ==== Auditoria (placeholders) ====
 async function visualizarFotos(audit){ console.log(audit) }
 async function reportarProblema(audit){
   await auditoriaApi.reportarProblema(audit.descarte_id, 'Problema reportado no descarte.')
@@ -510,7 +507,7 @@ async function baixar (url, filename) {
 
 async function reportarProblemaDescarte() {
   if (!detalhe.value?.id) return
-  showReportModal.value = true  // Abre o modal personalizado
+  showReportModal.value = true
   reportDescription.value = ''
 }
 
@@ -541,7 +538,6 @@ async function submitReport() {
 </script>
 
 <style scoped>
-/* ===== Tokens ===== */
 :root{
   --mint:#12b886; --mint-700:#0fae79;
   --amber:#f59e0b; --amber-700:#ea9405;
@@ -549,7 +545,6 @@ async function submitReport() {
   --shadow-panel:0 24px 48px rgba(16,24,40,.18);
 }
 
-/* ===== Cards / link-like ===== */
 .card-metric{
   border:1px solid rgba(16,24,40,.06);
   border-radius:12px;
@@ -558,9 +553,8 @@ async function submitReport() {
 }
 .link-like{ background:none; border:0; color:var(--mint); font-weight:600; cursor:pointer }
 
-/* ===== Botão da lista "Obter detalhes" ===== */
 .btn-details{
-  background:#12b886 !important;  /* força cor (contra gradiente do tema) */
+  background:#12b886 !important;
   color:#fff !important;
   border:0; border-radius:12px;
   padding:.42rem .8rem;
@@ -573,31 +567,13 @@ async function submitReport() {
 .btn-details:active{ transform:translateY(1px); background:#0fae79 !important }
 .btn-details:disabled{ opacity:.6; cursor:not-allowed }
 
-/* ===== Modal ===== */
-.ecor-modal{ position:fixed; inset:0; z-index:1000; display:grid; place-items:center; isolation:isolate }
-.ecor-backdrop{ position:absolute; inset:0; background:rgba(15,23,42,.35); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); z-index:0 }
-.ecor-panel{
-  position:relative; z-index:1;
-  width:min(680px, calc(100vw - 32px));
-  background:#fff; color:#111827;
-  border-radius:12px; box-shadow:var(--shadow-panel);
-  padding:18px 22px;                 /* respiro maior à direita */
-  max-height:85vh; overflow:auto;    /* rolagem interna quando precisar */
-  background-clip:padding-box;
-  animation:pop .14s ease-out;
-}
-@keyframes pop{ from{ transform:scale(.985); opacity:0 } to{ transform:scale(1); opacity:1 } }
-.ecor-close{ position:absolute; top:8px; right:10px; font-size:22px; border:0; background:transparent; cursor:pointer; color:#6b7280 }
-
-/* ===== Layout interno: detalhes | ações ===== */
 .ecor-detail-grid{
   display:grid;
-  grid-template-columns:minmax(0,1fr) 240px; /* coluna direita fixa */
+  grid-template-columns:minmax(0,1fr) 240px;
   column-gap:20px;
   align-items:stretch;
 }
 
-/* Coluna de ações (direita) */
 .ecor-actions{
   justify-self:end;
   width:240px; min-width:240px;
@@ -606,7 +582,6 @@ async function submitReport() {
   gap:10px;
 }
 
-/* ===== Botões da coluna de ações ===== */
 .ecor-actions > .ecor-attach-btn,
 .ecor-actions > .ecor-report-btn{
   display:block;
@@ -621,12 +596,10 @@ async function submitReport() {
   transition:transform .08s ease, box-shadow .2s ease, filter .2s ease, background-color .2s ease;
 }
 
-/* Anexos (verde) */
 .ecor-attach-btn{ background:#12b886 !important; position:relative; }
 .ecor-attach-btn:hover{ filter:brightness(.97); box-shadow:0 3px 12px rgba(0,0,0,.12) }
 .ecor-attach-btn:active{ background:#0fae79 !important }
 
-/* Badge do Anexos */
 .ecor-attach-btn .badge{
   position:absolute; top:-4px; right:-4px;
   border-radius:9999px; padding:.14rem .34rem;
@@ -635,20 +608,17 @@ async function submitReport() {
   pointer-events:none;
 }
 
-/* Reportar (âmbar) */
 .ecor-report-btn{ background:#f59e0b !important; }
 .ecor-report-btn:hover{ filter:brightness(.98); box-shadow:0 3px 12px rgba(0,0,0,.12) }
 .ecor-report-btn:active{ background:#ea9405 !important }
 .ecor-report-btn:disabled{ opacity:.65; cursor:not-allowed }
 
-/* ===== Modal de Anexos (galeria) ===== */
 .anx-cards{ width:min(900px, calc(100vw - 32px)) }
 .anx-gridCards{ display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:14px }
 .anx-card2{ border:1px solid rgba(0,0,0,.06); border-radius:10px; padding:8px; background:#fafafa; display:flex; flex-direction:column; gap:8px }
 .anx-img2{ width:100%; aspect-ratio:16/10; object-fit:cover; border-radius:6px; cursor:pointer }
 .anx-btnDl{ width:100% }
 
-/* ===== Responsivo ===== */
 @media (max-width:576px){
   .ecor-panel{ width:calc(100vw - 24px); padding:16px }
   .ecor-detail-grid{ grid-template-columns:1fr; row-gap:12px }
@@ -660,7 +630,6 @@ async function submitReport() {
   .ecor-actions > .ecor-report-btn{ width:auto }
 }
 
-/* ===== Lista de auditorias ===== */
 .audit-item{
   padding:.6rem 0;
   border-bottom:1px solid rgba(0,0,0,.06);
@@ -670,10 +639,8 @@ async function submitReport() {
 .audit-text .fw-semibold{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .audit-actions{ display:flex; gap:8px; flex:0 0 auto; }
 
-/* Botões menores (reutiliza sua base .ecor-btn) */
 .ecor-btn--sm{ padding:.34rem .66rem; font-size:.84rem; border-radius:10px; }
 
-/* Pílula de status */
 .audit-status{
   margin-left:.5rem; padding:.14rem .5rem;
   border-radius:9999px; font-size:.75rem; font-weight:700; line-height:1;
@@ -697,12 +664,10 @@ async function submitReport() {
   background:#fef2f2; color:#b91c1c; border-color:#fecaca;   /* vermelho */
 }
 
-/* Responsivo: ações descem e ficam lado a lado */
 @media (max-width:576px){
   .audit-item{ align-items:flex-start; }
   .audit-actions{ width:100%; justify-content:flex-end; flex-wrap:wrap; }
   .audit-actions .ecor-btn{ width:auto; }
 }
-/* ==== FIX FINAL – alinhamento e respiro dos botões do modal ==== */
 
 </style>

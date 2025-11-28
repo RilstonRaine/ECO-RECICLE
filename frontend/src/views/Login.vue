@@ -2,7 +2,8 @@
   <div class="container-fluid d-flex align-items-center justify-content-center bg-light" style="min-height: calc(100vh - 76px);">
     <div class="w-100 p-3" style="max-width: 550px;">
       <div class="card-metric p-5 shadow-sm border-0 bg-white rounded-4">
-        <h2 class="mb-4 text-center fw-bold text-mint">Login</h2>
+        <h2 class="mb-4 text-center fw-bold">Login</h2>
+        <p class="text-center text-muted">Faça login para acessar sua conta</p>
 
         <form @submit.prevent="login">
           <div class="mb-3">
@@ -21,7 +22,7 @@
 
         <p class="mt-3 mb-0 text-center text-muted">
           Não tem conta?
-          <RouterLink to="/cadastro" class="fw-bold text-mint text-decoration-none">Cadastre-se</RouterLink>
+          <RouterLink to="/register" class="fw-bold text-mint text-decoration-none">Cadastre-se</RouterLink>
         </p>
       </div>
     </div>
@@ -52,7 +53,6 @@ async function login() {
 </script>
 <style scoped>
 .text-mint { color: #10b981 !important; }
-.bg-mint { background-color: #10b981 !important; }
 
 .btn-mint {
   background-color: #10b981;
