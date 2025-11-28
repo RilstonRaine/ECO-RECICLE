@@ -499,6 +499,10 @@ async function buscarSelecionado() {
     flex-direction: column;
     justify-content: center;
   }
+
+  :deep(.leaflet-control-zoom) {
+    display: none !important;
+  }
 }
 
 .sugestoes{
