@@ -271,7 +271,8 @@ async function carregarPontos() {
 
 function initMap() {
   if (map) return
-  map = L.map('map', { zoomControl: true }).setView([-12.9714, -38.5014], 11)
+  map = L.map('map', { zoomControl: false }).setView([-12.9714, -38.5014], 11)
+  L.control.zoom({ position: 'bottomright' }).addTo(map)
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; OpenStreetMap'

@@ -8,28 +8,63 @@
               <h3 class="mb-4 fw-bold text-mint text-center">Cadastrar Descarte</h3>
 
               <form @submit.prevent="salvar" class="row g-3" novalidate>
-                <div class="col-md-12">
+                
+                <!-- Autocomplete Ponto de Coleta -->
+                <div class="col-md-12 position-relative">
                   <label class="form-label fw-semibold">Ponto de Coleta</label>
-                  <select v-model.number="form.ponto_coleta_id" class="form-select form-select-lg bg-light border-0" required>
-                    <option :value="null" disabled>Selecione um ponto de entrega</option>
-                    <option
-                      v-for="p in pontosColeta"
+                  <input
+                    type="text"
+                    class="form-control form-control-lg bg-light border-0"
+                    placeholder="Busque por nome ou endereço..."
+                    v-model="buscaPonto"
+                    @focus="showPontos = true"
+                    @blur="delayHide(() => showPontos = false)"
+                    required
+                  />
+                  <ul v-if="showPontos && pontosFiltrados.length" class="list-group position-absolute w-100 shadow-sm" style="z-index: 1000; top: 85px; max-height: 200px; overflow-y: auto;">
+                    <li
+                      v-for="p in pontosFiltrados"
                       :key="p.id"
-                      :value="p.id"
+                      class="list-group-item list-group-item-action cursor-pointer"
+                      @mousedown.prevent="selecionarPonto(p)"
                     >
-                      {{ p.nome || ('Ponto #' + p.id) }} — {{ resumoEndereco(p) }}
-                    </option>
-                  </select>
-                  <div class="form-text" v-if="!pontosColeta.length">
-                    Nenhum ponto encontrado. Verifique se há pontos de coleta cadastrados.
+                      <strong>{{ p.nome || ('Ponto #' + p.id) }}</strong><br>
+                      <small class="text-muted">{{ resumoEndereco(p) }}</small>
+                    </li>
+                  </ul>
+                  <div class="form-text text-danger" v-if="buscaPonto && !pontosFiltrados.length">
+                    Nenhum ponto encontrado.
+                  </div>
+                  <div class="form-text text-danger" v-if="!form.ponto_coleta_id && buscaPonto && !showPontos">
+                    Selecione um ponto da lista.
                   </div>
                 </div>
 
-                <div class="col-md-6">
+                <!-- Autocomplete Tipo de Resíduo -->
+                <div class="col-md-6 position-relative">
                   <label class="form-label fw-semibold">Tipo de resíduo</label>
-                  <select v-model="form.tipo_residuo" class="form-select bg-light border-0" required>
-                    <option v-for="t in tipos" :key="t" :value="t">{{ t }}</option>
-                  </select>
+                  <input
+                    type="text"
+                    class="form-control bg-light border-0"
+                    placeholder="Ex: Smartphone..."
+                    v-model="buscaTipo"
+                    @focus="showTipos = true"
+                    @blur="delayHide(() => showTipos = false)"
+                    required
+                  />
+                  <ul v-if="showTipos && tiposFiltrados.length" class="list-group position-absolute w-100 shadow-sm" style="z-index: 1000; top: 75px; max-height: 200px; overflow-y: auto;">
+                    <li
+                      v-for="t in tiposFiltrados"
+                      :key="t"
+                      class="list-group-item list-group-item-action cursor-pointer"
+                      @mousedown.prevent="selecionarTipo(t)"
+                    >
+                      {{ t }}
+                    </li>
+                  </ul>
+                  <div class="form-text text-danger" v-if="!form.tipo_residuo && buscaTipo && !showTipos">
+                    Selecione um tipo válido.
+                  </div>
                 </div>
 
                 <div class="col-md-3">
@@ -267,17 +302,68 @@ const pesoMedio = {
 
 const form = ref({
   ponto_coleta_id: null,
-  tipo_residuo: tipos[0],
+  tipo_residuo: null,
   quantidade: 1,
   peso_por_item: 1.00,
   foto_item: null,
   foto_local: null
 })
 
+/* ---------- Autocomplete Ponto ---------- */
+const buscaPonto = ref('')
+const showPontos = ref(false)
+
+const pontosFiltrados = computed(() => {
+  if (!buscaPonto.value) return pontosColeta.value
+  const term = buscaPonto.value.toLowerCase()
+  return pontosColeta.value.filter(p => {
+    const nome = (p.nome || '').toLowerCase()
+    const end = resumoEndereco(p).toLowerCase()
+    return nome.includes(term) || end.includes(term)
+  })
+})
+
+function selecionarPonto(p) {
+  form.value.ponto_coleta_id = p.id
+  buscaPonto.value = p.nome || `Ponto #${p.id}`
+  showPontos.value = false
+}
+
+/* ---------- Autocomplete Tipo ---------- */
+const buscaTipo = ref('')
+const showTipos = ref(false)
+
+const tiposFiltrados = computed(() => {
+  if (!buscaTipo.value) return tipos
+  const term = buscaTipo.value.toLowerCase()
+  return tipos.filter(t => t.toLowerCase().includes(term))
+})
+
+function selecionarTipo(t) {
+  form.value.tipo_residuo = t
+  buscaTipo.value = t
+  showTipos.value = false
+}
+
+function delayHide(cb) {
+  setTimeout(cb, 200)
+}
+
+watch(() => form.value.ponto_coleta_id, (newId) => {
+  if (!newId) {
+    buscaPonto.value = ''
+    return
+  }
+  const p = pontosColeta.value.find(x => x.id === newId)
+  if (p && buscaPonto.value !== p.nome) {
+    buscaPonto.value = p.nome || `Ponto #${p.id}`
+  }
+})
+
 const naoSeiPeso = ref(false)
 
 watch([() => form.value.tipo_residuo, naoSeiPeso], ([novoTipo, isEstimado]) => {
-  if (isEstimado) {
+  if (isEstimado && novoTipo) {
     const peso = pesoMedio[novoTipo]
     if (peso) {
       form.value.peso_por_item = peso
@@ -369,31 +455,29 @@ async function salvar() {
   box-shadow: 0 10px 30px rgba(0,0,0,0.08) !important;
 }
 
-/* Layout Responsivo */
 .layout-container {
-  min-height: auto; /* Mobile: altura natural */
-  background-color: #10b981; /* Garante fundo verde se sobrar espaço embaixo */
+  min-height: auto;
+  background-color: #10b981;
 }
 .layout-row {
-  min-height: auto; /* Mobile: altura natural */
+  min-height: auto;
 }
 .scrollable-col {
-  max-height: none; /* Mobile: sem scroll interno */
+  max-height: none;
   overflow: visible;
-  background-color: #f8f9fa; /* Garante fundo claro na esquerda */
+  background-color: #f8f9fa;
 }
 .info-col {
-  height: auto; /* Mobile: altura natural */
-  min-height: 500px; /* Garante altura mínima no mobile */
+  height: auto;
+  min-height: 500px;
   background-color: #10b981;
 }
 
-/* Desktop (lg = 992px+) */
 @media (min-width: 992px) {
   .layout-container {
-    min-height: calc(100vh - 60px); /* Ajuste fino para cobrir viewport */
-    height: calc(100vh - 60px);      /* Força altura */
-    overflow: hidden;                /* Evita scroll duplo se passar um pouco */
+    min-height: calc(100vh - 60px);
+    height: calc(100vh - 60px);
+    overflow: hidden;
   }
   .layout-row {
     height: 100%;
@@ -409,4 +493,3 @@ async function salvar() {
   }
 }
 </style>
-```

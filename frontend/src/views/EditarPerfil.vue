@@ -1,4 +1,3 @@
-<!-- src/views/EditarPerfil.vue -->
 <template>
   <div class="container narrow">
     <div class="card-metric p-4">
