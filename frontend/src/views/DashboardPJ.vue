@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid px-4 py-4">
-    <h3 class="mb-4 fw-bold">Dashboard — Ponto de Coleta</h3>
+    <h3 class="mb-4 fw-bold">Ponto de Coleta</h3>
 
     <!-- ===== Cards ===== -->
     <!-- Filtro simples (estilo DashboardPF) -->

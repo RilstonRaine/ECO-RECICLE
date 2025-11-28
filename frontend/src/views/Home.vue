@@ -16,7 +16,7 @@
     <div class="hero-section px-4 py-5 mb-5">
       <div class="container-fluid">
         <div class="row align-items-center g-5">
-          <div class="col-lg-6">
+          <div class="col-lg-6 hero-content">
             <p class="kicker text-uppercase fw-bold mb-2">Descarte Sustentável</p>
             <h1 class="display-3 fw-bold text-dark mb-3">
               Descarte Seus<br />
@@ -28,7 +28,7 @@
               encontre o ponto de coleta mais próximo de você.
             </p>
 
-            <div class="d-flex gap-3 flex-wrap">
+            <div class="d-flex gap-3 flex-wrap hero-buttons">
               <router-link class="btn btn--primary btn-lg px-4" to="/cadastro-dispositivo">
                 <i class="bi bi-recycle me-2"></i>
                 Realizar Descarte
@@ -204,7 +204,25 @@ import InfoBanner from '@/components/InfoBanner.vue'
 .info-card h3 { font-weight: 700; margin-bottom: 0.75rem; color: var(--ecor-ink-900); }
 .info-card p { color: var(--ecor-ink-600); line-height: 1.6; margin: 0; }
 
+@media (min-width: 1200px) {
+  .step-content {
+    flex-grow: 1;
+    text-align: center;
+  }
+}
+
 @media (max-width: 991px) {
   .display-3 { font-size: 2.5rem; }
+  
+  .hero-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .hero-buttons {
+    justify-content: center;
+  }
 }
 </style>

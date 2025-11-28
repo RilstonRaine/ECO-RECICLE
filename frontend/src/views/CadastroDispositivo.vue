@@ -1,197 +1,3 @@
-<template>
-  <div class="container-fluid p-0 layout-container">
-    <div class="row g-0 layout-row">
-      <div class="col-lg-7 col-xl-8 scrollable-col bg-light">
-        <div class="p-3 p-md-4 h-100 d-flex flex-column justify-content-center align-items-center">
-          <div class="w-100" style="max-width: 800px;">
-            <div class="card-metric p-4 p-md-5 shadow-sm border-0 bg-white rounded-4">
-              <h3 class="mb-4 fw-bold text-mint text-center">Cadastrar Descarte</h3>
-
-              <form @submit.prevent="salvar" class="row g-3" novalidate>
-                
-                <!-- Autocomplete Ponto de Coleta -->
-                <div class="col-md-12 position-relative">
-                  <label class="form-label fw-semibold">Ponto de Coleta</label>
-                  <input
-                    type="text"
-                    class="form-control form-control-lg bg-light border-0"
-                    placeholder="Busque por nome ou endereço..."
-                    v-model="buscaPonto"
-                    @focus="showPontos = true"
-                    @blur="delayHide(() => showPontos = false)"
-                    required
-                  />
-                  <ul v-if="showPontos && pontosFiltrados.length" class="list-group position-absolute w-100 shadow-sm" style="z-index: 1000; top: 85px; max-height: 200px; overflow-y: auto;">
-                    <li
-                      v-for="p in pontosFiltrados"
-                      :key="p.id"
-                      class="list-group-item list-group-item-action cursor-pointer"
-                      @mousedown.prevent="selecionarPonto(p)"
-                    >
-                      <strong>{{ p.nome || ('Ponto #' + p.id) }}</strong><br>
-                      <small class="text-muted">{{ resumoEndereco(p) }}</small>
-                    </li>
-                  </ul>
-                  <div class="form-text text-danger" v-if="buscaPonto && !pontosFiltrados.length">
-                    Nenhum ponto encontrado.
-                  </div>
-                  <div class="form-text text-danger" v-if="!form.ponto_coleta_id && buscaPonto && !showPontos">
-                    Selecione um ponto da lista.
-                  </div>
-                </div>
-
-                <!-- Autocomplete Tipo de Resíduo -->
-                <div class="col-md-6 position-relative">
-                  <label class="form-label fw-semibold">Tipo de resíduo</label>
-                  <input
-                    type="text"
-                    class="form-control bg-light border-0"
-                    placeholder="Ex: Smartphone..."
-                    v-model="buscaTipo"
-                    @focus="showTipos = true"
-                    @blur="delayHide(() => showTipos = false)"
-                    required
-                  />
-                  <ul v-if="showTipos && tiposFiltrados.length" class="list-group position-absolute w-100 shadow-sm" style="z-index: 1000; top: 75px; max-height: 200px; overflow-y: auto;">
-                    <li
-                      v-for="t in tiposFiltrados"
-                      :key="t"
-                      class="list-group-item list-group-item-action cursor-pointer"
-                      @mousedown.prevent="selecionarTipo(t)"
-                    >
-                      {{ t }}
-                    </li>
-                  </ul>
-                  <div class="form-text text-danger" v-if="!form.tipo_residuo && buscaTipo && !showTipos">
-                    Selecione um tipo válido.
-                  </div>
-                </div>
-
-                <div class="col-md-3">
-                  <label class="form-label fw-semibold">Qtd. Itens</label>
-                  <input
-                    v-model.number="form.quantidade"
-                    type="number"
-                    min="1"
-                    step="1"
-                    class="form-control bg-light border-0"
-                    required
-                  />
-                </div>
-
-                <div class="col-md-6">
-                  <label class="form-label fw-semibold">Peso por item (kg)</label>
-                  <div class="input-group">
-                    <input
-                      v-model.number="form.peso_por_item"
-                      type="number"
-                      min="0.01"
-                      step="0.01"
-                      class="form-control bg-light border-0"
-                      :readonly="naoSeiPeso"
-                      required
-                    />
-                  </div>
-                  <div class="form-check mt-2">
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      id="naoSeiPesoCheck"
-                      v-model="naoSeiPeso"
-                    />
-                    <label class="form-check-label small text-muted" for="naoSeiPesoCheck">
-                      Não sei o peso (usar média estimada)
-                    </label>
-                  </div>
-                  <div class="invalid-feedback d-block" v-if="!ppiValido && !naoSeiPeso">
-                    O peso por item deve ser maior que 0.
-                  </div>
-                </div>
-
-                <div class="col-12 small text-muted">
-                  Peso total: <strong>{{ pesoTotal.toFixed(2) }} kg</strong>
-                  <span v-if="naoSeiPeso" class="badge bg-info text-dark ms-2">Estimado</span>
-                </div>
-
-                <div class="col-md-6">
-                  <label class="form-label fw-semibold">Foto do Item</label>
-                  <input type="file" @change="handleFileChange('foto_item', $event)" class="form-control bg-light border-0" accept="image/*" required />
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label fw-semibold">Foto do Local</label>
-                  <input type="file" @change="handleFileChange('foto_local', $event)" class="form-control bg-light border-0" accept="image/*" required />
-                </div>
-
-                <div class="col-12 mt-4">
-                  <button
-                    type="submit"
-                    class="btn btn-mint w-100 btn-lg fw-bold py-3"
-                    :disabled="loading || !podeSalvar"
-                  >
-                    <span v-if="!loading">Registrar descarte</span>
-                    <span v-else>Registrando…</span>
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-5 col-xl-4 info-col">
-        <div class="p-4 p-md-5 h-100 flex-grow-1 bg-mint text-white position-relative overflow-hidden d-flex flex-column justify-content-between">
-          <div class="position-absolute top-0 end-0 opacity-10 p-3">
-             <i class="bi bi-recycle display-1"></i>
-          </div>
-
-          <div class="position-relative z-1 d-flex flex-column h-100 justify-content-between">
-            <h3 class="fw-bold mb-5 display-6">Por que reciclar com a EcoRecicle?</h3>
-
-            <div class="d-flex flex-column gap-5 flex-fill justify-content-center">
-              <div class="d-flex gap-4">
-                <div class="rounded-circle bg-white bg-opacity-25 p-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width:64px; height:64px;">
-                  <i class="bi bi-tree-fill fs-3"></i>
-                </div>
-                <div>
-                  <h4 class="fw-bold mb-2">Impacto Ambiental</h4>
-                  <p class="mb-0 opacity-75 lead">Cada kg reciclado evita a emissão de CO₂ e preserva recursos naturais.</p>
-                </div>
-              </div>
-
-              <div class="d-flex gap-4">
-                <div class="rounded-circle bg-white bg-opacity-25 p-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width:64px; height:64px;">
-                  <i class="bi bi-gift-fill fs-3"></i>
-                </div>
-                <div>
-                  <h4 class="fw-bold mb-2">Ganhe Pontos</h4>
-                  <p class="mb-0 opacity-75 lead">Seus descartes valem pontos que podem ser trocados por recompensas incríveis.</p>
-                </div>
-              </div>
-
-              <div class="d-flex gap-4">
-                <div class="rounded-circle bg-white bg-opacity-25 p-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width:64px; height:64px;">
-                  <i class="bi bi-shield-fill-check fs-3"></i>
-                </div>
-                <div>
-                  <h4 class="fw-bold mb-2">Descarte Seguro</h4>
-                  <p class="mb-0 opacity-75 lead">Garantimos a destinação correta de resíduos eletrônicos perigosos.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="mt-5 pt-5 border-top border-white border-opacity-25">
-              <p class="opacity-75 mb-3 lead">Dúvidas sobre o que descartar?</p>
-              <router-link to="/guia-reciclagem" class="btn btn-light btn-lg w-100 fw-bold text-mint py-3">
-                <i class="bi bi-question-circle me-2"></i>Ver Guia de Reciclagem
-              </router-link>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
@@ -429,6 +235,198 @@ async function salvar() {
 }
 </script>
 
+<template>
+  <div class="container-fluid p-0 layout-container">
+    <div class="row g-0 layout-row">
+      <div class="col-lg-7 col-xl-8 scrollable-col bg-light">
+        <div class="p-3 p-md-5 h-100 d-flex flex-column justify-content-center align-items-center anime-fade-in">
+          <div class="w-100" style="max-width: 800px;">
+            <div class="card-metric p-4 p-md-5 shadow-sm border-0 bg-white rounded-4">
+              <h3 class="mb-4 fw-bold text-mint text-center">Cadastrar Descarte</h3>
+
+              <form @submit.prevent="salvar" class="row g-3" novalidate>
+                
+                <!-- Autocomplete Ponto de Coleta -->
+                <div class="col-md-12 position-relative">
+                  <label class="form-label fw-semibold">Ponto de Coleta</label>
+                  <input
+                    type="text"
+                    class="form-control form-control-lg bg-light border-0"
+                    placeholder="Busque por nome ou endereço..."
+                    v-model="buscaPonto"
+                    @focus="showPontos = true"
+                    @blur="delayHide(() => showPontos = false)"
+                    required
+                  />
+                  <ul v-if="showPontos && pontosFiltrados.length" class="list-group position-absolute w-100 shadow-sm" style="z-index: 1000; top: 85px; max-height: 200px; overflow-y: auto;">
+                    <li
+                      v-for="p in pontosFiltrados"
+                      :key="p.id"
+                      class="list-group-item list-group-item-action cursor-pointer"
+                      @mousedown.prevent="selecionarPonto(p)"
+                    >
+                      <strong>{{ p.nome || ('Ponto #' + p.id) }}</strong><br>
+                      <small class="text-muted">{{ resumoEndereco(p) }}</small>
+                    </li>
+                  </ul>
+                  <div class="form-text text-danger" v-if="buscaPonto && !pontosFiltrados.length">
+                    Nenhum ponto encontrado.
+                  </div>
+                  <div class="form-text text-danger" v-if="!form.ponto_coleta_id && buscaPonto && !showPontos">
+                    Selecione um ponto da lista.
+                  </div>
+                </div>
+
+                <!-- Autocomplete Tipo de Resíduo -->
+                <div class="col-md-6 position-relative">
+                  <label class="form-label fw-semibold">Tipo de resíduo</label>
+                  <input
+                    type="text"
+                    class="form-control bg-light border-0"
+                    placeholder="Ex: Smartphone..."
+                    v-model="buscaTipo"
+                    @focus="showTipos = true"
+                    @blur="delayHide(() => showTipos = false)"
+                    required
+                  />
+                  <ul v-if="showTipos && tiposFiltrados.length" class="list-group position-absolute w-100 shadow-sm" style="z-index: 1000; top: 75px; max-height: 200px; overflow-y: auto;">
+                    <li
+                      v-for="t in tiposFiltrados"
+                      :key="t"
+                      class="list-group-item list-group-item-action cursor-pointer"
+                      @mousedown.prevent="selecionarTipo(t)"
+                    >
+                      {{ t }}
+                    </li>
+                  </ul>
+                  <div class="form-text text-danger" v-if="!form.tipo_residuo && buscaTipo && !showTipos">
+                    Selecione um tipo válido.
+                  </div>
+                </div>
+
+                <div class="col-md-3">
+                  <label class="form-label fw-semibold">Qtd. Itens</label>
+                  <input
+                    v-model.number="form.quantidade"
+                    type="number"
+                    min="1"
+                    step="1"
+                    class="form-control bg-light border-0"
+                    required
+                  />
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Peso por item (kg)</label>
+                  <div class="input-group">
+                    <input
+                      v-model.number="form.peso_por_item"
+                      type="number"
+                      min="0.01"
+                      step="0.01"
+                      class="form-control bg-light border-0"
+                      :readonly="naoSeiPeso"
+                      required
+                    />
+                  </div>
+                  <div class="form-check mt-2">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="naoSeiPesoCheck"
+                      v-model="naoSeiPeso"
+                    />
+                    <label class="form-check-label small text-muted" for="naoSeiPesoCheck">
+                      Não sei o peso (usar média estimada)
+                    </label>
+                  </div>
+                  <div class="invalid-feedback d-block" v-if="!ppiValido && !naoSeiPeso">
+                    O peso por item deve ser maior que 0.
+                  </div>
+                </div>
+
+                <div class="col-12 small text-muted">
+                  Peso total: <strong>{{ pesoTotal.toFixed(2) }} kg</strong>
+                  <span v-if="naoSeiPeso" class="badge bg-info text-dark ms-2">Estimado</span>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Foto do Item</label>
+                  <input type="file" @change="handleFileChange('foto_item', $event)" class="form-control bg-light border-0" accept="image/*" required />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Foto do Local</label>
+                  <input type="file" @change="handleFileChange('foto_local', $event)" class="form-control bg-light border-0" accept="image/*" required />
+                </div>
+
+                <div class="col-12 mt-4">
+                  <button
+                    type="submit"
+                    class="btn btn-mint w-100 btn-lg fw-bold py-3"
+                    :disabled="loading || !podeSalvar"
+                  >
+                    <span v-if="!loading">Registrar descarte</span>
+                    <span v-else>Registrando…</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-5 col-xl-4 info-col">
+        <div class="p-4 p-md-5 h-100 flex-grow-1 bg-mint text-white position-relative overflow-hidden d-flex flex-column justify-content-between anime-fade-in-right">
+          <!-- Icon removed -->
+          
+          <div class="position-relative z-1 d-flex flex-column h-100 justify-content-between">
+            <h3 class="fw-bold mb-5 display-6">Por que reciclar com a EcoRecicle?</h3>
+
+            <div class="d-flex flex-column gap-5 flex-fill justify-content-center">
+              <div class="d-flex gap-4">
+                <div class="rounded-circle bg-white bg-opacity-25 p-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width:64px; height:64px;">
+                  <i class="bi bi-tree-fill fs-3"></i>
+                </div>
+                <div>
+                  <h4 class="fw-bold mb-2">Impacto Ambiental</h4>
+                  <p class="mb-0 opacity-75 lead">Cada kg reciclado evita a emissão de CO₂ e preserva recursos naturais.</p>
+                </div>
+              </div>
+
+              <div class="d-flex gap-4">
+                <div class="rounded-circle bg-white bg-opacity-25 p-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width:64px; height:64px;">
+                  <i class="bi bi-gift-fill fs-3"></i>
+                </div>
+                <div>
+                  <h4 class="fw-bold mb-2">Ganhe Pontos</h4>
+                  <p class="mb-0 opacity-75 lead">Seus descartes valem pontos que podem ser trocados por recompensas incríveis.</p>
+                </div>
+              </div>
+
+              <div class="d-flex gap-4">
+                <div class="rounded-circle bg-white bg-opacity-25 p-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width:64px; height:64px;">
+                  <i class="bi bi-shield-fill-check fs-3"></i>
+                </div>
+                <div>
+                  <h4 class="fw-bold mb-2">Descarte Seguro</h4>
+                  <p class="mb-0 opacity-75 lead">Garantimos a destinação correta de resíduos eletrônicos perigosos.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-5 pt-5 border-top border-white border-opacity-25">
+              <p class="opacity-75 mb-3 lead">Dúvidas sobre o que descartar?</p>
+              <router-link to="/guia-reciclagem" class="btn btn-light btn-lg w-100 fw-bold text-mint py-3">
+                <i class="bi bi-question-circle me-2"></i>Ver Guia de Reciclagem
+              </router-link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
 <style scoped>
 .text-mint { color: #10b981 !important; }
 .bg-mint { background-color: #10b981 !important; }
@@ -491,5 +489,40 @@ async function salvar() {
     display: flex;
     flex-direction: column;
   }
+}
+
+@media (min-width: 1200px) and (max-width: 1366px) {
+  .p-md-5 {
+    padding: 2rem !important;
+  }
+  .display-6 {
+    font-size: 1.75rem;
+  }
+  .lead {
+    font-size: 1rem;
+  }
+  .fs-3 {
+    font-size: 1.25rem !important;
+  }
+  .card-metric {
+    padding: 2rem !important;
+  }
+}
+
+.anime-fade-in {
+  animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+.anime-fade-in-right {
+  animation: fadeInRight 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInRight {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
 }
 </style>

@@ -1,5 +1,4 @@
 :root {
-  /* Cores principais (Mint) */
   --ecor-mint-50: #f0fdf4;
   --ecor-mint-100: #dcfce7;
   --ecor-mint-150: #bbf7d0;
@@ -7,13 +6,10 @@
   --ecor-mint-300: #4ade80;
   --ecor-mint-400: #22c55e;
   --ecor-mint-500: #10b981;
-  /* Cor principal */
   --ecor-mint-600: #059669;
   --ecor-mint-700: #047857;
   --ecor-mint-800: #065f46;
   --ecor-mint-900: #064e3b;
-
-  /* Cores de texto/fundo (Ink) */
   --ecor-ink-50: #f8fafc;
   --ecor-ink-100: #f1f5f9;
   --ecor-ink-200: #e2e8f0;
@@ -24,18 +20,39 @@
   cursor: pointer;
 }
 
+body {
+  overflow-x: hidden;
+}
+
+@media (max-width: 576px) {
+  h1 {
+    font-size: 1.75rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+  }
+
+  .container-fluid {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
 .ecor-attach-btn:hover {
   background: #ffffff;
 }
 
-/* modal de anexos mais compacto */
 .anx-panel {
   width: min(560px, calc(100vw - 32px));
   max-height: 80vh;
   overflow: auto;
 }
 
-/* grade e thumbs */
 .anx-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -66,14 +83,12 @@
   background: #ffffff;
 }
 
-/* modal de anexos mais compacto */
 .anx-panel {
   width: min(560px, calc(100vw - 32px));
   max-height: 80vh;
   overflow: auto;
 }
 
-/* grade e thumbs */
 .anx-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -92,7 +107,6 @@
 .anx-thumb {
   width: 100%;
   aspect-ratio: 4 / 3;
-  /* cria uma miniatura consistente */
   object-fit: cover;
   display: block;
 }
@@ -104,7 +118,6 @@
   box-shadow: inset 0 0 0 1px #eef2f7;
 }
 
-/* ações sobre o preview */
 .anx-actions {
   position: absolute;
   right: 10px;
@@ -113,7 +126,6 @@
   gap: 8px;
 }
 
-/* ==== Detalhes: botão no rodapé ==== */
 .detail-panel {
   position: relative;
   padding-bottom: 72px;
@@ -139,7 +151,6 @@
   background: #fff;
 }
 
-/* ==== Anexos: painel menor + layout com preview interno ==== */
 .anx-panel {
   width: min(640px, calc(100vw - 32px));
   max-height: 82vh;
@@ -213,12 +224,10 @@
   gap: 8px;
 }
 
-/* painel um pouco mais largo */
 .anx-cards {
   width: min(900px, calc(100vw - 32px));
 }
 
-/* grid com 2 colunas */
 .anx-gridCards {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -231,7 +240,6 @@
   }
 }
 
-/* card da imagem */
 .anx-card2 {
   position: relative;
   border-radius: 14px;
@@ -239,11 +247,9 @@
   background: #f1f5f9;
   box-shadow: 0 8px 24px rgba(16, 24, 40, .08);
   height: 210px;
-  /* deixa compacto como no mock */
   cursor: zoom-in;
 }
 
-/* imagem ocupa tudo com corte elegante */
 .anx-img2 {
   width: 100%;
   height: 100%;
@@ -251,7 +257,6 @@
   object-fit: cover;
 }
 
-/* título no canto superior esquerdo */
 .anx-badge {
   position: absolute;
   left: 10px;
@@ -266,7 +271,6 @@
   pointer-events: none;
 }
 
-/* botão “Baixar” no canto inferior direito */
 .anx-btnDl {
   position: absolute;
   right: 10px;
@@ -278,13 +282,11 @@
   transition: opacity .15s ease, transform .15s ease;
 }
 
-/* aparece no hover do card */
 .anx-card2:hover .anx-btnDl {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* em dispositivos touch (sem hover), deixa visível sempre */
 @media (hover: none) {
   .anx-btnDl {
     opacity: 1;
@@ -292,27 +294,22 @@
   }
 }
 
-/* === EcoRecicle – hardening global para modais do dashboard === */
 .ecor-modal,
 .ecor-panel {
   box-sizing: border-box;
 }
 
-/* anula margens e gradientes que alguns temas aplicam em .btn */
 .ecor-panel .btn {
   margin: 0 !important;
   background-image: none !important;
 }
 
-/* impede qualquer contador/bolha implícito no botão */
 .ecor-panel .btn .badge,
 .ecor-panel .btn::after {
   display: none !important;
   content: none !important;
 }
 
-/* === FIX: modal de detalhes não usa botão flutuante === */
-/* Reseta qualquer regra global que force absolute no botão dentro do modal */
 .ecor-panel .ecor-actions .ecor-attach-btn,
 .ecor-panel .ecor-actions .ecor-report-btn {
   position: static !important;
@@ -323,13 +320,11 @@
   background-image: none !important;
 }
 
-/* Garante mesma largura/estética na coluna de ações */
 .ecor-panel .ecor-actions {
   justify-self: end !important;
   width: 260px !important;
   min-width: 260px !important;
   margin-right: 12px !important;
-  /* <-- respiro da borda direita */
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -337,167 +332,6 @@
   gap: 10px;
 }
 
-/* Botões com mesmo padding/raio */
-.ecor-panel .ecor-actions .ecor-attach-btn,
-.ecor-panel .ecor-actions .ecor-report-btn {
-  display: block !important;
-  width: 100% !important;
-  text-align: center;
-  padding: .40rem .72rem !important;
-  border-radius: 12px !important;
-  object-fit: cover;
-  display: block;
-  background: #f1f5f9;
-}
-
-.anx-preview-pane {
-  position: relative;
-  min-height: 260px;
-}
-
-.anx-preview-img {
-  width: 100%;
-  max-height: 66vh;
-  object-fit: contain;
-  display: block;
-  border-radius: 12px;
-  background: #f8fafc;
-  box-shadow: inset 0 0 0 1px #eef2f7;
-}
-
-.anx-actions {
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  display: flex;
-  gap: 8px;
-}
-
-/* painel um pouco mais largo */
-.anx-cards {
-  width: min(900px, calc(100vw - 32px));
-}
-
-/* grid com 2 colunas */
-.anx-gridCards {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-}
-
-@media (max-width: 768px) {
-  .anx-gridCards {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* card da imagem */
-.anx-card2 {
-  position: relative;
-  border-radius: 14px;
-  overflow: hidden;
-  background: #f1f5f9;
-  box-shadow: 0 8px 24px rgba(16, 24, 40, .08);
-  height: 210px;
-  /* deixa compacto como no mock */
-  cursor: zoom-in;
-}
-
-/* imagem ocupa tudo com corte elegante */
-.anx-img2 {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-}
-
-/* título no canto superior esquerdo */
-.anx-badge {
-  position: absolute;
-  left: 10px;
-  top: 10px;
-  background: rgba(255, 255, 255, .85);
-  -webkit-backdrop-filter: blur(4px);
-  backdrop-filter: blur(4px);
-  color: #0f172a;
-  font-weight: 600;
-  padding: 4px 8px;
-  border-radius: 8px;
-  pointer-events: none;
-}
-
-/* botão “Baixar” no canto inferior direito */
-.anx-btnDl {
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  padding: 6px 12px;
-  border-radius: 999px;
-  transform: translateY(6px);
-  opacity: 0;
-  transition: opacity .15s ease, transform .15s ease;
-}
-
-/* aparece no hover do card */
-.anx-card2:hover .anx-btnDl {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* em dispositivos touch (sem hover), deixa visível sempre */
-@media (hover: none) {
-  .anx-btnDl {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-/* === EcoRecicle – hardening global para modais do dashboard === */
-.ecor-modal,
-.ecor-panel {
-  box-sizing: border-box;
-}
-
-/* anula margens e gradientes que alguns temas aplicam em .btn */
-.ecor-panel .btn {
-  margin: 0 !important;
-  background-image: none !important;
-}
-
-/* impede qualquer contador/bolha implícito no botão */
-.ecor-panel .btn .badge,
-.ecor-panel .btn::after {
-  display: none !important;
-  content: none !important;
-}
-
-/* === FIX: modal de detalhes não usa botão flutuante === */
-/* Reseta qualquer regra global que force absolute no botão dentro do modal */
-.ecor-panel .ecor-actions .ecor-attach-btn,
-.ecor-panel .ecor-actions .ecor-report-btn {
-  position: static !important;
-  right: auto !important;
-  left: auto !important;
-  bottom: auto !important;
-  margin: 0 !important;
-  background-image: none !important;
-}
-
-/* Garante mesma largura/estética na coluna de ações */
-.ecor-panel .ecor-actions {
-  justify-self: end !important;
-  width: 260px !important;
-  min-width: 260px !important;
-  margin-right: 12px !important;
-  /* <-- respiro da borda direita */
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: flex-end;
-  gap: 10px;
-}
-
-/* Botões com mesmo padding/raio */
 .ecor-panel .ecor-actions .ecor-attach-btn,
 .ecor-panel .ecor-actions .ecor-report-btn {
   display: block !important;
@@ -509,7 +343,6 @@
   color: #fff !important;
 }
 
-/* Cores (mantém seu tema) */
 .ecor-panel .ecor-actions .ecor-attach-btn {
   background: #12b886 !important;
 }
@@ -526,19 +359,16 @@
   background: #ea9405 !important;
 }
 
-/* Se algum tema injeta contadores/bolhas, desliga no modal */
 .ecor-panel .ecor-actions .ecor-attach-btn .badge,
 .ecor-panel .ecor-actions .ecor-attach-btn::after {
   display: none !important;
   content: none !important;
 }
 
-/* Utility for flex truncation */
 .min-w-0 {
   min-width: 0 !important;
 }
 
-/* === Botões Globais (System Colors) === */
 .btn--primary,
 .btn-primary {
   background-color: var(--ecor-mint-600) !important;
@@ -559,7 +389,6 @@
   background-color: var(--ecor-mint-800) !important;
   border-color: var(--ecor-mint-800) !important;
   box-shadow: 0 0 0 0.25rem rgba(16, 185, 129, 0.25) !important;
-  /* Mint shadow */
 }
 
 .btn--secondary,
@@ -599,7 +428,6 @@
   color: #fff !important;
 }
 
-/* Ajuste para links que parecem botões */
 a.btn--primary,
 a.btn-primary {
   color: #fff !important;

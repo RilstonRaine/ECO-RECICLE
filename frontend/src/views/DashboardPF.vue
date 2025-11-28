@@ -1,6 +1,6 @@
 <template>
-  <div class="container-fluid px-4 py-4">
-    <h3 class="mb-4 fw-bold">Dashboard — Descartante</h3>
+  <div class="container-fluid px-3 py-3 px-md-4 py-md-4">
+    <h3 class="mb-4 fw-bold">Descartante</h3>
 
     <div class="row g-2 align-items-end mb-4">
       <div class="col-6 col-md-auto">
