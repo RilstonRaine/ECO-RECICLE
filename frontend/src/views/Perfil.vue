@@ -1,4 +1,3 @@
-<!-- src/views/Perfil.vue -->
 <template>
   <div class="container py-3">
     <div class="card-metric p-4">
@@ -17,15 +16,11 @@
         </div>
       </div>
 
-      <!-- Estado de erro -->
       <div v-if="erro" class="alert alert-danger my-3">
         {{ erro }}
       </div>
-
-      <!-- Skeleton / carregando -->
       <div v-if="loading && !perfil" class="text-muted py-4">Carregando…</div>
 
-      <!-- Dados -->
       <div v-if="perfil" class="row mt-3 g-3">
         <div class="col-md-6">
           <div class="card p-3 h-100">
@@ -74,7 +69,6 @@
       </div>
     </div>
 
-    <!-- Modal de edição -->
     <div v-if="showEdit" class="ecor-modal">
       <div class="ecor-backdrop" @click="fecharEditar"></div>
       <div class="ecor-panel">
@@ -279,7 +273,6 @@ onMounted(carregar)
 .card-metric { background: #fff; border-radius: 12px; box-shadow: 0 10px 28px rgba(2,6,23,.06); }
 .text-muted { color: var(--ecor-ink-500); }
 
-/* Modal (mesmo padrão usado em Pontos.vue) */
 .ecor-modal{ position:fixed; inset:0; z-index:1000; display:grid; place-items:center; }
 .ecor-backdrop{ position:absolute; inset:0; background:rgba(15,23,42,.35); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); }
 .ecor-panel{

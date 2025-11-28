@@ -2,7 +2,6 @@
   <div class="container-fluid px-4 py-4">
     <h3 class="mb-4 fw-bold">Dashboard — Descartante</h3>
 
-    <!-- Filtro simples -->
     <div class="row g-2 align-items-end mb-4">
       <div class="col-6 col-md-auto">
         <label class="form-label mb-1 fw-semibold">De</label>
@@ -20,7 +19,6 @@
       </div>
     </div>
 
-    <!-- Cards (totais por padrão; com período, mostram apenas o período) -->
     <div class="row g-3 mb-4">
       <div class="col-12 col-sm-6 col-xl-3">
         <Card titulo="Meus descartes" :valor="meusDescartesAtivos.length" />
@@ -81,7 +79,6 @@
       </div>
     </div>
 
-    <!-- Modal Detalhes -->
     <div v-if="showModal" class="ecor-modal">
       <div class="ecor-backdrop" @click="closeModal"></div>
       <div class="ecor-panel">
@@ -102,7 +99,6 @@
 
         <div v-else>Carregando…</div>
 
-        <!-- Botão de anexos -->
         <div class="mt-3 d-flex align-items-center gap-2" v-if="anexos.length">
           <button class="btn btn-details" @click="showAnexos = true">
             Anexos ({{ anexos.length }})
@@ -115,7 +111,6 @@
       </div>
     </div>
 
-    <!-- Modal Galeria de Anexos -->
     <div v-if="showAnexos" class="ecor-modal">
       <div class="ecor-backdrop" @click="showAnexos = false"></div>
       <div class="ecor-panel ecor-panel-lg">
@@ -162,7 +157,6 @@ const descartes = ref([])
 const showModal = ref(false)
 const detalhe = ref(null)
 
-// ======= NOVO: Anexos
 const anexos = ref([])        // urls resolvidas
 const showAnexos = ref(false) // modal da galeria
 

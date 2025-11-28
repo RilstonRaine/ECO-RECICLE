@@ -2,7 +2,7 @@
 <template>
   <header class="ecor-navbar navbar navbar-expand-lg">
     <div class="container-fluid px-4">
-      <router-link to="/" class="navbar-brand d-flex align-items-center gap-2">
+      <router-link to="/" class="navbar-brand d-flex align-items-center gap-2" @click="closeMenu">
         <i class="bi bi-recycle brand-icon"></i>
         <span class="brand-text">EcoRecicle</span>
       </router-link>
@@ -22,12 +22,12 @@
       <div class="collapse navbar-collapse" id="navbarContent">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center gap-3">
           <li class="nav-item">
-            <router-link class="nav-link" to="/">
+            <router-link class="nav-link" to="/" @click="closeMenu">
               <i class="bi bi-house"></i> Início
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="/pontos">
+            <router-link class="nav-link" to="/pontos" @click="closeMenu">
               <i class="bi bi-geo-alt"></i> Pontos
             </router-link>
           </li>
@@ -35,17 +35,17 @@
           <!-- PF -->
           <template v-if="isAuth && isPF">
             <li class="nav-item">
-              <router-link class="nav-link" :to="{ name: 'CadastroDispositivo' }">
+              <router-link class="nav-link" :to="{ name: 'CadastroDispositivo' }" @click="closeMenu">
                 <i class="bi bi-recycle"></i> Realizar Descarte
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link class="nav-link" to="/relatorios/pf">
+              <router-link class="nav-link" to="/relatorios/pf" @click="closeMenu">
                 <i class="bi bi-graph-up"></i> Relatórios
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link class="nav-link" to="/dashboard-pf">
+              <router-link class="nav-link" to="/dashboard-pf" @click="closeMenu">
                 <i class="bi bi-speedometer2"></i> Dashboard
               </router-link>
             </li>
@@ -54,12 +54,12 @@
           <!-- PJ -->
           <template v-if="isAuth && isPJ">
             <li class="nav-item">
-              <router-link class="nav-link" to="/relatorios/pj">
+              <router-link class="nav-link" to="/relatorios/pj" @click="closeMenu">
                 <i class="bi bi-graph-up"></i> Relatórios
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link class="nav-link" to="/dashboard-pj">
+              <router-link class="nav-link" to="/dashboard-pj" @click="closeMenu">
                 <i class="bi bi-speedometer2"></i> Dashboard
               </router-link>
             </li>
@@ -68,12 +68,12 @@
           <!-- Auth -->
           <template v-if="!isAuth">
             <li class="nav-item">
-              <router-link class="nav-link" to="/login">
+              <router-link class="nav-link" to="/login" @click="closeMenu">
                 <i class="bi bi-box-arrow-in-right"></i> Entrar
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link class="nav-link" to="/register">
+              <router-link class="nav-link" to="/register" @click="closeMenu">
                 <i class="bi bi-person-plus"></i> Cadastrar
               </router-link>
             </li>
@@ -92,12 +92,12 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
               <li>
-                <router-link class="dropdown-item" to="/recompensas">
+                <router-link class="dropdown-item" to="/recompensas" @click="closeMenu">
                   <i class="bi bi-trophy"></i> Recompensas
                 </router-link>
               </li>
               <li>
-                <router-link to="/perfil" class="dropdown-item d-flex align-items-center gap-2">
+                <router-link to="/perfil" class="dropdown-item d-flex align-items-center gap-2" @click="closeMenu">
                   <i class="bi bi-person-circle"></i>
                   <span>Meu Perfil</span>
                 </router-link>
@@ -120,6 +120,7 @@
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import store from '@/store'
+import { Collapse } from 'bootstrap'
 
 function getLSUser() {
   try {
@@ -141,6 +142,15 @@ function logout() {
   } catch {}
   localStorage.removeItem('auth')
   router.push('/')
+  closeMenu()
+}
+
+function closeMenu() {
+  const navbarContent = document.getElementById('navbarContent')
+  if (navbarContent && navbarContent.classList.contains('show')) {
+    const bsCollapse = Collapse.getInstance(navbarContent) || new Collapse(navbarContent, { toggle: false })
+    bsCollapse.hide()
+  }
 }
 </script>
 

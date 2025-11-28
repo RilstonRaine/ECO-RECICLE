@@ -1,16 +1,12 @@
-<!-- src/views/Pontos.vue -->
 <template>
   <div class="pontos-layout">
-    <!-- Mapa (Esquerda) -->
     <div class="map-container">
       <div id="map" class="h-100 w-100"></div>
     </div>
 
-    <!-- Sidebar (Direita) -->
     <div class="sidebar-container">
       <h3 class="mb-3 px-3 pt-3">Pontos de coleta</h3>
 
-      <!-- Barra de busca -->
       <div class="px-3 mb-3 position-relative">
         <form @submit.prevent="buscarSelecionado">
           <label class="form-label fw-semibold small text-muted text-uppercase">Buscar ponto</label>
@@ -33,7 +29,6 @@
             </button>
           </div>
 
-          <!-- Sugestões -->
           <ul
             v-if="showSugestoes && q && sugestoes.length"
             class="sugestoes list-group shadow-sm"
@@ -56,7 +51,6 @@
       </div>
 
 
-      <!-- Detalhes do Ponto (ou lista vazia/instrução) -->
       <Teleport to="body" :disabled="!isMobile">
         <div 
           v-if="!isMobile || modalPonto"
@@ -129,13 +123,11 @@ import { usuariosApi } from '@/services/api'
 const pontos = ref([])
 const q = ref('')
 const selecionado = ref(null)
-// "modalPonto" agora controla o painel lateral de detalhes
 const modalPonto = ref(null)
 
 const showSugestoes = ref(false)
 const inputBusca = ref(null)
 
-/* ---------- Mobile Check ---------- */
 const isMobile = ref(false)
 let mediaQuery = null
 
@@ -171,7 +163,6 @@ function abrirRota(p) {
 let map, markersLayer
 const markersById = Object.create(null)
 
-/* Ícone padrão do Leaflet */
 const defaultIcon = new L.Icon({
   iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
   iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
@@ -182,7 +173,6 @@ const defaultIcon = new L.Icon({
   shadowSize: [41, 41]
 })
 
-/* ---------- Cache de geocodificação ---------- */
 let geocodeMap
 try {
   geocodeMap = new Map(JSON.parse(localStorage.getItem('geocodeCache') || '[]'))
@@ -192,7 +182,6 @@ function saveGeocodeCache() {
   try { localStorage.setItem('geocodeCache', JSON.stringify([...geocodeMap])) } catch {}
 }
 
-/* ---------- Helpers ---------- */
 function norm(s) {
   return (s || '').toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
 }
@@ -242,7 +231,6 @@ async function geocode(query) {
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)) }
 
-/* Resolvedor “teimoso” para um ponto */
 const SLEEP_MS = 900
 async function resolveCoordsFor(p) {
   if (p.latitude && p.longitude) return { lat: p.latitude, lon: p.longitude }
@@ -263,9 +251,9 @@ onMounted(async () => {
 
   await carregarPontos()
   initMap()
-  renderMarkers()                        // desenha quem já tem coords
-  ensureCoordsThrottled().then(fitAll)   // resolve pendentes e depois enquadra
-  fitAll()                               // enquadra o que já existe agora
+  renderMarkers()                        
+  ensureCoordsThrottled().then(fitAll)   
+  fitAll()                               
 })
 
 async function carregarPontos() {
@@ -292,7 +280,6 @@ function initMap() {
   setTimeout(() => map.invalidateSize(), 100)
 }
 
-/* Completa coordenadas que faltam (com respiro p/ Nominatim) */
 async function ensureCoordsThrottled() {
   const pendentes = pontos.value.filter(p => !p.latitude || !p.longitude)
   for (const p of pendentes) {
@@ -306,7 +293,6 @@ async function ensureCoordsThrottled() {
   }
 }
 
-/* ---------- Markers & mapa ---------- */
 function addOrUpdateMarker(p) {
   if (!p.latitude || !p.longitude) return
   const key = String(p.id)
@@ -353,7 +339,6 @@ function focusMarker(p) {
   const latlng = m.getLatLng()
 
   map.flyTo(latlng, 16, { duration: 0.45 })
-  // m.bindPopup(...).openPopup() // Popup removido, usamos sidebar
 
   const pulse = L.circleMarker(latlng, {
     radius: 18,
@@ -365,7 +350,6 @@ function focusMarker(p) {
   setTimeout(() => map.removeLayer(pulse), 1200)
 }
 
-/* ---------- Busca & sugestões ---------- */
 const sugestoes = computed(() => {
   const nq = norm(q.value)
   const nd = onlyDigits(q.value)
@@ -402,7 +386,6 @@ function abrirSugestoes() { showSugestoes.value = true }
 function fecharSugestoes() { showSugestoes.value = false }
 function fecharSugestoesComDelay() { setTimeout(() => (showSugestoes.value = false), 120) }
 
-/* Buscar: cria marcador se faltar, centraliza/zoom, popup e pulso */
 async function buscarSelecionado() {
   fecharSugestoes()
 
@@ -419,7 +402,9 @@ async function buscarSelecionado() {
     }
   }
 
-  window.open(url, '_blank')
+  if (m) {
+    openModal(p)
+  }
 }
 </script>
 

@@ -1,4 +1,3 @@
-<!-- src/views/AssinarPro.vue -->
 <template>
   <div class="container py-4" style="max-width:720px;">
     <h1 class="mb-3">Plano PRO</h1>
