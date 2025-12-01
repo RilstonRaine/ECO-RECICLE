@@ -58,6 +58,7 @@ router.beforeEach(async (to, from, next) => {
   if (to.meta.requiresPro) {
     try {
       const lic = await getLicencaCached()
+      console.log('Router Check PRO:', { path: to.path, lic, isPro: isProAtivo(lic) })
       if (!isProAtivo(lic)) {
         const reason = to.name === 'Recompensas' ? 'rewards' : 'reports'
         ui.openProModal({ reason, need: userRole === 'descartante' ? 'pf' : 'pj' })

@@ -104,23 +104,19 @@ async function assinar() {
 </script>
 
 <style scoped>
-/* garante cálculos corretos e evita estouro */
 *, *::before, *::after { box-sizing: border-box; }
 
-.pro-modal { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; }
+.pro-modal { position: fixed; inset: 0; z-index: 2000; display: grid; place-items: center; }
 
 .backdrop {
   position: absolute;
   inset: 0;
-  /* escurece um pouco e permite o blur */
-  background: rgba(15, 23, 42, 0.35);          /* fallback se o blur não existir */
-  backdrop-filter: blur(6px) saturate(0.9);     /* blur real */
-  -webkit-backdrop-filter: blur(6px) saturate(0.9); /* Safari */
+  background: rgba(15, 23, 42, 0.35);
+  backdrop-filter: blur(6px) saturate(0.9);
+  -webkit-backdrop-filter: blur(6px) saturate(0.9);
 }
 
-/* opcional: animação de entrada do painel */
 .panel {
-  /* ...seus estilos já existentes... */
   animation: proPop .14s ease-out;
 }
 
@@ -131,7 +127,7 @@ async function assinar() {
 
 .panel {
   position: relative;
-  width: min(720px, calc(100vw - 32px)); /* margens seguras */
+  width: min(720px, calc(100vw - 32px));
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 24px 48px rgba(16,24,40,.18);
@@ -148,22 +144,21 @@ async function assinar() {
 
 .form { display: grid; gap: 12px; }
 
-/* ==== NOVAS CLASSES (evita conflito com Bootstrap .row) ==== */
 .field { display: grid; gap: 6px; margin: 0; }
 .field.full { width: 100%; }
 
 .field.grid3 {
   display: grid;
   gap: 10px;
-  grid-template-columns: 1fr; /* mobile-first */
+  grid-template-columns: 1fr;
 }
 
 @media (min-width: 640px) {
   .field.grid3 {
     grid-template-columns:
-      minmax(0, 1fr)         /* Nome */
-      minmax(110px, 160px)   /* Validade */
-      minmax(84px, 120px);   /* CVV   */
+      minmax(0, 1fr)
+      minmax(110px, 160px)
+      minmax(84px, 120px);
   }
 }
 

@@ -21,7 +21,7 @@ export async function getMinhaLicenca() {
 export async function upgradePro(dias = 30) {
   const { data } = await api.post('/licencas/upgrade', { dias })
   // invalida cache local se você usa
-  try { window.dispatchEvent(new CustomEvent('licenca:changed')) } catch {}
+  try { window.dispatchEvent(new CustomEvent('licenca:changed')) } catch { }
   return data
 }
 
@@ -40,11 +40,15 @@ export function clearLicencaCache() {
 }
 
 export function isProAtivo(lic) {
+  console.log('isProAtivo check:', lic)
   if (!lic) return false
-  const planoOk = lic.plano === 'pro'
+  const planoOk = lic.plano && lic.plano.toLowerCase() === 'pro'
   const ate = lic.pro_ativo_ate ? Date.parse(lic.pro_ativo_ate) : 0
   const agora = Date.now()
-  return planoOk && (lic.pro_ativo === true || (ate && ate > agora))
+  const ativo = !!lic.pro_ativo
+  const validadeOk = ate && ate > agora
+  console.log('isProAtivo result:', { planoOk, ativo, validadeOk, result: planoOk && (ativo || validadeOk) })
+  return planoOk && (ativo || validadeOk)
 }
 
 // boolean helper
@@ -52,5 +56,5 @@ export async function isProAtivoCached(opts) {
   const lic = await getLicencaCached(opts)
   return !!(lic?.plano === 'pro' && (lic?.pro_ativo || (lic?.pro_ativo_ate && new Date(lic.pro_ativo_ate) > new Date())))
 
-  
+
 }

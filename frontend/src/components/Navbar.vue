@@ -121,6 +121,7 @@ import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import store from '@/store'
 import { Collapse } from 'bootstrap'
+import { clearLicencaCache } from '@/services/licenca'
 
 function getLSUser() {
   try {
@@ -140,6 +141,7 @@ function logout() {
     else if (store?.state) { store.state.token = null; store.state.usuario = null }
     else { store.token = null; store.usuario = null }
   } catch {}
+  clearLicencaCache()
   localStorage.removeItem('auth')
   router.push('/')
   closeMenu()
