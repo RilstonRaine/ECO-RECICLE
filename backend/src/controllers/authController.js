@@ -6,12 +6,12 @@ const { buscarUsuarioPorEmail } = require('../models/usuariosModel');
 
 // --- Helper: normaliza UF (BA, SP...) a partir de "BA" ou nome do estado ---
 const UF_BY_NAME = {
-  'acre':'AC','alagoas':'AL','amapa':'AP','amazonas':'AM','bahia':'BA','ceara':'CE',
-  'distrito federal':'DF','espirito santo':'ES','goias':'GO','maranhao':'MA',
-  'mato grosso':'MT','mato grosso do sul':'MS','minas gerais':'MG','para':'PA',
-  'paraiba':'PB','parana':'PR','pernambuco':'PE','piaui':'PI','rio de janeiro':'RJ',
-  'rio grande do norte':'RN','rio grande do sul':'RS','rondonia':'RO','roraima':'RR',
-  'santa catarina':'SC','sao paulo':'SP','sergipe':'SE','tocantins':'TO'
+  'acre': 'AC', 'alagoas': 'AL', 'amapa': 'AP', 'amazonas': 'AM', 'bahia': 'BA', 'ceara': 'CE',
+  'distrito federal': 'DF', 'espirito santo': 'ES', 'goias': 'GO', 'maranhao': 'MA',
+  'mato grosso': 'MT', 'mato grosso do sul': 'MS', 'minas gerais': 'MG', 'para': 'PA',
+  'paraiba': 'PB', 'parana': 'PR', 'pernambuco': 'PE', 'piaui': 'PI', 'rio de janeiro': 'RJ',
+  'rio grande do norte': 'RN', 'rio grande do sul': 'RS', 'rondonia': 'RO', 'roraima': 'RR',
+  'santa catarina': 'SC', 'sao paulo': 'SP', 'sergipe': 'SE', 'tocantins': 'TO'
 };
 function normalizeUF(v) {
   if (!v) return null;
@@ -114,9 +114,9 @@ exports.cadastro = async (req, res) => {
       const via = await fetchViaCep(addr.cep);
       if (via) {
         addr.logradouro = addr.logradouro || via.logradouro;
-        addr.bairro     = addr.bairro     || via.bairro;
-        addr.cidade     = addr.cidade     || via.cidade;
-        addr.estado     = addr.estado     || via.estado; // já vem normalizado
+        addr.bairro = addr.bairro || via.bairro;
+        addr.cidade = addr.cidade || via.cidade;
+        addr.estado = addr.estado || via.estado; // já vem normalizado
       }
     }
 
@@ -216,5 +216,24 @@ exports.login = async (req, res) => {
   } catch (err) {
     console.error('[POST /auth/login]', err);
     return res.status(500).json({ message: 'Erro no login', error: err.message });
+  }
+};
+
+/* ===================== RECUPERAÇÃO DE SENHA ===================== */
+exports.verificarEmail = async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) return res.status(400).json({ message: 'E-mail é obrigatório.' });
+
+    const usuario = await buscarUsuarioPorEmail(email);
+    if (!usuario) {
+      return res.status(404).json({ message: 'E-mail não encontrado em nossa base de dados.' });
+    }
+
+    // Simulação de envio de e-mail
+    return res.json({ message: 'Um link para redefinição de senha foi enviado para seu e-mail.' });
+  } catch (e) {
+    console.error('[auth.verificarEmail]', e);
+    return res.status(500).json({ message: 'Erro ao verificar e-mail.', error: e.message });
   }
 };
