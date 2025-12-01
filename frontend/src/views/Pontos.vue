@@ -48,6 +48,40 @@
             </li>
           </ul>
         </form>
+        
+        <button 
+          type="button" 
+          class="btn btn-outline-success w-100 mt-3 d-flex align-items-center justify-content-center gap-2" 
+          @click="buscarLocalizacao" 
+          :disabled="loadingLoc"
+        >
+          <i class="bi" :class="loadingLoc ? 'bi-hourglass-split' : 'bi-geo-alt-fill'"></i>
+          {{ loadingLoc ? 'Obtendo localização...' : 'Buscar minha localização' }}
+        </button>
+      </div>
+
+      <div v-if="userCoords && !q && !modalPonto && pontosProximos.length" class="px-3 pb-3 overflow-auto flex-grow-1 anime-fade-in">
+        <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+          <h6 class="text-muted fw-bold mb-0 small text-uppercase">Pontos Próximos</h6>
+          <button type="button" class="btn-close" aria-label="Fechar" @click="userCoords = null"></button>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li 
+            v-for="p in pontosProximos" 
+            :key="p.id" 
+            class="list-group-item list-group-item-action px-0 py-3 border-bottom" 
+            @click="openModal(p)"
+          >
+            <div class="d-flex justify-content-between align-items-start mb-1">
+              <span class="fw-bold text-dark">{{ p.nome }}</span>
+              <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">
+                ~{{ p.distancia.toFixed(1) }} km
+              </span>
+            </div>
+            <small class="text-muted d-block mb-1">{{ p.enderecoFull }}</small>
+            <small class="text-muted" v-if="p.cidade">{{ p.cidade }} - {{ p.estado }}</small>
+          </li>
+        </ul>
       </div>
 
 
@@ -73,6 +107,9 @@
                 <p class="mb-0 small">{{ modalPonto.enderecoFull }}</p>
                 <p class="mb-0 small text-muted">{{ modalPonto.cidade }} / {{ modalPonto.estado }}</p>
                 <p class="mb-0 small text-muted">CEP: {{ modalPonto.cep || '—' }}</p>
+                <div v-if="modalPonto.distancia" class="mt-2 pt-2 border-top">
+                  <span class="badge bg-success">~{{ modalPonto.distancia.toFixed(1) }} km ({{ modalPonto.tipoDistancia || 'linear' }}) de você</span>
+                </div>
               </div>
             </div>
 
@@ -103,7 +140,7 @@
             </button>
           </div>
 
-          <div v-else class="text-center text-muted mt-5">
+          <div v-else-if="!userCoords" class="text-center text-muted mt-5">
             <i class="bi bi-geo-alt display-4 opacity-25"></i>
             <p class="mt-3">Selecione um ponto no mapa ou busque para ver detalhes.</p>
           </div>
@@ -118,6 +155,9 @@ import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import { onMounted, onUnmounted, ref, computed, nextTick } from 'vue'
 import { usuariosApi } from '@/services/api'
+import { useToast } from 'vue-toastification'
+
+const toast = useToast()
 
 /* ---------- Estado ---------- */
 const pontos = ref([])
@@ -130,6 +170,9 @@ const inputBusca = ref(null)
 
 const isMobile = ref(false)
 let mediaQuery = null
+
+const loadingLoc = ref(false)
+const userCoords = ref(null)
 
 function updateMobile() {
   isMobile.value = window.matchMedia('(max-width: 768px)').matches
@@ -264,7 +307,8 @@ async function carregarPontos() {
       ...u,
       enderecoFull: buildEndereco(u),
       latitude: (u.latitude ?? null) !== null ? Number(u.latitude) : null,
-      longitude: (u.longitude ?? null) !== null ? Number(u.longitude) : null
+      longitude: (u.longitude ?? null) !== null ? Number(u.longitude) : null,
+      distancia: null
     }))
   pontos.value = arr
 }
@@ -407,12 +451,112 @@ async function buscarSelecionado() {
     openModal(p)
   }
 }
+
+/* ---------- Geolocalização ---------- */
+function deg2rad(deg) { return deg * (Math.PI/180) }
+function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+  const R = 6371
+  const dLat = deg2rad(lat2-lat1)
+  const dLon = deg2rad(lon2-lon1)
+  const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+            Math.sin(dLon/2) * Math.sin(dLon/2)
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
+  return R * c
+}
+
+async function fetchRouteDistance(lat1, lon1, lat2, lon2) {
+  try {
+    const url = `https://router.project-osrm.org/route/v1/driving/${lon1},${lat1};${lon2},${lat2}?overview=false`
+    const res = await fetch(url)
+    if (!res.ok) return null
+    const data = await res.json()
+    if (data.routes && data.routes.length > 0) {
+      return data.routes[0].distance / 1000 // metros para km
+    }
+  } catch (e) {
+    console.warn('Erro ao buscar rota OSRM', e)
+  }
+  return null
+}
+
+function buscarLocalizacao() {
+  if (!navigator.geolocation) {
+    toast.error('Geolocalização não suportada pelo seu navegador.')
+    return
+  }
+  loadingLoc.value = true
+  navigator.geolocation.getCurrentPosition(
+    async (pos) => {
+      const { latitude, longitude } = pos.coords
+      userCoords.value = { lat: latitude, lon: longitude }
+      
+      // 1. Calcular distâncias lineares para pré-filtro
+      pontos.value.forEach(p => {
+        if (p.latitude && p.longitude) {
+          p.distanciaLinear = getDistanceFromLatLonInKm(latitude, longitude, p.latitude, p.longitude)
+          p.distancia = p.distanciaLinear // fallback inicial
+          p.tipoDistancia = 'linear'
+        } else {
+          p.distancia = Infinity
+        }
+      })
+      
+      // Ordenar por linear para pegar os candidatos mais próximos
+      pontos.value.sort((a, b) => (a.distancia || Infinity) - (b.distancia || Infinity))
+      
+      // 2. Buscar rota real para os top 10 mais próximos (para não abusar da API)
+      const candidatos = pontos.value.slice(0, 10)
+      
+      // Paralelizar requests (com cuidado)
+      await Promise.all(candidatos.map(async (p) => {
+        if (p.distancia !== Infinity) {
+          const routeDist = await fetchRouteDistance(latitude, longitude, p.latitude, p.longitude)
+          if (routeDist !== null) {
+            p.distancia = routeDist
+            p.tipoDistancia = 'rota'
+          }
+        }
+      }))
+      
+      // Reordenar final com as distâncias de rota
+      pontos.value.sort((a, b) => (a.distancia || Infinity) - (b.distancia || Infinity))
+      
+      loadingLoc.value = false
+      toast.success('Localização obtida! Pontos ordenados por rota de condução.')
+      
+      // Zoom no usuário
+      if (map) {
+        map.setView([latitude, longitude], 13)
+        L.marker([latitude, longitude], {
+          icon: L.divIcon({
+            className: 'user-location-marker',
+            html: '<div style="background:#0d6efd;width:16px;height:16px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 8px rgba(0,0,0,0.4);"></div>',
+            iconSize: [16, 16]
+          })
+        }).addTo(map).bindPopup('Você está aqui').openPopup()
+      }
+    },
+    (err) => {
+      console.error(err)
+      toast.error('Não foi possível obter sua localização. Verifique as permissões.')
+      loadingLoc.value = false
+    },
+    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+  )
+}
+
+const pontosProximos = computed(() => {
+  if (!userCoords.value) return []
+  return pontos.value.filter(p => p.distancia !== null && p.distancia < 1000).slice(0, 10)
+})
+
 </script>
 
 <style scoped>
 .pontos-layout {
   display: flex;
-  height: calc(100vh - 70px); /* Ajuste conforme altura do Navbar */
+  height: calc(100vh - 70px);
   overflow: hidden;
   position: relative;
 }
@@ -473,11 +617,29 @@ async function buscarSelecionado() {
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   }
+  
+  .sidebar-container > .px-3.mb-3 button.btn-outline-success {
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border: none;
+    color: #198754;
+    font-weight: 600;
+    pointer-events: auto;
+  }
 
   .sidebar-container > .flex-grow-1 {
     pointer-events: none;
     display: flex;
     flex-direction: column;
+  }
+  
+  .sidebar-container > .flex-grow-1.anime-fade-in {
+    background: #fff;
+    pointer-events: auto;
+    margin: 0 1rem 1rem 1rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    max-height: 40vh;
   }
 
   .sidebar-container > .flex-grow-1 > .text-center {
