@@ -185,4 +185,15 @@ async function assinar() {
 
 .price { text-align: center; margin-top: 8px; font-size: .95rem; }
 .disclaimer { text-align: center; color: #6b7280; font-size: .85rem; margin-top: 4px; }
+
+@media (max-width: 640px) {
+  .panel {
+    padding: 16px;
+    width: calc(100vw - 24px);
+  }
+  .title { font-size: 1.25rem; }
+  .subtitle { font-size: 0.9rem; }
+  .benefits { font-size: 0.9rem; margin-bottom: 12px; }
+  .close { top: 6px; right: 8px; font-size: 20px; }
+}
 </style>

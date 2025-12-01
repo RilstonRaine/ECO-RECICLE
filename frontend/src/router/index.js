@@ -11,8 +11,11 @@ import RelatoriosPF from '../views/RelatoriosPF.vue'
 import RelatoriosPJ from '../views/RelatoriosPJ.vue'
 import Perfil from '../views/Perfil.vue'
 import EditarPerfil from '../views/EditarPerfil.vue'
+import AssinarPro from '../views/AssinarPro.vue'
 import store from '../store'
+import ui from '../store/ui'
 import GuiaReciclagem from '../views/GuiaReciclagem.vue'
+import { getLicencaCached, isProAtivo } from '../services/licenca'
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
@@ -20,14 +23,15 @@ const routes = [
   { path: '/register', name: 'Register', component: Register },
   { path: '/dashboard-pf', name: 'DashboardPF', component: DashboardPF, meta: { requiresAuth: true, role: 'descartante' } },
   { path: '/dashboard-pj', name: 'DashboardPJ', component: DashboardPJ, meta: { requiresAuth: true, role: 'ponto_coleta' } },
-  { path: '/relatorios/pf', name: 'RelatoriosPF', component: RelatoriosPF, meta: { requiresAuth: true, role: 'descartante' } },
-  { path: '/relatorios/pj', name: 'RelatoriosPJ', component: RelatoriosPJ, meta: { requiresAuth: true, role: 'ponto_coleta' } },
-  { path: '/recompensas', name: 'Recompensas', component: Recompensas, meta: { requiresAuth: true } },
+  { path: '/relatorios/pf', name: 'RelatoriosPF', component: RelatoriosPF, meta: { requiresAuth: true, role: 'descartante', requiresPro: true } },
+  { path: '/relatorios/pj', name: 'RelatoriosPJ', component: RelatoriosPJ, meta: { requiresAuth: true, role: 'ponto_coleta', requiresPro: true } },
+  { path: '/recompensas', name: 'Recompensas', component: Recompensas, meta: { requiresAuth: true, requiresPro: true } },
   { path: '/pontos', name: 'Pontos', component: Pontos },
   { path: '/cadastro-dispositivo', name: 'CadastroDispositivo', component: CadastroDispositivo, meta: { requiresAuth: true, role: 'descartante' } },
   { path: '/perfil', name: 'Perfil', component: Perfil, meta: { requiresAuth: true } },
   { path: '/perfil/editar', name: 'EditarPerfil', component: EditarPerfil, meta: { requiresAuth: true } },
   { path: '/guia-reciclagem', name: 'GuiaReciclagem', component: GuiaReciclagem },
+  { path: '/assinar-pro', name: 'AssinarPro', component: AssinarPro, meta: { requiresAuth: true } },
 ]
 
 const router = createRouter({
@@ -41,14 +45,34 @@ router.beforeEach(async (to, from, next) => {
 
   if (to.meta.requiresAuth && !isAuthenticated) {
     next({ name: 'Login' })
-  } else if (to.meta.role && userRole && to.meta.role !== userRole) {
-    // Redirecionar se o papel não corresponder
+    return
+  }
+
+  if (to.meta.role && userRole && to.meta.role !== userRole) {
     if (userRole === 'descartante') next({ name: 'DashboardPF' })
     else if (userRole === 'ponto_coleta') next({ name: 'DashboardPJ' })
     else next({ name: 'Home' })
-  } else {
-    next()
+    return
   }
+
+  if (to.meta.requiresPro) {
+    try {
+      const lic = await getLicencaCached()
+      if (!isProAtivo(lic)) {
+        const reason = to.name === 'Recompensas' ? 'rewards' : 'reports'
+        ui.openProModal({ reason, need: userRole === 'descartante' ? 'pf' : 'pj' })
+        next(false)
+        return
+      }
+    } catch (e) {
+      console.error('Erro ao verificar licença PRO', e)
+      ui.openProModal({ reason: 'reports' })
+      next(false)
+      return
+    }
+  }
+
+  next()
 })
 
 export default router
