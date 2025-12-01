@@ -160,7 +160,7 @@ function closeMenu() {
   padding: 10px 0;
   position: sticky;
   top: 0;
-  z-index: 20;
+  z-index: 1030;
   background-color: var(--ecor-mint-600);
   box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 }
