@@ -50,7 +50,7 @@
           {{ loading ? 'Ativando…' : 'Assinar PRO agora' }}
         </button>
 
-        <div class="price">R$ <strong>12,90</strong> / mês • cancele quando quiser</div>
+        <div class="price">R$ <strong>{{ souPF ? '12,90' : '59,90' }}</strong> / mês • cancele quando quiser</div>
         <div class="disclaimer">Simulação de pagamento (teste). Nenhuma cobrança real será feita.</div>
       </form>
     </div>
